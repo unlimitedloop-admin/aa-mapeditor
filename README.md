@@ -1,11 +1,10 @@
 # Authentic Action Map Editor
-It is a production tool for a project to port a remake of a Famicom game to Windows.
+It is a production tool for a project aimed at porting a remake of a Famicom game to Windows.
 
-The source code used in this can be used freely by anyone.
+The source code used in this project can be freely utilized by anyone.
 
-However, it is dangerous to claim the creator of this entire project under a name other than mine. It is because of the fatal fear of portrait rights.
+However, claiming the creator of this entire project under a name other than mine is dangerous due to potential infringement of portrait rights.
 
-Also, this source code may be incomplete because it may have a configuration uniquely devised by u7.
-For example, if you misappropriate this and damage occurs, it will be transferred only to your responsibility.
+Furthermore, it should be noted that this source code may be incomplete, as it includes configurations uniquely devised by u7. For instance, misappropriation of this code leading to damages would solely be the responsibility of the user.
 
-Many thanks
+Thank you for your understanding.
