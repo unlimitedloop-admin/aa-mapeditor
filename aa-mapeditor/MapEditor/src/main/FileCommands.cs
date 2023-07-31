@@ -13,13 +13,13 @@
 //
 //      Arthentic Action Map Editor (Csharp Edition)
 //
-//      File name       : MainForm.cs
+//      File name       : FileCommands.cs
 //
 //      Author          : u7
 //
 //      Last update     : 2023/08/01
 //
-//      File version    : 2
+//      File version    : 1
 //
 //
 /**************************************************************/
@@ -28,25 +28,16 @@
 namespace MapEditor.src.main
 {
     /// <summary>
-    ///  Application power window.
+    ///  A collection of event handlers for file menu commands.
     /// </summary>
-    public partial class MainForm : Form
+    internal class FileCommands
     {
         /// <summary>
-        ///  File menu commands.
+        ///  Quit the whole application.
         /// </summary>
-        private readonly FileCommands _fileCommands = new();
-
-        public MainForm()
+        internal static void ExitApplication()
         {
-            InitializeComponent();
-        }
-
-
-        /** EventHandler **/
-        private void アプリケーションを終了XToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            FileCommands.ExitApplication();
+            Application.Exit();
         }
     }
 }

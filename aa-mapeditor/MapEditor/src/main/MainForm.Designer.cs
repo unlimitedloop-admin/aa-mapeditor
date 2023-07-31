@@ -344,6 +344,7 @@ namespace MapEditor.src.main
             アプリケーションを終了XToolStripMenuItem.Name = "アプリケーションを終了XToolStripMenuItem";
             アプリケーションを終了XToolStripMenuItem.Size = new Size(260, 22);
             アプリケーションを終了XToolStripMenuItem.Text = "アプリケーションを終了 (&X)";
+            アプリケーションを終了XToolStripMenuItem.Click += アプリケーションを終了XToolStripMenuItem_Click;
             // 
             // 編集EToolStripMenuItem
             // 
