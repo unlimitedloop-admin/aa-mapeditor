@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/08/01
+//      Last update     : 2023/08/02
 //
-//      File version    : 2
+//      File version    : 3
 //
 //
 /**************************************************************/
@@ -32,6 +32,11 @@ namespace MapEditor.src.main
     /// </summary>
     public partial class MainForm : Form
     {
+        /// <summary>
+        ///  Debug context menu commands.
+        /// </summary>
+        private readonly DebugCommands _examinateCommands = new();
+
         /// <summary>
         ///  File menu commands.
         /// </summary>
@@ -47,6 +52,11 @@ namespace MapEditor.src.main
         private void アプリケーションを終了XToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FileCommands.ExitApplication();
+        }
+
+        private void バイナリファイルオープンテスト1ToolStripMenuItem_Click(Object sender, EventArgs e)
+        {
+            _examinateCommands.OpenBinaryFile1();
         }
     }
 }

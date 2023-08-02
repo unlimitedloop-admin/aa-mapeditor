@@ -28,6 +28,7 @@ namespace MapEditor.src.main
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             mainMenuStrip = new MenuStrip();
             ファイルFToolStripMenuItem = new ToolStripMenuItem();
@@ -171,6 +172,8 @@ namespace MapEditor.src.main
             mapInfoPanel = new Panel();
             graphicChipPanel = new Panel();
             statusStrip = new StatusStrip();
+            debugContextMenu = new ContextMenuStrip(components);
+            バイナリファイルオープンテスト1ToolStripMenuItem = new ToolStripMenuItem();
             mainMenuStrip.SuspendLayout();
             selectedChipPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)selectedChipTexture).BeginInit();
@@ -183,6 +186,7 @@ namespace MapEditor.src.main
             leftContainer.Panel2.SuspendLayout();
             leftContainer.SuspendLayout();
             mapStructPanel.SuspendLayout();
+            debugContextMenu.SuspendLayout();
             SuspendLayout();
             // 
             // mainMenuStrip
@@ -1288,12 +1292,26 @@ namespace MapEditor.src.main
             statusStrip.TabIndex = 28;
             statusStrip.Text = "statusStrip1";
             // 
+            // debugContextMenu
+            // 
+            debugContextMenu.Items.AddRange(new ToolStripItem[] { バイナリファイルオープンテスト1ToolStripMenuItem });
+            debugContextMenu.Name = "debugContextMenu";
+            debugContextMenu.Size = new Size(212, 26);
+            // 
+            // バイナリファイルオープンテスト1ToolStripMenuItem
+            // 
+            バイナリファイルオープンテスト1ToolStripMenuItem.Name = "バイナリファイルオープンテスト1ToolStripMenuItem";
+            バイナリファイルオープンテスト1ToolStripMenuItem.Size = new Size(211, 22);
+            バイナリファイルオープンテスト1ToolStripMenuItem.Text = "バイナリファイルオープンテスト1";
+            バイナリファイルオープンテスト1ToolStripMenuItem.Click += バイナリファイルオープンテスト1ToolStripMenuItem_Click;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(6F, 12F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.Control;
             ClientSize = new Size(1284, 841);
+            ContextMenuStrip = debugContextMenu;
             Controls.Add(statusStrip);
             Controls.Add(mainContainer);
             Controls.Add(selectedChipPanel);
@@ -1344,6 +1362,7 @@ namespace MapEditor.src.main
             ((System.ComponentModel.ISupportInitialize)leftContainer).EndInit();
             leftContainer.ResumeLayout(false);
             mapStructPanel.ResumeLayout(false);
+            debugContextMenu.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -1492,5 +1511,7 @@ namespace MapEditor.src.main
         private ToolStripMenuItem グラフィックチップリストGToolStripMenuItem;
         private ToolStripMenuItem 両方BToolStripMenuItem;
         private ToolStripMenuItem プロジェクトを閉じるDToolStripMenuItem;
+        private ContextMenuStrip debugContextMenu;
+        private ToolStripMenuItem バイナリファイルオープンテスト1ToolStripMenuItem;
     }
 }
