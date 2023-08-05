@@ -1,7 +1,7 @@
 /**************************************************************/
 //
 //
-//      Copyright (c) 20XX UNLIMITED LOOP ROOT-ONE
+//      Copyright (c) 2023 UNLIMITED LOOP ROOT-ONE
 //
 //
 //      This software(and source code) is completely Unlicense.
@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/08/02
+//      Last update     : 2023/08/05
 //
-//      File version    : 1
+//      File version    : 2
 //
 //
 /**************************************************************/
@@ -51,11 +51,20 @@ namespace MapEditor.src.app.IO
         /// <summary>
         ///  This is the constructor for BinMapFile.
         /// </summary>
-        /// <param name="name">Binary file name label.</param>
+        /// <param name="name">Binary file name label</param>
         internal BinMapFile(string name)
         {
             Name = name;
             _data = Array.Empty<byte>();
+        }
+
+        /// <summary>
+        ///  Gets the data length of the binary data being stored in memory.
+        /// </summary>
+        /// <returns>An integer for the data length, 0 if null.</returns>
+        internal int GetDataLength()
+        {
+            return _data?.Length ?? 0;
         }
 
         /// <summary>
@@ -123,7 +132,7 @@ namespace MapEditor.src.app.IO
         ///  Gets the value of the specified address.
         /// </summary>
         /// <param name="address">Address number in bytes to read</param>
-        /// <returns>binary data bytes</returns>
+        /// <returns>binary data bytes.</returns>
         internal byte? GetDataByte(int address)
         {
             if (null != _data && address < _data.Length)
@@ -131,6 +140,36 @@ namespace MapEditor.src.app.IO
                 return _data[address];
             }
             return null;
+        }
+
+        /// <summary>
+        ///  Create a <see cref="TextBox"/> object to be any placed.
+        /// </summary>
+        /// <param name="address">Hex number to write in the textbox</param>
+        /// <param name="rectangle">Text box scaler</param>
+        /// <returns>Generated <see cref="TextBox"/> object.</returns>
+        internal TextBox CreateMapTextBox(int address, Size rectangle, Font? font = null)
+        {
+            Font default_font = new("Yu Gothic UI", 12, FontStyle.Regular);
+            Font selected_font = font ?? default_font;
+
+            // NOTE : If the binary data is empty, delete the character and change it to black(DimGray).
+            var picx = new TextBox()
+            {
+                Text = (this.GetDataByte(address) ?? 256).ToString("X2"),
+                Size = new(rectangle.Width, rectangle.Height),
+                Margin = new(0),
+                BackColor = SystemColors.Control,
+                TextAlign = HorizontalAlignment.Center,
+                Multiline = true,
+                Font = selected_font,
+            };
+            if ("100" == picx.Text)
+            {
+                picx.Text = "";
+                picx.BackColor = Color.DimGray;
+            }
+            return picx;
         }
     }
 }

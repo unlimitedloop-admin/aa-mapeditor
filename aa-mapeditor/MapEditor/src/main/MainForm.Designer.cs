@@ -174,6 +174,8 @@ namespace MapEditor.src.main
             statusStrip = new StatusStrip();
             debugContextMenu = new ContextMenuStrip(components);
             バイナリファイルオープンテスト1ToolStripMenuItem = new ToolStripMenuItem();
+            バイナリファイルオープンテスト2ToolStripMenuItem = new ToolStripMenuItem();
+            バイナリファイルクローズテストToolStripMenuItem = new ToolStripMenuItem();
             mainMenuStrip.SuspendLayout();
             selectedChipPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)selectedChipTexture).BeginInit();
@@ -1294,9 +1296,9 @@ namespace MapEditor.src.main
             // 
             // debugContextMenu
             // 
-            debugContextMenu.Items.AddRange(new ToolStripItem[] { バイナリファイルオープンテスト1ToolStripMenuItem });
+            debugContextMenu.Items.AddRange(new ToolStripItem[] { バイナリファイルオープンテスト1ToolStripMenuItem, バイナリファイルオープンテスト2ToolStripMenuItem, バイナリファイルクローズテストToolStripMenuItem });
             debugContextMenu.Name = "debugContextMenu";
-            debugContextMenu.Size = new Size(212, 26);
+            debugContextMenu.Size = new Size(212, 92);
             // 
             // バイナリファイルオープンテスト1ToolStripMenuItem
             // 
@@ -1304,6 +1306,20 @@ namespace MapEditor.src.main
             バイナリファイルオープンテスト1ToolStripMenuItem.Size = new Size(211, 22);
             バイナリファイルオープンテスト1ToolStripMenuItem.Text = "バイナリファイルオープンテスト1";
             バイナリファイルオープンテスト1ToolStripMenuItem.Click += バイナリファイルオープンテスト1ToolStripMenuItem_Click;
+            // 
+            // バイナリファイルオープンテスト2ToolStripMenuItem
+            // 
+            バイナリファイルオープンテスト2ToolStripMenuItem.Name = "バイナリファイルオープンテスト2ToolStripMenuItem";
+            バイナリファイルオープンテスト2ToolStripMenuItem.Size = new Size(211, 22);
+            バイナリファイルオープンテスト2ToolStripMenuItem.Text = "バイナリファイルオープンテスト2";
+            バイナリファイルオープンテスト2ToolStripMenuItem.Click += バイナリデータを開くBToolStripMenuItem_Click;
+            // 
+            // バイナリファイルクローズテストToolStripMenuItem
+            // 
+            バイナリファイルクローズテストToolStripMenuItem.Name = "バイナリファイルクローズテストToolStripMenuItem";
+            バイナリファイルクローズテストToolStripMenuItem.Size = new Size(211, 22);
+            バイナリファイルクローズテストToolStripMenuItem.Text = "バイナリファイルクローズテスト";
+            バイナリファイルクローズテストToolStripMenuItem.Click += バイナリデータを閉じるBToolStripMenuItem_Click;
             // 
             // MainForm
             // 
@@ -1513,5 +1529,7 @@ namespace MapEditor.src.main
         private ToolStripMenuItem プロジェクトを閉じるDToolStripMenuItem;
         private ContextMenuStrip debugContextMenu;
         private ToolStripMenuItem バイナリファイルオープンテスト1ToolStripMenuItem;
+        private ToolStripMenuItem バイナリファイルオープンテスト2ToolStripMenuItem;
+        private ToolStripMenuItem バイナリファイルクローズテストToolStripMenuItem;
     }
 }
