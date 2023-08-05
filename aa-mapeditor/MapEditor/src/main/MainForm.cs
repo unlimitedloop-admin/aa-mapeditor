@@ -19,7 +19,7 @@
 //
 //      Last update     : 2023/08/05
 //
-//      File version    : 4
+//      File version    : 5
 //
 //
 /**************************************************************/
@@ -75,9 +75,24 @@ namespace MapEditor.src.main
             FileCommands.ExitApplication();
         }
 
-        private void バイナリファイルオープンテスト1ToolStripMenuItem_Click(Object sender, EventArgs e)
+        private void MainForm_Activated(object sender, EventArgs e)
         {
-            _examinateCommands.OpenBinaryFile1();
+            ActiveControl = null;
+        }
+
+        private void MainForm_Click(object sender, EventArgs e)
+        {
+            ActiveControl = null;
+        }
+
+        private void MainForm_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyData == Keys.Escape)
+            {
+                e.SuppressKeyPress = true;
+                ActiveControl = null;
+                return;
+            }
         }
     }
 }

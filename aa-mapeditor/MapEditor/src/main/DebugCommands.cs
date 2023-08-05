@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/08/02
+//      Last update     : 2023/08/05
 //
-//      File version    : 1
+//      File version    : 2
 //
 //
 /**************************************************************/
@@ -37,23 +37,6 @@ namespace MapEditor.src.main
     /// </summary>
     internal class DebugCommands
     {
-        internal void OpenBinaryFile1()
-        {
-            using OpenFileDialog openbin = new()
-            {
-                Filter = "binファイル(*bin)|*bin|すべてのファイル(*.*)|*.*",
-                Title = "ファイルを選択",
-            };
-            if (openbin.ShowDialog() == DialogResult.OK)
-            {
-                BinMapFile file = new("sample!");
-                if (file.FileOpen(openbin.FileName))
-                {
-                    //MessageBox.Show("メッセージが表示できます。");
-                    //MessageBox.Show(Path.GetFileName(openbin.FileName) + "が選択されました。");
-                    MessageBox.Show("指定の番号のバイナリデータバイトは0x" + file.GetDataByte(0xD5)?.ToString("X2") + "です。");
-                }
-            }
-        }
+        // Add sample code...
     }
 }

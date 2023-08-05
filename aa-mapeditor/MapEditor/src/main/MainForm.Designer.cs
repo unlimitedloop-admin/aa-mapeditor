@@ -173,9 +173,9 @@ namespace MapEditor.src.main
             graphicChipPanel = new Panel();
             statusStrip = new StatusStrip();
             debugContextMenu = new ContextMenuStrip(components);
-            バイナリファイルオープンテスト1ToolStripMenuItem = new ToolStripMenuItem();
-            バイナリファイルオープンテスト2ToolStripMenuItem = new ToolStripMenuItem();
-            バイナリファイルクローズテストToolStripMenuItem = new ToolStripMenuItem();
+            mapFieldContextMenu = new ContextMenuStrip(components);
+            マップデータを読み込みToolStripMenuItem = new ToolStripMenuItem();
+            マップデータ消去ToolStripMenuItem = new ToolStripMenuItem();
             mainMenuStrip.SuspendLayout();
             selectedChipPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)selectedChipTexture).BeginInit();
@@ -188,7 +188,7 @@ namespace MapEditor.src.main
             leftContainer.Panel2.SuspendLayout();
             leftContainer.SuspendLayout();
             mapStructPanel.SuspendLayout();
-            debugContextMenu.SuspendLayout();
+            mapFieldContextMenu.SuspendLayout();
             SuspendLayout();
             // 
             // mainMenuStrip
@@ -237,6 +237,7 @@ namespace MapEditor.src.main
             バイナリデータを開くBToolStripMenuItem.Name = "バイナリデータを開くBToolStripMenuItem";
             バイナリデータを開くBToolStripMenuItem.Size = new Size(230, 22);
             バイナリデータを開くBToolStripMenuItem.Text = "バイナリデータを開く... (&B)";
+            バイナリデータを開くBToolStripMenuItem.Click += バイナリデータを開くBToolStripMenuItem_Click;
             // 
             // グラフィックチップリストを開くGToolStripMenuItem
             // 
@@ -256,6 +257,7 @@ namespace MapEditor.src.main
             マップデータMToolStripMenuItem.Name = "マップデータMToolStripMenuItem";
             マップデータMToolStripMenuItem.Size = new Size(193, 22);
             マップデータMToolStripMenuItem.Text = "マップデータ (&M)";
+            マップデータMToolStripMenuItem.Click += バイナリデータを閉じるBToolStripMenuItem_Click;
             // 
             // グラフィックチップリストGToolStripMenuItem
             // 
@@ -1053,6 +1055,7 @@ namespace MapEditor.src.main
             openBinaryFileButton.Size = new Size(32, 32);
             openBinaryFileButton.TabIndex = 8;
             openBinaryFileButton.UseVisualStyleBackColor = false;
+            openBinaryFileButton.Click += バイナリデータを開くBToolStripMenuItem_Click;
             // 
             // shiftOneLeftButton
             // 
@@ -1218,6 +1221,7 @@ namespace MapEditor.src.main
             // 
             mapStructPanel.BackColor = SystemColors.ControlLight;
             mapStructPanel.BorderStyle = BorderStyle.Fixed3D;
+            mapStructPanel.ContextMenuStrip = mapFieldContextMenu;
             mapStructPanel.Controls.Add(mapFieldTable);
             mapStructPanel.Dock = DockStyle.Fill;
             mapStructPanel.Location = new Point(0, 0);
@@ -1296,30 +1300,28 @@ namespace MapEditor.src.main
             // 
             // debugContextMenu
             // 
-            debugContextMenu.Items.AddRange(new ToolStripItem[] { バイナリファイルオープンテスト1ToolStripMenuItem, バイナリファイルオープンテスト2ToolStripMenuItem, バイナリファイルクローズテストToolStripMenuItem });
             debugContextMenu.Name = "debugContextMenu";
-            debugContextMenu.Size = new Size(212, 92);
+            debugContextMenu.Size = new Size(61, 4);
             // 
-            // バイナリファイルオープンテスト1ToolStripMenuItem
+            // mapFieldContextMenu
             // 
-            バイナリファイルオープンテスト1ToolStripMenuItem.Name = "バイナリファイルオープンテスト1ToolStripMenuItem";
-            バイナリファイルオープンテスト1ToolStripMenuItem.Size = new Size(211, 22);
-            バイナリファイルオープンテスト1ToolStripMenuItem.Text = "バイナリファイルオープンテスト1";
-            バイナリファイルオープンテスト1ToolStripMenuItem.Click += バイナリファイルオープンテスト1ToolStripMenuItem_Click;
+            mapFieldContextMenu.Items.AddRange(new ToolStripItem[] { マップデータを読み込みToolStripMenuItem, マップデータ消去ToolStripMenuItem });
+            mapFieldContextMenu.Name = "mapFieldContextMenu";
+            mapFieldContextMenu.Size = new Size(191, 48);
             // 
-            // バイナリファイルオープンテスト2ToolStripMenuItem
+            // マップデータを読み込みToolStripMenuItem
             // 
-            バイナリファイルオープンテスト2ToolStripMenuItem.Name = "バイナリファイルオープンテスト2ToolStripMenuItem";
-            バイナリファイルオープンテスト2ToolStripMenuItem.Size = new Size(211, 22);
-            バイナリファイルオープンテスト2ToolStripMenuItem.Text = "バイナリファイルオープンテスト2";
-            バイナリファイルオープンテスト2ToolStripMenuItem.Click += バイナリデータを開くBToolStripMenuItem_Click;
+            マップデータを読み込みToolStripMenuItem.Name = "マップデータを読み込みToolStripMenuItem";
+            マップデータを読み込みToolStripMenuItem.Size = new Size(190, 22);
+            マップデータを読み込みToolStripMenuItem.Text = "マップデータを読み込み...";
+            マップデータを読み込みToolStripMenuItem.Click += バイナリデータを開くBToolStripMenuItem_Click;
             // 
-            // バイナリファイルクローズテストToolStripMenuItem
+            // マップデータ消去ToolStripMenuItem
             // 
-            バイナリファイルクローズテストToolStripMenuItem.Name = "バイナリファイルクローズテストToolStripMenuItem";
-            バイナリファイルクローズテストToolStripMenuItem.Size = new Size(211, 22);
-            バイナリファイルクローズテストToolStripMenuItem.Text = "バイナリファイルクローズテスト";
-            バイナリファイルクローズテストToolStripMenuItem.Click += バイナリデータを閉じるBToolStripMenuItem_Click;
+            マップデータ消去ToolStripMenuItem.Name = "マップデータ消去ToolStripMenuItem";
+            マップデータ消去ToolStripMenuItem.Size = new Size(190, 22);
+            マップデータ消去ToolStripMenuItem.Text = "マップデータ消去";
+            マップデータ消去ToolStripMenuItem.Click += バイナリデータを閉じるBToolStripMenuItem_Click;
             // 
             // MainForm
             // 
@@ -1365,6 +1367,9 @@ namespace MapEditor.src.main
             Name = "MainForm";
             StartPosition = FormStartPosition.Manual;
             Text = "MainForm";
+            Activated += MainForm_Activated;
+            Click += MainForm_Click;
+            KeyDown += MainForm_KeyDown;
             mainMenuStrip.ResumeLayout(false);
             mainMenuStrip.PerformLayout();
             selectedChipPanel.ResumeLayout(false);
@@ -1378,7 +1383,7 @@ namespace MapEditor.src.main
             ((System.ComponentModel.ISupportInitialize)leftContainer).EndInit();
             leftContainer.ResumeLayout(false);
             mapStructPanel.ResumeLayout(false);
-            debugContextMenu.ResumeLayout(false);
+            mapFieldContextMenu.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -1528,8 +1533,8 @@ namespace MapEditor.src.main
         private ToolStripMenuItem 両方BToolStripMenuItem;
         private ToolStripMenuItem プロジェクトを閉じるDToolStripMenuItem;
         private ContextMenuStrip debugContextMenu;
-        private ToolStripMenuItem バイナリファイルオープンテスト1ToolStripMenuItem;
-        private ToolStripMenuItem バイナリファイルオープンテスト2ToolStripMenuItem;
-        private ToolStripMenuItem バイナリファイルクローズテストToolStripMenuItem;
+        private ContextMenuStrip mapFieldContextMenu;
+        private ToolStripMenuItem マップデータを読み込みToolStripMenuItem;
+        private ToolStripMenuItem マップデータ消去ToolStripMenuItem;
     }
 }
