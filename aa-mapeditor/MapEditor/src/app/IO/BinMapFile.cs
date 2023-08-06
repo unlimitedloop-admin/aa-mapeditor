@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/08/05
+//      Last update     : 2023/08/06
 //
-//      File version    : 2
+//      File version    : 3
 //
 //
 /**************************************************************/
@@ -152,11 +152,10 @@ namespace MapEditor.src.app.IO
         {
             Font default_font = new("Yu Gothic UI", 12, FontStyle.Regular);
             Font selected_font = font ?? default_font;
-
-            // NOTE : If the binary data is empty, delete the character and change it to black(DimGray).
+            
             var picx = new TextBox()
             {
-                Text = (this.GetDataByte(address) ?? 256).ToString("X2"),
+                Text = (GetDataByte(address)?.ToString("X2")) ?? "",
                 Size = new(rectangle.Width, rectangle.Height),
                 Margin = new(0),
                 BackColor = SystemColors.Control,
@@ -164,11 +163,6 @@ namespace MapEditor.src.app.IO
                 Multiline = true,
                 Font = selected_font,
             };
-            if ("100" == picx.Text)
-            {
-                picx.Text = "";
-                picx.BackColor = Color.DimGray;
-            }
             return picx;
         }
     }

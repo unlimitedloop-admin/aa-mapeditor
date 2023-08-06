@@ -17,15 +17,16 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/08/05
+//      Last update     : 2023/08/06
 //
-//      File version    : 1
+//      File version    : 2
 //
 //
 /**************************************************************/
 
 /* using namespace */
 using MapEditor.src.app.IO;
+using MapEditor.src.common;
 
 
 
@@ -47,11 +48,9 @@ namespace MapEditor.src.app.models
         ///  This is the constructor for MapStructs.
         /// </summary>
         /// <param name="name">Binary file name label.</param>
-        /// <param name="path">Specify the full path of the binary file</param>
-        internal MapStructs(string name, string path)
+        internal MapStructs(string name)
         {
             _binMapFile = new(name);
-            _binMapFile.FileOpen(path);
         }
 
         /// <summary>
@@ -69,32 +68,32 @@ namespace MapEditor.src.app.models
         /// <summary>
         ///  Unzip the map data file.
         /// </summary>
+        /// <param name="path">File path to unzip</param>
         /// <param name="objects">A reference to the <see cref="TableLayoutPanel"/> object for adding objects</param>
         /// <returns>True if successful.</returns>
-        internal bool Unzip(ref TableLayoutPanel objects)
+        internal bool Unzip(string path, ref TableLayoutPanel objects)
         {
-            // Branching where BinMapFile failed.
-            if (null == _binMapFile || 0 == _binMapFile.GetDataLength())
+            if (null != _binMapFile && _binMapFile.FileOpen(path))
             {
-                return false;
-            }
-            int row_number = objects.RowCount;
-            int col_number = objects.ColumnCount;
-            int cellheight = objects.Height / row_number;
-            int cellwidth = objects.Width / col_number;
-            Size boxsize = new(cellwidth, cellheight);
-            int index = 0x00, chipindex = 0x10;
+                int row_number = objects.RowCount;
+                int col_number = objects.ColumnCount;
+                int cellheight = objects.Height / row_number;
+                int cellwidth = objects.Width / col_number;
+                Size boxsize = new(cellwidth, cellheight);
+                int index = 0x00, chipindex = ConstBinaryData.MAP_HEADERSIZE;
 
-            // An iterative process that sequentially accesses each split panel in a TableLayoutPanel.
-            for (int i = 0; i < row_number; i++)
-            {
-                for (int j = 0; j < col_number; j++)
+                // An iterative process that sequentially accesses each split panel in a TableLayoutPanel.
+                for (int i = 0; i < row_number; i++)
                 {
-                    objects.Controls.Add(_binMapFile.CreateMapTextBox(chipindex, boxsize), j, i);
-                    index++; chipindex++;
+                    for (int j = 0; j < col_number; j++)
+                    {
+                        objects.Controls.Add(_binMapFile.CreateMapTextBox(chipindex, boxsize), j, i);
+                        index++; chipindex++;
+                    }
                 }
+                return true;
             }
-            return true;
+            return false;
         }
     }
 }

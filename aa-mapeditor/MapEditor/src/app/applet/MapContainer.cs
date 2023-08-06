@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/08/05
+//      Last update     : 2023/08/06
 //
-//      File version    : 1
+//      File version    : 2
 //
 //
 /**************************************************************/
@@ -57,8 +57,11 @@ namespace MapEditor.src.app.applet
             if (openbin.ShowDialog() == DialogResult.OK)
             {
                 DestroyMapFile(ref instance);
-                _mapStruct = new(Path.GetFullPath(openbin.FileName), openbin.FileName);
-                _mapStruct.Unzip(ref instance);
+                _mapStruct = new(Path.GetFullPath(openbin.FileName));
+                if (!_mapStruct.Unzip(openbin.FileName, ref instance))
+                {
+                    _mapStruct = null;
+                }
             }
             openbin.Dispose();
         }

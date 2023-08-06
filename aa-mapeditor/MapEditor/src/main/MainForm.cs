@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/08/05
+//      Last update*    : 2023/08/06
 //
-//      File version    : 5
+//      File version    : 6
 //
 //
 /**************************************************************/
@@ -52,6 +52,10 @@ namespace MapEditor.src.main
         /// </summary>
         private readonly FileCommands _fileCommands;
 
+
+        /// <summary>
+        ///  This is the constructor for MainForm.
+        /// </summary>
         public MainForm()
         {
             InitializeComponent();
