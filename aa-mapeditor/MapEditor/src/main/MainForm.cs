@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update*    : 2023/08/06
+//      Last update     : 2023/08/10
 //
-//      File version    : 6
+//      File version    : 7
 //
 //
 /**************************************************************/
@@ -72,6 +72,16 @@ namespace MapEditor.src.main
         private void バイナリデータを閉じるBToolStripMenuItem_Click(object sender, EventArgs e)
         {
             _fileCommands.CloseBinaryMapFile(ref mapFieldTable);
+        }
+
+        private void グラフィックチップリストを開くGToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _fileCommands.OpenGraphicChipFile(ref graphicChipPanel);
+        }
+
+        private void グラフィックチップリストを閉じるGToolStripMenuItem_Click(Object sender, EventArgs e)
+        {
+            _fileCommands.CloseGraphicChipFile(ref graphicChipPanel);
         }
 
         private void アプリケーションを終了XToolStripMenuItem_Click(object sender, EventArgs e)

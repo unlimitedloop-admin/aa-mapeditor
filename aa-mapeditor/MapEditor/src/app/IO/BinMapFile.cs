@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/08/06
+//      Last update     : 2023/08/10
 //
-//      File version    : 3
+//      File version    : 4
 //
 //
 /**************************************************************/
@@ -30,7 +30,7 @@ namespace MapEditor.src.app.IO
     /// <summary>
     ///  File IO class for stage maps.
     /// </summary>
-    internal class BinMapFile
+    internal class BinMapFile : IStandardFileIO
     {
         /// <summary>
         ///  Binary file source path.

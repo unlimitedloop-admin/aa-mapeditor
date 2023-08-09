@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/08/05
+//      Last update     : 2023/08/10
 //
-//      File version    : 2
+//      File version    : 3
 //
 //
 /**************************************************************/
@@ -68,6 +68,24 @@ namespace MapEditor.src.main
         internal void CloseBinaryMapFile(ref TableLayoutPanel panel)
         {
             _mapContainer?.DestroyMapFile(ref panel);
+        }
+
+        /// <summary>
+        ///  Open the graphic chip file and expand it to the panel.
+        /// </summary>
+        /// <param name="panel">Object to deploy</param>
+        internal void OpenGraphicChipFile(ref Panel panel)
+        {
+            _mapContainer?.LoadGraphicChipList(ref panel);
+        }
+
+        /// <summary>
+        ///  Close the graphic chip list.
+        /// </summary>
+        /// <param name="panel">Object to destroy</param>
+        internal void CloseGraphicChipFile(ref Panel panel)
+        {
+            _mapContainer?.DestroyGraphicChip(ref panel);
         }
 
         /// <summary>

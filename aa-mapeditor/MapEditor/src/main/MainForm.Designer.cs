@@ -168,14 +168,14 @@ namespace MapEditor.src.main
             mainContainer = new SplitContainer();
             leftContainer = new SplitContainer();
             mapStructPanel = new Panel();
+            mapFieldContextMenu = new ContextMenuStrip(components);
+            マップデータを読み込みToolStripMenuItem = new ToolStripMenuItem();
+            マップデータ消去ToolStripMenuItem = new ToolStripMenuItem();
             mapFieldTable = new TableLayoutPanel();
             mapInfoPanel = new Panel();
             graphicChipPanel = new Panel();
             statusStrip = new StatusStrip();
             debugContextMenu = new ContextMenuStrip(components);
-            mapFieldContextMenu = new ContextMenuStrip(components);
-            マップデータを読み込みToolStripMenuItem = new ToolStripMenuItem();
-            マップデータ消去ToolStripMenuItem = new ToolStripMenuItem();
             mainMenuStrip.SuspendLayout();
             selectedChipPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)selectedChipTexture).BeginInit();
@@ -244,6 +244,7 @@ namespace MapEditor.src.main
             グラフィックチップリストを開くGToolStripMenuItem.Name = "グラフィックチップリストを開くGToolStripMenuItem";
             グラフィックチップリストを開くGToolStripMenuItem.Size = new Size(230, 22);
             グラフィックチップリストを開くGToolStripMenuItem.Text = "グラフィックチップリストを開く... (&G)";
+            グラフィックチップリストを開くGToolStripMenuItem.Click += グラフィックチップリストを開くGToolStripMenuItem_Click;
             // 
             // 閉じるCToolStripMenuItem
             // 
@@ -264,6 +265,7 @@ namespace MapEditor.src.main
             グラフィックチップリストGToolStripMenuItem.Name = "グラフィックチップリストGToolStripMenuItem";
             グラフィックチップリストGToolStripMenuItem.Size = new Size(193, 22);
             グラフィックチップリストGToolStripMenuItem.Text = "グラフィックチップリスト (&G)";
+            グラフィックチップリストGToolStripMenuItem.Click += グラフィックチップリストを閉じるGToolStripMenuItem_Click;
             // 
             // 両方BToolStripMenuItem
             // 
@@ -1149,6 +1151,7 @@ namespace MapEditor.src.main
             openGraphChipButton.Size = new Size(32, 32);
             openGraphChipButton.TabIndex = 24;
             openGraphChipButton.UseVisualStyleBackColor = false;
+            openGraphChipButton.Click += グラフィックチップリストを開くGToolStripMenuItem_Click;
             // 
             // chipCount
             // 
@@ -1229,6 +1232,26 @@ namespace MapEditor.src.main
             mapStructPanel.Size = new Size(563, 504);
             mapStructPanel.TabIndex = 0;
             // 
+            // mapFieldContextMenu
+            // 
+            mapFieldContextMenu.Items.AddRange(new ToolStripItem[] { マップデータを読み込みToolStripMenuItem, マップデータ消去ToolStripMenuItem });
+            mapFieldContextMenu.Name = "mapFieldContextMenu";
+            mapFieldContextMenu.Size = new Size(191, 48);
+            // 
+            // マップデータを読み込みToolStripMenuItem
+            // 
+            マップデータを読み込みToolStripMenuItem.Name = "マップデータを読み込みToolStripMenuItem";
+            マップデータを読み込みToolStripMenuItem.Size = new Size(190, 22);
+            マップデータを読み込みToolStripMenuItem.Text = "マップデータを読み込み...";
+            マップデータを読み込みToolStripMenuItem.Click += バイナリデータを開くBToolStripMenuItem_Click;
+            // 
+            // マップデータ消去ToolStripMenuItem
+            // 
+            マップデータ消去ToolStripMenuItem.Name = "マップデータ消去ToolStripMenuItem";
+            マップデータ消去ToolStripMenuItem.Size = new Size(190, 22);
+            マップデータ消去ToolStripMenuItem.Text = "マップデータ消去";
+            マップデータ消去ToolStripMenuItem.Click += バイナリデータを閉じるBToolStripMenuItem_Click;
+            // 
             // mapFieldTable
             // 
             mapFieldTable.ColumnCount = 16;
@@ -1302,26 +1325,6 @@ namespace MapEditor.src.main
             // 
             debugContextMenu.Name = "debugContextMenu";
             debugContextMenu.Size = new Size(61, 4);
-            // 
-            // mapFieldContextMenu
-            // 
-            mapFieldContextMenu.Items.AddRange(new ToolStripItem[] { マップデータを読み込みToolStripMenuItem, マップデータ消去ToolStripMenuItem });
-            mapFieldContextMenu.Name = "mapFieldContextMenu";
-            mapFieldContextMenu.Size = new Size(191, 48);
-            // 
-            // マップデータを読み込みToolStripMenuItem
-            // 
-            マップデータを読み込みToolStripMenuItem.Name = "マップデータを読み込みToolStripMenuItem";
-            マップデータを読み込みToolStripMenuItem.Size = new Size(190, 22);
-            マップデータを読み込みToolStripMenuItem.Text = "マップデータを読み込み...";
-            マップデータを読み込みToolStripMenuItem.Click += バイナリデータを開くBToolStripMenuItem_Click;
-            // 
-            // マップデータ消去ToolStripMenuItem
-            // 
-            マップデータ消去ToolStripMenuItem.Name = "マップデータ消去ToolStripMenuItem";
-            マップデータ消去ToolStripMenuItem.Size = new Size(190, 22);
-            マップデータ消去ToolStripMenuItem.Text = "マップデータ消去";
-            マップデータ消去ToolStripMenuItem.Click += バイナリデータを閉じるBToolStripMenuItem_Click;
             // 
             // MainForm
             // 
