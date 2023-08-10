@@ -176,6 +176,9 @@ namespace MapEditor.src.main
             graphicChipPanel = new Panel();
             statusStrip = new StatusStrip();
             debugContextMenu = new ContextMenuStrip(components);
+            chipListContextMenu = new ContextMenuStrip(components);
+            グラフィックチップデータを読み込みToolStripMenuItem = new ToolStripMenuItem();
+            グラフィックチップリスト消去ToolStripMenuItem = new ToolStripMenuItem();
             mainMenuStrip.SuspendLayout();
             selectedChipPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)selectedChipTexture).BeginInit();
@@ -189,6 +192,7 @@ namespace MapEditor.src.main
             leftContainer.SuspendLayout();
             mapStructPanel.SuspendLayout();
             mapFieldContextMenu.SuspendLayout();
+            chipListContextMenu.SuspendLayout();
             SuspendLayout();
             // 
             // mainMenuStrip
@@ -1307,6 +1311,7 @@ namespace MapEditor.src.main
             // 
             graphicChipPanel.BackColor = SystemColors.Window;
             graphicChipPanel.BorderStyle = BorderStyle.Fixed3D;
+            graphicChipPanel.ContextMenuStrip = chipListContextMenu;
             graphicChipPanel.Dock = DockStyle.Fill;
             graphicChipPanel.Location = new Point(0, 0);
             graphicChipPanel.Name = "graphicChipPanel";
@@ -1325,6 +1330,26 @@ namespace MapEditor.src.main
             // 
             debugContextMenu.Name = "debugContextMenu";
             debugContextMenu.Size = new Size(61, 4);
+            // 
+            // chipListContextMenu
+            // 
+            chipListContextMenu.Items.AddRange(new ToolStripItem[] { グラフィックチップデータを読み込みToolStripMenuItem, グラフィックチップリスト消去ToolStripMenuItem });
+            chipListContextMenu.Name = "chipListContextMenu";
+            chipListContextMenu.Size = new Size(240, 48);
+            // 
+            // グラフィックチップデータを読み込みToolStripMenuItem
+            // 
+            グラフィックチップデータを読み込みToolStripMenuItem.Name = "グラフィックチップデータを読み込みToolStripMenuItem";
+            グラフィックチップデータを読み込みToolStripMenuItem.Size = new Size(239, 22);
+            グラフィックチップデータを読み込みToolStripMenuItem.Text = "グラフィックチップデータを読み込み...";
+            グラフィックチップデータを読み込みToolStripMenuItem.Click += グラフィックチップリストを開くGToolStripMenuItem_Click;
+            // 
+            // グラフィックチップリスト消去ToolStripMenuItem
+            // 
+            グラフィックチップリスト消去ToolStripMenuItem.Name = "グラフィックチップリスト消去ToolStripMenuItem";
+            グラフィックチップリスト消去ToolStripMenuItem.Size = new Size(239, 22);
+            グラフィックチップリスト消去ToolStripMenuItem.Text = "グラフィックチップリスト消去";
+            グラフィックチップリスト消去ToolStripMenuItem.Click += グラフィックチップリストを閉じるGToolStripMenuItem_Click;
             // 
             // MainForm
             // 
@@ -1387,6 +1412,7 @@ namespace MapEditor.src.main
             leftContainer.ResumeLayout(false);
             mapStructPanel.ResumeLayout(false);
             mapFieldContextMenu.ResumeLayout(false);
+            chipListContextMenu.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -1539,5 +1565,8 @@ namespace MapEditor.src.main
         private ContextMenuStrip mapFieldContextMenu;
         private ToolStripMenuItem マップデータを読み込みToolStripMenuItem;
         private ToolStripMenuItem マップデータ消去ToolStripMenuItem;
+        private ContextMenuStrip chipListContextMenu;
+        private ToolStripMenuItem グラフィックチップデータを読み込みToolStripMenuItem;
+        private ToolStripMenuItem グラフィックチップリスト消去ToolStripMenuItem;
     }
 }

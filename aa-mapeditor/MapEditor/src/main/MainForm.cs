@@ -19,7 +19,7 @@
 //
 //      Last update     : 2023/08/10
 //
-//      File version    : 7
+//      File version    : 8
 //
 //
 /**************************************************************/
@@ -79,7 +79,7 @@ namespace MapEditor.src.main
             _fileCommands.OpenGraphicChipFile(ref graphicChipPanel);
         }
 
-        private void グラフィックチップリストを閉じるGToolStripMenuItem_Click(Object sender, EventArgs e)
+        private void グラフィックチップリストを閉じるGToolStripMenuItem_Click(object sender, EventArgs e)
         {
             _fileCommands.CloseGraphicChipFile(ref graphicChipPanel);
         }

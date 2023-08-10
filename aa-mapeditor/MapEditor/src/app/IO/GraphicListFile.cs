@@ -19,10 +19,15 @@
 //
 //      Last update     : 2023/08/10
 //
-//      File version    : 1
+//      File version    : 2
 //
 //
 /**************************************************************/
+
+/* using namespace */
+using MapEditor.src.common;
+
+
 
 /* sources */
 namespace MapEditor.src.app.IO
@@ -140,8 +145,8 @@ namespace MapEditor.src.app.IO
             {
                 Name = "graph" + index,
                 FlatStyle = FlatStyle.Flat,
-                Width = 40,
-                Height = 40,
+                Width = ConstGraphicData.CHIPBUTTON_SIZE,
+                Height = ConstGraphicData.CHIPBUTTON_SIZE,
                 BackColor = Color.Transparent,
                 BackgroundImageLayout = ImageLayout.None,
             };
@@ -162,8 +167,8 @@ namespace MapEditor.src.app.IO
             // Is there an upper limit for the graphics chip list, is it within that range, and is it possible to obtain the specified image file?
             if (null != _image && 0x100 >= rows * cols)
             {
-                const int graph_size = 16;
-                const int cell_size = 48!;
+                const int graph_size = ConstGraphicData.CHIPRAWSIZE;
+                const int cell_size = ConstGraphicData.TABLE_CELLSIZE;
                 ImageList = new();
                 // Create a resource to place the graphics chip list.
                 table = GetLayoutPanel(rows, cols, cell_size);
@@ -174,7 +179,7 @@ namespace MapEditor.src.app.IO
                     for (var col = 0; col < table.ColumnCount; col++)
                     {
                         // Create a drawing canvas and put it in the background of the button.
-                        Rectangle box = new(0, 0, 32, 32);
+                        Rectangle box = new(0, 0, ConstGraphicData.GRAPHBOXSIZE, ConstGraphicData.GRAPHBOXSIZE);
                         Rectangle img_rect = new(col % table.ColumnCount / 1 * graph_size, row * graph_size, graph_size, graph_size);
                         Bitmap bitmap = new(cell_size, cell_size);
                         Graphics graphics = Graphics.FromImage(bitmap);

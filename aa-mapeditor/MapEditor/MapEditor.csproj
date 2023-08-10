@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
-    <VersionPrefix>0.0.8</VersionPrefix>
+    <VersionPrefix>0.0.9</VersionPrefix>
     <VersionSuffix></VersionSuffix>
   </PropertyGroup>
 
@@ -35,6 +35,10 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="src\dialog\" />
   </ItemGroup>
 
 </Project>

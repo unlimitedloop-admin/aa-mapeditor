@@ -19,13 +19,14 @@
 //
 //      Last update     : 2023/08/10
 //
-//      File version    : 3
+//      File version    : 4
 //
 //
 /**************************************************************/
 
 /* using namespace */
 using MapEditor.src.app.models;
+using MapEditor.src.dialog;
 
 
 
@@ -90,16 +91,12 @@ namespace MapEditor.src.app.applet
         /// <param name="instance"><seealso cref="Panel"/> to place the tip list</param>
         internal void LoadGraphicChipList(ref Panel instance)
         {
-            using OpenFileDialog openfile = new()
-            {
-                Filter = "画像ファイル(*.bmp,*.png,*.jpeg,*.jpg)|*.bmp;*.png;*.jpeg;*.jpg|すべてのファイル(*.*)|*.*",
-                Title = "ファイルを選択",
-            };
-            if (openfile.ShowDialog() == DialogResult.OK)
+            using LoadGraphDialog openfile = new();
+            if (openfile.ShowDialog() == DialogResult.OK && null != openfile.FileName)
             {
                 DestroyGraphicChip(ref instance);
                 _chipLists = new(Path.GetFileName(openfile.FileName));
-                _chipLists.Create(openfile.FileName, 8, 16, ref instance);
+                _chipLists.Create(openfile.FileName, openfile.GraphicHeight, openfile.GraphicWidth, ref instance);
             }
             openfile.Dispose();
         }
