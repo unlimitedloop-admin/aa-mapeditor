@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/08/10
+//      Last update     : 2023/08/13
 //
-//      File version    : 4
+//      File version    : 5
 //
 //
 /**************************************************************/
@@ -63,10 +63,37 @@ namespace MapEditor.src.app.applet
             if (openbin.ShowDialog() == DialogResult.OK)
             {
                 DestroyMapFile(ref instance);
-                _mapStruct = new(Path.GetFullPath(openbin.FileName));
+                _mapStruct = new(Path.GetFileName(openbin.FileName));
                 if (!_mapStruct.Unzip(openbin.FileName, ref instance))
                 {
                     _mapStruct = null;
+                }
+            }
+            openbin.Dispose();
+        }
+
+        /// <summary>
+        ///  Load the map structure of the selected binary file.
+        /// </summary>
+        /// <param name="instance">A <see cref="TableLayoutPanel"/> that expands the loaded map data</param>
+        internal void LoadMapFileFromGraphic(ref TableLayoutPanel instance)
+        {
+            using OpenFileDialog openbin = new()
+            {
+                Filter = "binファイル(*bin)|*bin|すべてのファイル(*.*)|*.*",
+                Title = "ファイルを選択",
+            };
+            if (openbin.ShowDialog() == DialogResult.OK && null != _chipLists)
+            {
+                DestroyMapFile(ref instance);
+                List<Image>? imagelist = _chipLists.GetBackgroundImageList();
+                if (null != imagelist)
+                {
+                    _mapStruct = new(Path.GetFileName(openbin.FileName));
+                    if (!_mapStruct.Unzip(openbin.FileName, imagelist, ref instance))
+                    {
+                        _mapStruct = null;
+                    }
                 }
             }
             openbin.Dispose();
@@ -102,12 +129,25 @@ namespace MapEditor.src.app.applet
         }
 
         /// <summary>
-        ///  Delete the graphic chip list. 
+        ///  Delete the graphic chip list.
         /// </summary>
         /// <param name="instance"><seealso cref="Panel"/> to place the chip list</param>
         internal void DestroyGraphicChip(ref Panel instance)
         {
             _chipLists?.Drop(ref instance);
+        }
+
+        /// <summary>
+        ///  The presence or absence of the _chipLists instance.
+        /// </summary>
+        /// <returns>If the ChipLists instance exists, true.</returns>
+        internal bool IsChipLists()
+        {
+            if (null != _chipLists)
+            {
+                return true;
+            }
+            return false;
         }
     }
 }

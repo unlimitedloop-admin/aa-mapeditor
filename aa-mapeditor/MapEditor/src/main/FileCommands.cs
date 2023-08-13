@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/08/10
+//      Last update     : 2023/08/13
 //
-//      File version    : 3
+//      File version    : 4
 //
 //
 /**************************************************************/
@@ -58,7 +58,14 @@ namespace MapEditor.src.main
         /// <param name="panel">An object responsible for deploying other objects</param>
         internal void OpenBinaryMapFile(ref TableLayoutPanel panel)
         {
-            _mapContainer?.LoadMapFileFromHexText(ref panel);
+            if (null != _mapContainer && _mapContainer.IsChipLists())
+            {
+                _mapContainer?.LoadMapFileFromGraphic(ref panel);
+            }
+            else
+            {
+                _mapContainer?.LoadMapFileFromHexText(ref panel);
+            }
         }
 
         /// <summary>

@@ -17,17 +17,19 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/08/10
+//      Last update     : 2023/08/13
 //
-//      File version    : 1
+//      File version    : 2
 //
 //
 /**************************************************************/
 
-/* sources */
+/* using namespace */
 using MapEditor.src.app.IO;
-using System.Drawing;
 
+
+
+/* sources */
 namespace MapEditor.src.app.models
 {
     /// <summary>
@@ -36,9 +38,9 @@ namespace MapEditor.src.app.models
     internal class ChipLists
     {
         /// <summary>
-        ///  Graphics chip list class.
+        ///  File IO class for graphic image datas.
         /// </summary>
-        private GraphicListFile? _graphicListFile = null;
+        private readonly GraphicListFile? _graphicListFile = null;
 
 
         /// <summary>
@@ -57,7 +59,7 @@ namespace MapEditor.src.app.models
         /// <param name="height">The vertical division count of the graphic chip</param>
         /// <param name="width">The Horizonal division count of the graphic chip</param>
         /// <param name="objects">A reference to the panel object for adding graphic chips</param>
-        /// <returns>If successful, returns true</returns>
+        /// <returns>If successful, returns true.</returns>
         internal bool Create(string path, int height, int width, ref Panel objects)
         {
             if (null != _graphicListFile && _graphicListFile.FileOpen(path))
@@ -86,6 +88,15 @@ namespace MapEditor.src.app.models
                 objects.Controls.Clear();
                 _graphicListFile?.FileClose(_graphicListFile.FilePath);
             }
+        }
+
+        /// <summary>
+        ///  Get the tiplist object loaded in memory.
+        /// </summary>
+        /// <returns>List generics.</returns>
+        internal List<Image>? GetBackgroundImageList()
+        {
+            return _graphicListFile?.ImageList;
         }
     }
 }

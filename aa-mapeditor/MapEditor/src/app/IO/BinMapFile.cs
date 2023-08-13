@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/08/10
+//      Last update     : 2023/08/13
 //
-//      File version    : 4
+//      File version    : 5
 //
 //
 /**************************************************************/
@@ -132,7 +132,7 @@ namespace MapEditor.src.app.IO
         ///  Gets the value of the specified address.
         /// </summary>
         /// <param name="address">Address number in bytes to read</param>
-        /// <returns>binary data bytes.</returns>
+        /// <returns>Binary data bytes.</returns>
         internal byte? GetDataByte(int address)
         {
             if (null != _data && address < _data.Length)
@@ -162,6 +162,25 @@ namespace MapEditor.src.app.IO
                 TextAlign = HorizontalAlignment.Center,
                 Multiline = true,
                 Font = selected_font,
+            };
+            return picx;
+        }
+
+        /// <summary>
+        ///  Generate a <seealso cref="PictureBox"/> to place the graphics chip.
+        /// </summary>
+        /// <param name="address">Hex number to graphic list number</param>
+        /// <param name="image">Graphic image <seealso cref="Image"/></param>
+        /// <param name="rectangle">Graphics chip size</param>
+        /// <returns>Generated <seealso cref="PictureBox"/> object.</returns>
+        internal static PictureBox CreateTextureBox(int address, Image? image, Size rectangle)
+        {
+            var picx = new PictureBox()
+            {
+                Name = "Texture_X" + address.ToString(),
+                Size = rectangle,
+                Margin = new(0),
+                BackgroundImage = image,
             };
             return picx;
         }
