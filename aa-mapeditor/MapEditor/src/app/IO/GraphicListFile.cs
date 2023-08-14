@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/08/10
+//      Last update     : 2023/08/14
 //
-//      File version    : 2
+//      File version    : 3
 //
 //
 /**************************************************************/
@@ -56,6 +56,12 @@ namespace MapEditor.src.app.IO
         ///  Graphic chip list object data.
         /// </summary>
         public List<Image>? ImageList { get; set; } = null;
+
+
+        /// <summary>
+        ///  Click event listener for the graphics chip list button.
+        /// </summary>
+        public event GraphicChipClickEventhandler? GraphicChipClick;
 
 
         /// <summary>
@@ -139,7 +145,7 @@ namespace MapEditor.src.app.IO
         /// <param name="index">Prefix number to append to button names</param>
         /// <param name="bitmap">Bitmap information to set in the background of the button</param>
         /// <returns><seealso cref="Button"/> instance.</returns>
-        private static Button GetButton(uint index, Bitmap bitmap)
+        private Button GetButton(uint index, Bitmap bitmap)
         {
             Button button = new()
             {
@@ -152,6 +158,7 @@ namespace MapEditor.src.app.IO
             };
             button.FlatAppearance.BorderSize = 0;
             button.BackgroundImage = bitmap;
+            button.Click += GraphicChipList_Click;
             return button;
         }
 
@@ -194,5 +201,24 @@ namespace MapEditor.src.app.IO
             }
             return table;
         }
+
+        /// <summary>
+        ///  Click event when the graphic chip button is clicked.
+        /// </summary>
+        /// <param name="sender">Sender object</param>
+        /// <param name="e">Event args</param>
+        private void GraphicChipList_Click(object? sender, EventArgs e)
+        {
+            Button button = (Button)sender!;
+            GraphicChipClick?.Invoke(button.BackgroundImage, e);
+        }
     }
+
+
+    /// <summary>
+    ///  This delegate is defined because it is useful for MapContainer event handlers.
+    /// </summary>
+    /// <param name="sender">Sender object</param>
+    /// <param name="e">Event args</param>
+    public delegate void GraphicChipClickEventhandler(object? sender, EventArgs e);
 }

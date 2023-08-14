@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/08/10
+//      Last update     : 2023/08/14
 //
-//      File version    : 8
+//      File version    : 9
 //
 //
 /**************************************************************/
@@ -76,7 +76,7 @@ namespace MapEditor.src.main
 
         private void グラフィックチップリストを開くGToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            _fileCommands.OpenGraphicChipFile(ref graphicChipPanel);
+            _fileCommands.OpenGraphicChipFile(ref graphicChipPanel, ref selectedChipTexture);
         }
 
         private void グラフィックチップリストを閉じるGToolStripMenuItem_Click(object sender, EventArgs e)

@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/08/13
+//      Last update     : 2023/08/14
 //
-//      File version    : 2
+//      File version    : 3
 //
 //
 /**************************************************************/
@@ -40,7 +40,7 @@ namespace MapEditor.src.app.models
         /// <summary>
         ///  File IO class for graphic image datas.
         /// </summary>
-        private readonly GraphicListFile? _graphicListFile = null;
+        internal readonly GraphicListFile? _graphicListFile = null;
 
 
         /// <summary>

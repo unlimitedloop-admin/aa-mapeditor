@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/08/13
+//      Last update     : 2023/08/14
 //
-//      File version    : 4
+//      File version    : 5
 //
 //
 /**************************************************************/
@@ -81,9 +81,10 @@ namespace MapEditor.src.main
         ///  Open the graphic chip file and expand it to the panel.
         /// </summary>
         /// <param name="panel">Object to deploy</param>
-        internal void OpenGraphicChipFile(ref Panel panel)
+        /// <param name="chip_box">Display panel for the selected image in the graphics chip list</param>
+        internal void OpenGraphicChipFile(ref Panel panel, ref PictureBox chip_box)
         {
-            _mapContainer?.LoadGraphicChipList(ref panel);
+            _mapContainer?.LoadGraphicChipList(ref panel, ref chip_box);
         }
 
         /// <summary>

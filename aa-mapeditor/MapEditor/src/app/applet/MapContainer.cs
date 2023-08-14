@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/08/13
+//      Last update     : 2023/08/14
 //
-//      File version    : 5
+//      File version    : 6
 //
 //
 /**************************************************************/
@@ -47,6 +47,11 @@ namespace MapEditor.src.app.applet
         ///  A management class for controlling objects placed in a MapStructPanel.
         /// </summary>
         private MapStructs? _mapStruct;
+
+        /// <summary>
+        ///  A <see cref="PictureBox"/> that manages selection chips for graphics chips.
+        /// </summary>
+        private PictureBox? _selectedChipBox;
 
 
         /// <summary>
@@ -116,14 +121,19 @@ namespace MapEditor.src.app.applet
         ///  Load the graphic chip list of the selected image file.
         /// </summary>
         /// <param name="instance"><seealso cref="Panel"/> to place the tip list</param>
-        internal void LoadGraphicChipList(ref Panel instance)
+        /// <param name="selectbox_inst">Display panel for the selected image in the graphics chip list</param>
+        internal void LoadGraphicChipList(ref Panel instance, ref PictureBox selectbox_inst)
         {
             using LoadGraphDialog openfile = new();
             if (openfile.ShowDialog() == DialogResult.OK && null != openfile.FileName)
             {
                 DestroyGraphicChip(ref instance);
+                _selectedChipBox = selectbox_inst;
                 _chipLists = new(Path.GetFileName(openfile.FileName));
-                _chipLists.Create(openfile.FileName, openfile.GraphicHeight, openfile.GraphicWidth, ref instance);
+                if (_chipLists.Create(openfile.FileName, openfile.GraphicHeight, openfile.GraphicWidth, ref instance) && null != _chipLists._graphicListFile)
+                {
+                    _chipLists._graphicListFile.GraphicChipClick += ChipLists_GraphicChipClick;
+                }
             }
             openfile.Dispose();
         }
@@ -148,6 +158,20 @@ namespace MapEditor.src.app.applet
                 return true;
             }
             return false;
+        }
+
+        /// <summary>
+        ///  Physical button click event handler for graphics chip list.
+        /// </summary>
+        /// <param name="sender">Image data set in <see cref="PictureBox"/></param>
+        /// <param name="e">Unused event argument</param>
+        private void ChipLists_GraphicChipClick(object? sender, EventArgs e)
+        {
+            Image image = (Image)sender!;
+            if (null != _selectedChipBox)
+            {
+                _selectedChipBox.Image = image;
+            }
         }
     }
 }
