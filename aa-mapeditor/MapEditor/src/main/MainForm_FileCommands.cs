@@ -17,17 +17,12 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/08/14
+//      Last update     : 2023/09/05
 //
-//      File version    : 5
+//      File version    : 6
 //
 //
 /**************************************************************/
-
-/* using namespace */
-using MapEditor.src.app.applet;
-
-
 
 /* sources */
 namespace MapEditor.src.main
@@ -35,36 +30,21 @@ namespace MapEditor.src.main
     /// <summary>
     ///  A collection of event handlers for file menu commands.
     /// </summary>
-    internal class FileCommands
+    public partial class MainForm
     {
-        /// <summary>
-        ///  MapContainer class reference.
-        /// </summary>
-        private readonly MapContainer? _mapContainer;
-
-
-        /// <summary>
-        ///  This is the constructor for FileCommands.
-        /// </summary>
-        /// <param name="container">Main container instance</param>
-        internal FileCommands(ref MapContainer container)
-        {
-            _mapContainer = container;
-        }
-
         /// <summary>
         ///  Open the binary file and expand it to the panel.
         /// </summary>
         /// <param name="panel">An object responsible for deploying other objects</param>
         internal void OpenBinaryMapFile(ref TableLayoutPanel panel)
         {
-            if (null != _mapContainer && _mapContainer.IsChipLists())
+            if (null != _mainContainer && _mainContainer.IsChipLists())
             {
-                _mapContainer?.LoadMapFileFromGraphic(ref panel);
+                _mainContainer?.LoadMapFileFromGraphic(ref panel);
             }
             else
             {
-                _mapContainer?.LoadMapFileFromHexText(ref panel);
+                _mainContainer?.LoadMapFileFromHexText(ref panel);
             }
         }
 
@@ -74,17 +54,16 @@ namespace MapEditor.src.main
         /// <param name="panel">The target object to demolish</param>
         internal void CloseBinaryMapFile(ref TableLayoutPanel panel)
         {
-            _mapContainer?.DestroyMapFile(ref panel);
+            _mainContainer?.DestroyMapFile(ref panel);
         }
 
         /// <summary>
         ///  Open the graphic chip file and expand it to the panel.
         /// </summary>
         /// <param name="panel">Object to deploy</param>
-        /// <param name="chip_box">Display panel for the selected image in the graphics chip list</param>
-        internal void OpenGraphicChipFile(ref Panel panel, ref PictureBox chip_box)
+        internal void OpenGraphicChipFile(ref Panel panel)
         {
-            _mapContainer?.LoadGraphicChipList(ref panel, ref chip_box);
+            _mainContainer?.LoadGraphicChipList(ref panel, ChipLists_GraphicChipClick);
         }
 
         /// <summary>
@@ -93,15 +72,7 @@ namespace MapEditor.src.main
         /// <param name="panel">Object to destroy</param>
         internal void CloseGraphicChipFile(ref Panel panel)
         {
-            _mapContainer?.DestroyGraphicChip(ref panel);
-        }
-
-        /// <summary>
-        ///  Quit the whole application.
-        /// </summary>
-        internal static void ExitApplication()
-        {
-            Application.Exit();
+            _mainContainer?.DestroyGraphicChip(ref panel);
         }
     }
 }

@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/08/14
+//      Last update     : 2023/09/05
 //
-//      File version    : 9
+//      File version    : 10
 //
 //
 /**************************************************************/
@@ -42,16 +42,6 @@ namespace MapEditor.src.main
         /// </summary>
         private readonly MapContainer _mainContainer = new();
 
-        /// <summary>
-        ///  Debug context menu commands.
-        /// </summary>
-        private readonly DebugCommands _examinateCommands = new();
-
-        /// <summary>
-        ///  File menu commands.
-        /// </summary>
-        private readonly FileCommands _fileCommands;
-
 
         /// <summary>
         ///  This is the constructor for MainForm.
@@ -59,35 +49,59 @@ namespace MapEditor.src.main
         public MainForm()
         {
             InitializeComponent();
-            _fileCommands = new(ref _mainContainer);
         }
 
 
-        /** EventHandler **/
+        #region FILE_MENU_EVENT
+
         private void バイナリデータを開くBToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            _fileCommands.OpenBinaryMapFile(ref mapFieldTable);
+            OpenBinaryMapFile(ref mapFieldTable);
         }
 
         private void バイナリデータを閉じるBToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            _fileCommands.CloseBinaryMapFile(ref mapFieldTable);
+            CloseBinaryMapFile(ref mapFieldTable);
         }
 
         private void グラフィックチップリストを開くGToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            _fileCommands.OpenGraphicChipFile(ref graphicChipPanel, ref selectedChipTexture);
+            OpenGraphicChipFile(ref graphicChipPanel);
         }
 
         private void グラフィックチップリストを閉じるGToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            _fileCommands.CloseGraphicChipFile(ref graphicChipPanel);
+            CloseGraphicChipFile(ref graphicChipPanel);
         }
 
         private void アプリケーションを終了XToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FileCommands.ExitApplication();
+            Application.Exit();
         }
+
+        #endregion  // FILE_MENU_EVENT
+
+
+        #region INTERRUPT_EVENT
+
+        /// <summary>
+        ///  Physical button click event handler for graphics chip list.
+        /// </summary>
+        /// <param name="sender">Image data set in <see cref="PictureBox"/></param>
+        /// <param name="e">Unused event argument</param>
+        private void ChipLists_GraphicChipClick(object? sender, EventArgs e)
+        {
+            Image image = (Image)sender!;
+            if (null != selectedChipTexture)
+            {
+                selectedChipTexture.Image = image;
+            }
+        }
+
+        #endregion  // INTERRUPT_EVENT
+
+
+        #region COMMON_EVENT_HANDLER
 
         private void MainForm_Activated(object sender, EventArgs e)
         {
@@ -108,5 +122,7 @@ namespace MapEditor.src.main
                 return;
             }
         }
+
+        #endregion  // COMMON_EVENT_HANDLER
     }
 }

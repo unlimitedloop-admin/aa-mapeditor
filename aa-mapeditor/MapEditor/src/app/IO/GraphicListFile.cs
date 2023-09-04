@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/08/14
+//      Last update     : 2023/09/05
 //
-//      File version    : 3
+//      File version    : 4
 //
 //
 /**************************************************************/
@@ -61,7 +61,7 @@ namespace MapEditor.src.app.IO
         /// <summary>
         ///  Click event listener for the graphics chip list button.
         /// </summary>
-        public event GraphicChipClickEventhandler? GraphicChipClick;
+        public event EventHandler? GraphicChipClick;
 
 
         /// <summary>
@@ -213,12 +213,4 @@ namespace MapEditor.src.app.IO
             GraphicChipClick?.Invoke(button.BackgroundImage, e);
         }
     }
-
-
-    /// <summary>
-    ///  This delegate is defined because it is useful for MapContainer event handlers.
-    /// </summary>
-    /// <param name="sender">Sender object</param>
-    /// <param name="e">Event args</param>
-    public delegate void GraphicChipClickEventhandler(object? sender, EventArgs e);
 }

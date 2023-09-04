@@ -17,17 +17,12 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/08/05
+//      Last update     : 2023/09/05
 //
-//      File version    : 2
+//      File version    : 3
 //
 //
 /**************************************************************/
-
-/* using namespace */
-using MapEditor.src.app.IO;
-
-
 
 /* sources */
 namespace MapEditor.src.main
@@ -35,7 +30,7 @@ namespace MapEditor.src.main
     /// <summary>
     ///  The command class is for development purposes only.
     /// </summary>
-    internal class DebugCommands
+    public partial class MainForm
     {
         // Add sample code...
     }
