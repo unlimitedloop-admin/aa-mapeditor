@@ -174,11 +174,11 @@ namespace MapEditor.src.main
             mapFieldTable = new TableLayoutPanel();
             mapInfoPanel = new Panel();
             graphicChipPanel = new Panel();
-            statusStrip = new StatusStrip();
-            debugContextMenu = new ContextMenuStrip(components);
             chipListContextMenu = new ContextMenuStrip(components);
             グラフィックチップデータを読み込みToolStripMenuItem = new ToolStripMenuItem();
             グラフィックチップリスト消去ToolStripMenuItem = new ToolStripMenuItem();
+            statusStrip = new StatusStrip();
+            debugContextMenu = new ContextMenuStrip(components);
             mainMenuStrip.SuspendLayout();
             selectedChipPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)selectedChipTexture).BeginInit();
@@ -370,14 +370,18 @@ namespace MapEditor.src.main
             // 元に戻すUToolStripMenuItem
             // 
             元に戻すUToolStripMenuItem.Name = "元に戻すUToolStripMenuItem";
+            元に戻すUToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.Z;
             元に戻すUToolStripMenuItem.Size = new Size(265, 22);
             元に戻すUToolStripMenuItem.Text = "元に戻す (&U)";
+            元に戻すUToolStripMenuItem.Click += 元に戻すUToolStripMenuItem_Click;
             // 
             // やり直しRToolStripMenuItem
             // 
             やり直しRToolStripMenuItem.Name = "やり直しRToolStripMenuItem";
+            やり直しRToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.Y;
             やり直しRToolStripMenuItem.Size = new Size(265, 22);
             やり直しRToolStripMenuItem.Text = "やり直し (&R)";
+            やり直しRToolStripMenuItem.Click += やり直しRToolStripMenuItem_Click;
             // 
             // toolStripMenuItem4
             // 
@@ -1318,19 +1322,6 @@ namespace MapEditor.src.main
             graphicChipPanel.Size = new Size(693, 640);
             graphicChipPanel.TabIndex = 0;
             // 
-            // statusStrip
-            // 
-            statusStrip.Location = new Point(0, 819);
-            statusStrip.Name = "statusStrip";
-            statusStrip.Size = new Size(1284, 22);
-            statusStrip.TabIndex = 28;
-            statusStrip.Text = "statusStrip1";
-            // 
-            // debugContextMenu
-            // 
-            debugContextMenu.Name = "debugContextMenu";
-            debugContextMenu.Size = new Size(61, 4);
-            // 
             // chipListContextMenu
             // 
             chipListContextMenu.Items.AddRange(new ToolStripItem[] { グラフィックチップデータを読み込みToolStripMenuItem, グラフィックチップリスト消去ToolStripMenuItem });
@@ -1350,6 +1341,19 @@ namespace MapEditor.src.main
             グラフィックチップリスト消去ToolStripMenuItem.Size = new Size(239, 22);
             グラフィックチップリスト消去ToolStripMenuItem.Text = "グラフィックチップリスト消去";
             グラフィックチップリスト消去ToolStripMenuItem.Click += グラフィックチップリストを閉じるGToolStripMenuItem_Click;
+            // 
+            // statusStrip
+            // 
+            statusStrip.Location = new Point(0, 819);
+            statusStrip.Name = "statusStrip";
+            statusStrip.Size = new Size(1284, 22);
+            statusStrip.TabIndex = 28;
+            statusStrip.Text = "statusStrip1";
+            // 
+            // debugContextMenu
+            // 
+            debugContextMenu.Name = "debugContextMenu";
+            debugContextMenu.Size = new Size(61, 4);
             // 
             // MainForm
             // 

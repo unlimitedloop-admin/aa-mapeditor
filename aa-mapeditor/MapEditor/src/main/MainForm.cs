@@ -17,7 +17,7 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/09/05
+//      Last update     : 2023/09/08
 //
 //      File version    : 10
 //
@@ -82,6 +82,21 @@ namespace MapEditor.src.main
         #endregion  // FILE_MENU_EVENT
 
 
+        #region EDIT_MENU_EVENT
+
+        private void 元に戻すUToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Undo();
+        }
+
+        private void やり直しRToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Redo();
+        }
+
+        #endregion  // EDIT_MENU_EVENT
+
+
         #region INTERRUPT_EVENT
 
         /// <summary>
@@ -91,11 +106,18 @@ namespace MapEditor.src.main
         /// <param name="e">Unused event argument</param>
         private void ChipLists_GraphicChipClick(object? sender, EventArgs e)
         {
-            Image image = (Image)sender!;
-            if (null != selectedChipTexture)
+            Button button = (Button)sender!;
+            List<MementoParameter> parameters = new()
             {
-                selectedChipTexture.Image = image;
-            }
+                new MementoParameter
+                {
+                    OldImageBinNum = "" != selectedChipTexture.Text ? byte.Parse(selectedChipTexture.Text) : null,
+                    NewImageBinNum = "" != button.Text ? byte.Parse(button.Text) : null,
+                    Holder = true
+                }
+            };
+            Recollection(parameters);
+            SetSelectedChipTexture(button.Text, button.BackgroundImage);
         }
 
         #endregion  // INTERRUPT_EVENT
@@ -124,5 +146,17 @@ namespace MapEditor.src.main
         }
 
         #endregion  // COMMON_EVENT_HANDLER
+
+
+        /// <summary>
+        ///  Set an image to the selectedChipTexture object.
+        /// </summary>
+        /// <param name="text">Set <see cref="string"/> the selectedChipTexture.Text</param>
+        /// <param name="backgroundimage">Set <see cref="Image"/> the selectedChipTexture.Image</param>
+        private void SetSelectedChipTexture(string? text, Image? backgroundimage)
+        {
+            selectedChipTexture.Text = text;
+            selectedChipTexture.Image = backgroundimage;
+        }
     }
 }

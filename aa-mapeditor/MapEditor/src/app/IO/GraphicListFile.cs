@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/09/05
+//      Last update     : 2023/09/08
 //
-//      File version    : 4
+//      File version    : 5
 //
 //
 /**************************************************************/
@@ -150,6 +150,7 @@ namespace MapEditor.src.app.IO
             Button button = new()
             {
                 Name = "graph" + index,
+                Text = index.ToString(),
                 FlatStyle = FlatStyle.Flat,
                 Width = ConstGraphicData.CHIPBUTTON_SIZE,
                 Height = ConstGraphicData.CHIPBUTTON_SIZE,
@@ -203,6 +204,24 @@ namespace MapEditor.src.app.IO
         }
 
         /// <summary>
+        ///  Retrieve the chip list from the specified index.
+        /// </summary>
+        /// <param name="index">The index of the array element</param>
+        /// <returns>If the specified array index is found, the image data is returned.</returns>
+        internal Image? GetChipListImageAtImdex(int index)
+        {
+            if (null != ImageList && 0 <= index && ImageList.Count > index)
+            {
+                return ImageList[index];
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+
+        /// <summary>
         ///  Click event when the graphic chip button is clicked.
         /// </summary>
         /// <param name="sender">Sender object</param>
@@ -210,7 +229,7 @@ namespace MapEditor.src.app.IO
         private void GraphicChipList_Click(object? sender, EventArgs e)
         {
             Button button = (Button)sender!;
-            GraphicChipClick?.Invoke(button.BackgroundImage, e);
+            GraphicChipClick?.Invoke(button, e);
         }
     }
 }

@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/08/14
+//      Last update     : 2023/09/08
 //
-//      File version    : 3
+//      File version    : 4
 //
 //
 /**************************************************************/
@@ -91,12 +91,22 @@ namespace MapEditor.src.app.models
         }
 
         /// <summary>
-        ///  Get the tiplist object loaded in memory.
+        ///  Get the chiplist object loaded in memory.
         /// </summary>
         /// <returns>List generics.</returns>
         internal List<Image>? GetBackgroundImageList()
         {
             return _graphicListFile?.ImageList;
+        }
+
+        /// <summary>
+        ///  Get the chiplist object loaded in memory.
+        /// </summary>
+        /// <param name="index">The index of the array element</param>
+        /// <returns>Image object.</returns>
+        internal Image? GetBackgroundImage(int index)
+        {
+            return _graphicListFile?.GetChipListImageAtImdex(index);
         }
     }
 }

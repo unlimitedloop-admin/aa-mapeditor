@@ -13,7 +13,7 @@
 //
 //      Arthentic Action Map Editor (Csharp Edition)
 //
-//      File name       : DebugCommands.cs
+//      File name       : MainForm_DebugCommands.cs
 //
 //      Author          : u7
 //

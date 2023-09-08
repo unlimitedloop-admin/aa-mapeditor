@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/09/05
+//      Last update     : 2023/09/08
 //
-//      File version    : 7
+//      File version    : 8
 //
 //
 /**************************************************************/
@@ -152,6 +152,33 @@ namespace MapEditor.src.app.applet
                 return true;
             }
             return false;
+        }
+
+        /// <summary>
+        ///  Retrieve the chip list image at the specified index number.
+        /// </summary>
+        /// <param name="index">Numerical value of the array index</param>
+        /// <returns>Chip list image object.</returns>
+        internal Image? GetChipListImage(int index)
+        {
+            return _chipLists?.GetBackgroundImage(index);
+        }
+
+        /// <summary>
+        ///  Retrieve the chip list image at the specified index number.
+        /// </summary>
+        /// <param name="index">Numerical value of the array index for byte type</param>
+        /// <returns>Chip list image object.</returns>
+        internal Image? GetChipListImage(byte? index)
+        {
+            if (index.HasValue)
+            {
+                return _chipLists?.GetBackgroundImage(index.Value);
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }
