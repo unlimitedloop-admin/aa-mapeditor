@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/08/13
+//      Last update     : 2023/09/10
 //
-//      File version    : 3
+//      File version    : 4
 //
 //
 /**************************************************************/
@@ -70,8 +70,9 @@ namespace MapEditor.src.app.models
         /// </summary>
         /// <param name="path">File path to unzip</param>
         /// <param name="objects">A reference to the <see cref="TableLayoutPanel"/> object for adding objects</param>
+        /// <param name="eventargs">Summary of event listeners for adding mouse events to the map</param>
         /// <returns>True if successful.</returns>
-        internal bool Unzip(string path, ref TableLayoutPanel objects)
+        internal bool Unzip(string path, ref TableLayoutPanel objects, CustomMapStructEventArgs eventargs)
         {
             if (null != _binMapFile && _binMapFile.FileOpen(path))
             {
@@ -87,7 +88,11 @@ namespace MapEditor.src.app.models
                 {
                     for (int j = 0; j < col_number; j++)
                     {
-                        objects.Controls.Add(_binMapFile.CreateMapTextBox(chipindex, boxsize), j, i);
+                        TextBox textbox = _binMapFile.CreateMapTextBox(chipindex, boxsize);
+                        textbox.MouseDown += eventargs.OnMouseDown;
+                        textbox.MouseUp += eventargs.OnMouseUp;
+                        textbox.MouseMove += eventargs.OnMouseMove;
+                        objects.Controls.Add(textbox, j, i);
                         index++; chipindex++;
                     }
                 }
@@ -102,8 +107,9 @@ namespace MapEditor.src.app.models
         /// <param name="path">File path to unzip</param>
         /// <param name="imagelist">A list of extracted graphic images</param>
         /// <param name="objects">A reference to the <see cref="TableLayoutPanel"/> object for adding objects</param>
+        /// <param name="eventargs">Summary of event listeners for adding mouse events to the map</param>
         /// <returns>True if successful.</returns>
-        internal bool Unzip(string path, List<Image> imagelist, ref TableLayoutPanel objects)
+        internal bool Unzip(string path, List<Image> imagelist, ref TableLayoutPanel objects, CustomMapStructEventArgs eventargs)
         {
             if (null != _binMapFile && _binMapFile.FileOpen(path))
             {
@@ -122,7 +128,11 @@ namespace MapEditor.src.app.models
                         // Place the image container for map data editing in MapFieldTable.
                         byte chipimage = _binMapFile.GetDataByte(chipindex) ?? 0xFF;
                         var chipno = imagelist.Count < chipimage ? imagelist.Count : chipimage;
-                        objects.Controls.Add(BinMapFile.CreateTextureBox(index, imagelist[chipno], boxsize), j, i);
+                        PictureBox picturebox = BinMapFile.CreateTextureBox(index, imagelist[chipno], boxsize);
+                        picturebox.MouseDown += eventargs.OnMouseDown;
+                        picturebox.MouseUp += eventargs.OnMouseUp;
+                        picturebox.MouseMove += eventargs.OnMouseMove;
+                        objects.Controls.Add(picturebox, j, i);
                         index++; chipindex++;
                     }
                 }

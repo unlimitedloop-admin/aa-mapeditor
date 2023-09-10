@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/09/08
+//      Last update     : 2023/09/10
 //
-//      File version    : 10
+//      File version    : 11
 //
 //
 /**************************************************************/
@@ -97,33 +97,14 @@ namespace MapEditor.src.main
         #endregion  // EDIT_MENU_EVENT
 
 
-        #region INTERRUPT_EVENT
-
-        /// <summary>
-        ///  Physical button click event handler for graphics chip list.
-        /// </summary>
-        /// <param name="sender">Image data set in <see cref="PictureBox"/></param>
-        /// <param name="e">Unused event argument</param>
-        private void ChipLists_GraphicChipClick(object? sender, EventArgs e)
-        {
-            Button button = (Button)sender!;
-            List<MementoParameter> parameters = new()
-            {
-                new MementoParameter
-                {
-                    OldImageBinNum = "" != selectedChipTexture.Text ? byte.Parse(selectedChipTexture.Text) : null,
-                    NewImageBinNum = "" != button.Text ? byte.Parse(button.Text) : null,
-                    Holder = true
-                }
-            };
-            Recollection(parameters);
-            SetSelectedChipTexture(button.Text, button.BackgroundImage);
-        }
-
-        #endregion  // INTERRUPT_EVENT
-
-
         #region COMMON_EVENT_HANDLER
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            _customMapStructEventArgs.MouseDownEvent += MapStruct_FieldMouseDown;
+            _customMapStructEventArgs.MouseUpEvent += MapStruct_FieldMouseUp;
+            _customMapStructEventArgs.MouseMoveEvent += MapStruct_FieldMouseMove;
+        }
 
         private void MainForm_Activated(object sender, EventArgs e)
         {

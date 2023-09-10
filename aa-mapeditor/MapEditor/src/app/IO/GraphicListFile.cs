@@ -17,15 +17,16 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/09/08
+//      Last update     : 2023/09/10
 //
-//      File version    : 5
+//      File version    : 6
 //
 //
 /**************************************************************/
 
 /* using namespace */
 using MapEditor.src.common;
+using MapEditor.src.main;
 
 
 
@@ -50,18 +51,23 @@ namespace MapEditor.src.app.IO
         /// <summary>
         ///  The original image data.
         /// </summary>
-        private Image? _image = null;
+        private Image? _image;
 
         /// <summary>
         ///  Graphic chip list object data.
         /// </summary>
-        public List<Image>? ImageList { get; set; } = null;
+        public List<Image>? ImageList { get; set; }
+
+        /// <summary>
+        ///  Annotations or tile numbers added to the graphic chip.
+        /// </summary>
+        private readonly ToolTip _toolTip = new();
 
 
         /// <summary>
         ///  Click event listener for the graphics chip list button.
         /// </summary>
-        public event EventHandler? GraphicChipClick;
+        public event GetChipHandler? GraphicChipClick;
 
 
         /// <summary>
@@ -150,7 +156,6 @@ namespace MapEditor.src.app.IO
             Button button = new()
             {
                 Name = "graph" + index,
-                Text = index.ToString(),
                 FlatStyle = FlatStyle.Flat,
                 Width = ConstGraphicData.CHIPBUTTON_SIZE,
                 Height = ConstGraphicData.CHIPBUTTON_SIZE,
@@ -159,6 +164,7 @@ namespace MapEditor.src.app.IO
             };
             button.FlatAppearance.BorderSize = 0;
             button.BackgroundImage = bitmap;
+            _toolTip.SetToolTip(button, index.ToString());
             button.Click += GraphicChipList_Click;
             return button;
         }
@@ -208,7 +214,7 @@ namespace MapEditor.src.app.IO
         /// </summary>
         /// <param name="index">The index of the array element</param>
         /// <returns>If the specified array index is found, the image data is returned.</returns>
-        internal Image? GetChipListImageAtImdex(int index)
+        internal Image? GetChipListImageAtIndex(int index)
         {
             if (null != ImageList && 0 <= index && ImageList.Count > index)
             {
@@ -229,7 +235,7 @@ namespace MapEditor.src.app.IO
         private void GraphicChipList_Click(object? sender, EventArgs e)
         {
             Button button = (Button)sender!;
-            GraphicChipClick?.Invoke(button, e);
+            GraphicChipClick?.Invoke(button, e, _toolTip.GetToolTip(button));
         }
     }
 }

@@ -1400,6 +1400,7 @@ namespace MapEditor.src.main
             StartPosition = FormStartPosition.Manual;
             Text = "MainForm";
             Activated += MainForm_Activated;
+            Load += MainForm_Load;
             Click += MainForm_Click;
             KeyDown += MainForm_KeyDown;
             mainMenuStrip.ResumeLayout(false);

@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/09/08
+//      Last update     : 2023/09/10
 //
-//      File version    : 4
+//      File version    : 5
 //
 //
 /**************************************************************/
@@ -106,7 +106,7 @@ namespace MapEditor.src.app.models
         /// <returns>Image object.</returns>
         internal Image? GetBackgroundImage(int index)
         {
-            return _graphicListFile?.GetChipListImageAtImdex(index);
+            return _graphicListFile?.GetChipListImageAtIndex(index);
         }
     }
 }

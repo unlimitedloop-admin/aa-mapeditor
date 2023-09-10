@@ -17,16 +17,18 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/09/08
+//      Last update     : 2023/09/10
 //
-//      File version    : 8
+//      File version    : 9
 //
 //
 /**************************************************************/
 
 /* using namespace */
 using MapEditor.src.app.models;
+using MapEditor.src.common;
 using MapEditor.src.dialog;
+using MapEditor.src.main;
 
 
 
@@ -42,7 +44,7 @@ namespace MapEditor.src.app.applet
         ///  A management class for controlling objects placed in a GraphicChipPanel.
         /// </summary>
         private ChipLists? _chipLists;
-        
+
         /// <summary>
         ///  A management class for controlling objects placed in a MapStructPanel.
         /// </summary>
@@ -53,7 +55,8 @@ namespace MapEditor.src.app.applet
         ///  Load the map structure of the selected binary file.
         /// </summary>
         /// <param name="instance">A <see cref="TableLayoutPanel"/> that expands the loaded map data</param>
-        internal void LoadMapFileFromHexText(ref TableLayoutPanel instance)
+        /// <param name="eventargs">Summary of event listeners for adding mouse events to the map</param>
+        internal void LoadMapFileFromHexText(ref TableLayoutPanel instance, CustomMapStructEventArgs eventargs)
         {
             using OpenFileDialog openbin = new()
             {
@@ -64,7 +67,7 @@ namespace MapEditor.src.app.applet
             {
                 DestroyMapFile(ref instance);
                 _mapStruct = new(Path.GetFileName(openbin.FileName));
-                if (!_mapStruct.Unzip(openbin.FileName, ref instance))
+                if (!_mapStruct.Unzip(openbin.FileName, ref instance, eventargs))
                 {
                     _mapStruct = null;
                 }
@@ -76,7 +79,8 @@ namespace MapEditor.src.app.applet
         ///  Load the map structure of the selected binary file.
         /// </summary>
         /// <param name="instance">A <see cref="TableLayoutPanel"/> that expands the loaded map data</param>
-        internal void LoadMapFileFromGraphic(ref TableLayoutPanel instance)
+        /// <param name="eventargs">Summary of event listeners for adding mouse events to the map</param>
+        internal void LoadMapFileFromGraphic(ref TableLayoutPanel instance, CustomMapStructEventArgs eventargs)
         {
             using OpenFileDialog openbin = new()
             {
@@ -90,7 +94,7 @@ namespace MapEditor.src.app.applet
                 if (null != imagelist)
                 {
                     _mapStruct = new(Path.GetFileName(openbin.FileName));
-                    if (!_mapStruct.Unzip(openbin.FileName, imagelist, ref instance))
+                    if (!_mapStruct.Unzip(openbin.FileName, imagelist, ref instance, eventargs))
                     {
                         _mapStruct = null;
                     }
@@ -116,8 +120,8 @@ namespace MapEditor.src.app.applet
         ///  Load the graphic chip list of the selected image file.
         /// </summary>
         /// <param name="instance"><seealso cref="Panel"/> to place the tip list</param>
-        /// <param name="selectbox_inst">Display panel for the selected image in the graphics chip list</param>
-        internal void LoadGraphicChipList(ref Panel instance, EventHandler events)
+        /// <param name="events">Event listener invoked for retrieving the graphic chip</param>
+        internal void LoadGraphicChipList(ref Panel instance, GetChipHandler events)
         {
             using LoadGraphDialog openfile = new();
             if (openfile.ShowDialog() == DialogResult.OK && null != openfile.FileName)
@@ -127,6 +131,10 @@ namespace MapEditor.src.app.applet
                 if (_chipLists.Create(openfile.FileName, openfile.GraphicHeight, openfile.GraphicWidth, ref instance) && null != _chipLists._graphicListFile)
                 {
                     _chipLists._graphicListFile.GraphicChipClick += events;
+                }
+                else
+                {
+                    _chipLists = null;
                 }
             }
             openfile.Dispose();
@@ -138,7 +146,11 @@ namespace MapEditor.src.app.applet
         /// <param name="instance"><seealso cref="Panel"/> to place the chip list</param>
         internal void DestroyGraphicChip(ref Panel instance)
         {
-            _chipLists?.Drop(ref instance);
+            if (null != _chipLists)
+            {
+                _chipLists.Drop(ref instance);
+                _chipLists = null;
+            }
         }
 
         /// <summary>
@@ -171,7 +183,7 @@ namespace MapEditor.src.app.applet
         /// <returns>Chip list image object.</returns>
         internal Image? GetChipListImage(byte? index)
         {
-            if (index.HasValue)
+            if (index.HasValue && IsChipLists())
             {
                 return _chipLists?.GetBackgroundImage(index.Value);
             }
