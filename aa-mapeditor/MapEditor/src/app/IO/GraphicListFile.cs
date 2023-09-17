@@ -17,16 +17,16 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/09/10
+//      Last update     : 2023/09/17
 //
-//      File version    : 6
+//      File version    : 7
 //
 //
 /**************************************************************/
 
 /* using namespace */
+using MapEditor.src.app.models;
 using MapEditor.src.common;
-using MapEditor.src.main;
 
 
 
@@ -194,7 +194,7 @@ namespace MapEditor.src.app.IO
                     {
                         // Create a drawing canvas and put it in the background of the button.
                         Rectangle box = new(0, 0, ConstGraphicData.GRAPHBOXSIZE, ConstGraphicData.GRAPHBOXSIZE);
-                        Rectangle img_rect = new(col % table.ColumnCount / 1 * graph_size, row * graph_size, graph_size, graph_size);
+                        Rectangle img_rect = new(col % table.ColumnCount / 1 * graph_size, row * graph_size, graph_size - 1, graph_size - 1);
                         Bitmap bitmap = new(cell_size, cell_size);
                         Graphics graphics = Graphics.FromImage(bitmap);
                         graphics.DrawImage(_image, box, img_rect, GraphicsUnit.Pixel);

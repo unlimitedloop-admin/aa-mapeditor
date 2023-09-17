@@ -17,15 +17,16 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/09/10
+//      Last update     : 2023/09/17
 //
-//      File version    : 5
+//      File version    : 6
 //
 //
 /**************************************************************/
 
 /* using namespace */
 using MapEditor.src.app.IO;
+using MapEditor.src.main;
 
 
 
@@ -40,16 +41,22 @@ namespace MapEditor.src.app.models
         /// <summary>
         ///  File IO class for graphic image datas.
         /// </summary>
-        internal readonly GraphicListFile? _graphicListFile = null;
+        private readonly GraphicListFile? _graphicListFile = null;
+
+        /// <summary>
+        ///  The management instance class for the tile panel used for selecting graphic chips from the graphic chip list.
+        /// </summary>
+        private readonly ChipHolder _chipHolder;
 
 
         /// <summary>
         ///  This is the constructor for ChipLists.
         /// </summary>
         /// <param name="name">Graphic chip file name label</param>
-        internal ChipLists(string name)
+        internal ChipLists(string name, ChipHolder chipHolder)
         {
             _graphicListFile = new(name);
+            _chipHolder = chipHolder;
         }
 
         /// <summary>
@@ -71,6 +78,7 @@ namespace MapEditor.src.app.models
                     objects.Controls.Add(table);
                     objects.BackColor = SystemColors.ControlLight;
                     objects.AutoScroll = true;
+                    _graphicListFile.GraphicChipClick += ChipLists_GraphicChipClick;
                     return true;
                 }
             }
@@ -108,5 +116,37 @@ namespace MapEditor.src.app.models
         {
             return _graphicListFile?.GetChipListImageAtIndex(index);
         }
+
+
+        /// <summary>
+        ///  Physical button click event handler for graphics chip list.
+        /// </summary>
+        /// <param name="sender">Image data set in <see cref="PictureBox"/></param>
+        /// <param name="e">Unused event argument</param>
+        /// <param name="tooltip_text">The text on the tooltip</param>
+        private void ChipLists_GraphicChipClick(Button sender, EventArgs e, string tooltip_text)
+        {
+            Button button = sender!;
+            List<MementoParameter> parameters = new()
+            {
+                new MementoParameter
+                {
+                    OldImageBinNum = !string.IsNullOrEmpty(_chipHolder.GetChipHolderNumberText()) ? byte.Parse(_chipHolder.GetChipHolderNumberText()!) : null,
+                    NewImageBinNum = "" != tooltip_text ? byte.Parse(tooltip_text) : null,
+                    Holder = true
+                }
+            };
+            MainForm.Recollection(parameters);
+            _chipHolder.SetSelectedChipTexture(tooltip_text, button.BackgroundImage);
+        }
     }
+
+
+    /// <summary>
+    ///  A dedicated event handler for retrieving information about the graphic chip.
+    /// </summary>
+    /// <param name="sender">Button object</param>
+    /// <param name="e">Event args</param>
+    /// <param name="tooltip_text">The chip sequence number set in the tooltip</param>
+    public delegate void GetChipHandler(Button sender, EventArgs e, string tooltip_text);
 }

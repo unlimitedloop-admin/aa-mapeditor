@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/09/10
+//      Last update     : 2023/09/17
 //
-//      File version    : 11
+//      File version    : 12
 //
 //
 /**************************************************************/
@@ -40,7 +40,7 @@ namespace MapEditor.src.main
         /// <summary>
         ///  The main functionality instance of the map editor.
         /// </summary>
-        private readonly MapContainer _mainContainer = new();
+        private readonly MapContainer _mainContainer;
 
 
         /// <summary>
@@ -49,6 +49,7 @@ namespace MapEditor.src.main
         public MainForm()
         {
             InitializeComponent();
+            _mainContainer = new(ref selectedChipPanel);
         }
 
 
@@ -99,13 +100,6 @@ namespace MapEditor.src.main
 
         #region COMMON_EVENT_HANDLER
 
-        private void MainForm_Load(object sender, EventArgs e)
-        {
-            _customMapStructEventArgs.MouseDownEvent += MapStruct_FieldMouseDown;
-            _customMapStructEventArgs.MouseUpEvent += MapStruct_FieldMouseUp;
-            _customMapStructEventArgs.MouseMoveEvent += MapStruct_FieldMouseMove;
-        }
-
         private void MainForm_Activated(object sender, EventArgs e)
         {
             ActiveControl = null;
@@ -127,17 +121,5 @@ namespace MapEditor.src.main
         }
 
         #endregion  // COMMON_EVENT_HANDLER
-
-
-        /// <summary>
-        ///  Set an image to the selectedChipTexture object.
-        /// </summary>
-        /// <param name="text">Set <see cref="string"/> the selectedChipTexture.Text</param>
-        /// <param name="backgroundimage">Set <see cref="Image"/> the selectedChipTexture.Image</param>
-        private void SetSelectedChipTexture(string? text, Image? backgroundimage)
-        {
-            selectedChipTexture.Text = text;
-            selectedChipTexture.Image = backgroundimage;
-        }
     }
 }

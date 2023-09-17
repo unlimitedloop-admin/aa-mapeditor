@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/09/10
+//      Last update     : 2023/09/17
 //
-//      File version    : 4
+//      File version    : 5
 //
 //
 /**************************************************************/
@@ -43,14 +43,29 @@ namespace MapEditor.src.app.models
         /// </summary>
         private BinMapFile? _binMapFile;
 
+        /// <summary>
+        ///  The map field table object.
+        /// </summary>
+        private TableLayoutPanel? _mapTable;
+
+        /// <summary>
+        ///  The management instance class for the tile panel used for selecting graphic chips from the graphic chip list.
+        /// </summary>
+        private readonly ChipHolder _chipHolder;
+
+        // The coordinates held to determine the selected area of the map field.
+        private Point _mouseDownPoint;
+        //private Point _mouseUpPoint;
+
 
         /// <summary>
         ///  This is the constructor for MapStructs.
         /// </summary>
         /// <param name="name">Binary file name label.</param>
-        internal MapStructs(string name)
+        internal MapStructs(string name, ChipHolder chipHolder)
         {
             _binMapFile = new(name);
+            _chipHolder = chipHolder;
         }
 
         /// <summary>
@@ -70,9 +85,8 @@ namespace MapEditor.src.app.models
         /// </summary>
         /// <param name="path">File path to unzip</param>
         /// <param name="objects">A reference to the <see cref="TableLayoutPanel"/> object for adding objects</param>
-        /// <param name="eventargs">Summary of event listeners for adding mouse events to the map</param>
         /// <returns>True if successful.</returns>
-        internal bool Unzip(string path, ref TableLayoutPanel objects, CustomMapStructEventArgs eventargs)
+        internal bool Unzip(string path, ref TableLayoutPanel objects)
         {
             if (null != _binMapFile && _binMapFile.FileOpen(path))
             {
@@ -89,13 +103,14 @@ namespace MapEditor.src.app.models
                     for (int j = 0; j < col_number; j++)
                     {
                         TextBox textbox = _binMapFile.CreateMapTextBox(chipindex, boxsize);
-                        textbox.MouseDown += eventargs.OnMouseDown;
-                        textbox.MouseUp += eventargs.OnMouseUp;
-                        textbox.MouseMove += eventargs.OnMouseMove;
+                        textbox.MouseDown += MapStruct_FieldMouseDown;
+                        textbox.MouseUp += MapStruct_FieldMouseUp;
+                        textbox.MouseMove += MapStruct_FieldMouseMove;
                         objects.Controls.Add(textbox, j, i);
                         index++; chipindex++;
                     }
                 }
+                _mapTable = objects;
                 return true;
             }
             return false;
@@ -107,9 +122,8 @@ namespace MapEditor.src.app.models
         /// <param name="path">File path to unzip</param>
         /// <param name="imagelist">A list of extracted graphic images</param>
         /// <param name="objects">A reference to the <see cref="TableLayoutPanel"/> object for adding objects</param>
-        /// <param name="eventargs">Summary of event listeners for adding mouse events to the map</param>
         /// <returns>True if successful.</returns>
-        internal bool Unzip(string path, List<Image> imagelist, ref TableLayoutPanel objects, CustomMapStructEventArgs eventargs)
+        internal bool Unzip(string path, List<Image> imagelist, ref TableLayoutPanel objects)
         {
             if (null != _binMapFile && _binMapFile.FileOpen(path))
             {
@@ -129,18 +143,64 @@ namespace MapEditor.src.app.models
                         byte chipimage = _binMapFile.GetDataByte(chipindex) ?? 0xFF;
                         var chipno = imagelist.Count < chipimage ? imagelist.Count : chipimage;
                         PictureBox picturebox = BinMapFile.CreateTextureBox(index, imagelist[chipno], boxsize);
-                        picturebox.MouseDown += eventargs.OnMouseDown;
-                        picturebox.MouseUp += eventargs.OnMouseUp;
-                        picturebox.MouseMove += eventargs.OnMouseMove;
+                        picturebox.MouseDown += MapStruct_FieldMouseDown;
+                        picturebox.MouseUp += MapStruct_FieldMouseUp;
+                        picturebox.MouseMove += MapStruct_FieldMouseMove;
                         objects.Controls.Add(picturebox, j, i);
                         index++; chipindex++;
                     }
                 }
+                _mapTable = objects;
                 return true;
             }
             else
             {
                 return false;
+            }
+        }
+
+
+
+        // ★Work in progress
+        /// <summary>
+        ///  The event when the mouse is pressed down on the MapStruct.
+        /// </summary>
+        /// <param name="sender">The control of the map field</param>
+        /// <param name="e">Mouse event argument</param>
+        private void MapStruct_FieldMouseDown(object? sender, MouseEventArgs e)
+        {
+            if (null != _mapTable)
+            {
+                Point mousepos = _mapTable.PointToClient(Control.MousePosition);
+                int clickedcol = mousepos.X / (_mapTable.Width / _mapTable.ColumnCount);
+                int clickedrow = mousepos.Y / (_mapTable.Height / _mapTable.RowCount);
+                _mouseDownPoint = new(clickedcol, clickedrow);
+            }
+        }
+
+        // ★Work in progress
+        /// <summary>
+        ///  The event when the mouse is moved over on the MapStruct.
+        /// </summary>
+        /// <param name="sender">The control of the map field</param>
+        /// <param name="e">Mouse event argument</param>
+        private void MapStruct_FieldMouseMove(object? sender, MouseEventArgs e)
+        {
+
+        }
+
+        // ★Work in progress
+        /// <summary>
+        ///  The event when the mouse is released on the MapStruct.
+        /// </summary>
+        /// <param name="sender">The control of the map field</param>
+        /// <param name="e">Mouse event argument</param>
+        private void MapStruct_FieldMouseUp(object? sender, MouseEventArgs e)
+        {
+            if (null != _mapTable && _mapTable.GetControlFromPosition(_mouseDownPoint.X, _mouseDownPoint.Y) is PictureBox target && "" != _chipHolder.GetChipHolderNumberText())
+            {
+                target.Text = _chipHolder.GetChipHolderNumberText();
+                target.Image = _chipHolder.GetChipHolderImage();
             }
         }
     }

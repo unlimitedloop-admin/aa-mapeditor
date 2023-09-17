@@ -164,7 +164,6 @@ namespace MapEditor.src.main
             openGraphChipButton = new Button();
             chipCount = new Label();
             selectedChipPanel = new Panel();
-            selectedChipTexture = new PictureBox();
             mainContainer = new SplitContainer();
             leftContainer = new SplitContainer();
             mapStructPanel = new Panel();
@@ -180,8 +179,6 @@ namespace MapEditor.src.main
             statusStrip = new StatusStrip();
             debugContextMenu = new ContextMenuStrip(components);
             mainMenuStrip.SuspendLayout();
-            selectedChipPanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)selectedChipTexture).BeginInit();
             ((System.ComponentModel.ISupportInitialize)mainContainer).BeginInit();
             mainContainer.Panel1.SuspendLayout();
             mainContainer.Panel2.SuspendLayout();
@@ -1175,21 +1172,11 @@ namespace MapEditor.src.main
             // 
             selectedChipPanel.BackColor = SystemColors.Window;
             selectedChipPanel.BorderStyle = BorderStyle.Fixed3D;
-            selectedChipPanel.Controls.Add(selectedChipTexture);
             selectedChipPanel.Font = new Font("Yu Gothic UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
             selectedChipPanel.Location = new Point(1230, 120);
             selectedChipPanel.Name = "selectedChipPanel";
             selectedChipPanel.Size = new Size(42, 42);
             selectedChipPanel.TabIndex = 26;
-            // 
-            // selectedChipTexture
-            // 
-            selectedChipTexture.Anchor = AnchorStyles.None;
-            selectedChipTexture.Location = new Point(3, 3);
-            selectedChipTexture.Name = "selectedChipTexture";
-            selectedChipTexture.Size = new Size(32, 32);
-            selectedChipTexture.TabIndex = 0;
-            selectedChipTexture.TabStop = false;
             // 
             // mainContainer
             // 
@@ -1400,13 +1387,10 @@ namespace MapEditor.src.main
             StartPosition = FormStartPosition.Manual;
             Text = "MainForm";
             Activated += MainForm_Activated;
-            Load += MainForm_Load;
             Click += MainForm_Click;
             KeyDown += MainForm_KeyDown;
             mainMenuStrip.ResumeLayout(false);
             mainMenuStrip.PerformLayout();
-            selectedChipPanel.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)selectedChipTexture).EndInit();
             mainContainer.Panel1.ResumeLayout(false);
             mainContainer.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)mainContainer).EndInit();
@@ -1560,7 +1544,6 @@ namespace MapEditor.src.main
         private TableLayoutPanel mapFieldTable;
         private Panel mapInfoPanel;
         private Panel graphicChipPanel;
-        private PictureBox selectedChipTexture;
         private StatusStrip statusStrip;
         private ToolStripMenuItem マップデータMToolStripMenuItem;
         private ToolStripMenuItem グラフィックチップリストGToolStripMenuItem;

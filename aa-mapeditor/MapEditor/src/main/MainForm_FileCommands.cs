@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/09/10
+//      Last update     : 2023/09/17
 //
-//      File version    : 7
+//      File version    : 8
 //
 //
 /**************************************************************/
@@ -40,11 +40,11 @@ namespace MapEditor.src.main
         {
             if (null != _mainContainer && _mainContainer.IsChipLists())
             {
-                _mainContainer?.LoadMapFileFromGraphic(ref panel, _customMapStructEventArgs);
+                _mainContainer?.LoadMapFileFromGraphic(ref panel);
             }
             else
             {
-                _mainContainer?.LoadMapFileFromHexText(ref panel, _customMapStructEventArgs);
+                _mainContainer?.LoadMapFileFromHexText(ref panel);
             }
         }
 
@@ -63,7 +63,7 @@ namespace MapEditor.src.main
         /// <param name="panel">Object to deploy</param>
         internal void OpenGraphicChipFile(ref Panel panel)
         {
-            _mainContainer?.LoadGraphicChipList(ref panel, ChipLists_GraphicChipClick);
+            _mainContainer?.LoadGraphicChipList(ref panel);
         }
 
         /// <summary>
@@ -72,8 +72,8 @@ namespace MapEditor.src.main
         /// <param name="panel">Object to destroy</param>
         internal void CloseGraphicChipFile(ref Panel panel)
         {
-            _mainContainer?.DestroyGraphicChip(ref panel);
-            SetSelectedChipTexture("", null);
+            _mainContainer.DestroyGraphicChip(ref panel);
+            _mainContainer._chipHolder.SetSelectedChipTexture("", null);
         }
     }
 }

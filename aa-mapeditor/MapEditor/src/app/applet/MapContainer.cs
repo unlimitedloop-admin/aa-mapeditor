@@ -17,18 +17,16 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/09/10
+//      Last update     : 2023/09/17
 //
-//      File version    : 9
+//      File version    : 10
 //
 //
 /**************************************************************/
 
 /* using namespace */
 using MapEditor.src.app.models;
-using MapEditor.src.common;
 using MapEditor.src.dialog;
-using MapEditor.src.main;
 
 
 
@@ -50,13 +48,22 @@ namespace MapEditor.src.app.applet
         /// </summary>
         private MapStructs? _mapStruct;
 
+        /// <summary>
+        ///  The management instance class for the tile panel used for selecting graphic chips from the graphic chip list.
+        /// </summary>
+        internal ChipHolder _chipHolder;
+
+
+        internal MapContainer(ref Panel holdpanel)
+        {
+            _chipHolder = new(ref holdpanel);
+        }
 
         /// <summary>
         ///  Load the map structure of the selected binary file.
         /// </summary>
         /// <param name="instance">A <see cref="TableLayoutPanel"/> that expands the loaded map data</param>
-        /// <param name="eventargs">Summary of event listeners for adding mouse events to the map</param>
-        internal void LoadMapFileFromHexText(ref TableLayoutPanel instance, CustomMapStructEventArgs eventargs)
+        internal void LoadMapFileFromHexText(ref TableLayoutPanel instance)
         {
             using OpenFileDialog openbin = new()
             {
@@ -66,8 +73,8 @@ namespace MapEditor.src.app.applet
             if (openbin.ShowDialog() == DialogResult.OK)
             {
                 DestroyMapFile(ref instance);
-                _mapStruct = new(Path.GetFileName(openbin.FileName));
-                if (!_mapStruct.Unzip(openbin.FileName, ref instance, eventargs))
+                _mapStruct = new(Path.GetFileName(openbin.FileName), _chipHolder);
+                if (!_mapStruct.Unzip(openbin.FileName, ref instance))
                 {
                     _mapStruct = null;
                 }
@@ -79,8 +86,7 @@ namespace MapEditor.src.app.applet
         ///  Load the map structure of the selected binary file.
         /// </summary>
         /// <param name="instance">A <see cref="TableLayoutPanel"/> that expands the loaded map data</param>
-        /// <param name="eventargs">Summary of event listeners for adding mouse events to the map</param>
-        internal void LoadMapFileFromGraphic(ref TableLayoutPanel instance, CustomMapStructEventArgs eventargs)
+        internal void LoadMapFileFromGraphic(ref TableLayoutPanel instance)
         {
             using OpenFileDialog openbin = new()
             {
@@ -93,8 +99,8 @@ namespace MapEditor.src.app.applet
                 List<Image>? imagelist = _chipLists.GetBackgroundImageList();
                 if (null != imagelist)
                 {
-                    _mapStruct = new(Path.GetFileName(openbin.FileName));
-                    if (!_mapStruct.Unzip(openbin.FileName, imagelist, ref instance, eventargs))
+                    _mapStruct = new(Path.GetFileName(openbin.FileName), _chipHolder);
+                    if (!_mapStruct.Unzip(openbin.FileName, imagelist, ref instance))
                     {
                         _mapStruct = null;
                     }
@@ -120,19 +126,14 @@ namespace MapEditor.src.app.applet
         ///  Load the graphic chip list of the selected image file.
         /// </summary>
         /// <param name="instance"><seealso cref="Panel"/> to place the tip list</param>
-        /// <param name="events">Event listener invoked for retrieving the graphic chip</param>
-        internal void LoadGraphicChipList(ref Panel instance, GetChipHandler events)
+        internal void LoadGraphicChipList(ref Panel instance)
         {
             using LoadGraphDialog openfile = new();
             if (openfile.ShowDialog() == DialogResult.OK && null != openfile.FileName)
             {
                 DestroyGraphicChip(ref instance);
-                _chipLists = new(Path.GetFileName(openfile.FileName));
-                if (_chipLists.Create(openfile.FileName, openfile.GraphicHeight, openfile.GraphicWidth, ref instance) && null != _chipLists._graphicListFile)
-                {
-                    _chipLists._graphicListFile.GraphicChipClick += events;
-                }
-                else
+                _chipLists = new(Path.GetFileName(openfile.FileName), _chipHolder);
+                if (!_chipLists.Create(openfile.FileName, openfile.GraphicHeight, openfile.GraphicWidth, ref instance))
                 {
                     _chipLists = null;
                 }

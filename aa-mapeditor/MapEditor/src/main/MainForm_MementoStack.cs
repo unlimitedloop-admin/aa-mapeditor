@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/09/08
+//      Last update     : 2023/09/17
 //
-//      File version    : 1
+//      File version    : 2
 //
 //
 /**************************************************************/
@@ -49,19 +49,20 @@ namespace MapEditor.src.main
         /// <summary>
         ///  The stack list of MementoParameter objects for storing undo actions.
         /// </summary>
-        private readonly Stack<List<MementoParameter>> _undoMemento = new();
+        private static readonly Stack<List<MementoParameter>> _undoMemento = new();
+
         /// <summary>
         ///  <para>The stack list of MementoParameter objects for storing redo actions.</para>
         ///  <para>*This is only stacked when the undo operation is performed.</para>
         /// </summary>
-        private readonly Stack<List<MementoParameter>> _redoMemento = new();
+        private static readonly Stack<List<MementoParameter>> _redoMemento = new();
 
 
         /// <summary>
         ///  Stacking the list of memories onto the stack.
         /// </summary>
         /// <param name="parameters">The list parameter containing objects for executing the undo process</param>
-        private void Recollection(List<MementoParameter> parameters)
+        internal static void Recollection(List<MementoParameter> parameters)
         {
             _undoMemento.Push(parameters);
             _redoMemento.Clear();
@@ -80,7 +81,7 @@ namespace MapEditor.src.main
                     // The process of reverting to the SelectedChipTexture object.
                     if (change.Holder)
                     {
-                        SetSelectedChipTexture(change.OldImageBinNum.ToString(), _mainContainer?.GetChipListImage(change.OldImageBinNum));
+                        _mainContainer?._chipHolder.SetSelectedChipTexture(change.OldImageBinNum.ToString(), _mainContainer?.GetChipListImage(change.OldImageBinNum));
                     }
                     // TODO : The process of reverting to the MapStructs area.
                     else
@@ -105,7 +106,7 @@ namespace MapEditor.src.main
                     // The process of redoing the SelectedChipTexture object.
                     if (change.Holder)
                     {
-                        SetSelectedChipTexture(change.NewImageBinNum.ToString(), _mainContainer?.GetChipListImage(change.NewImageBinNum));
+                        _mainContainer?._chipHolder.SetSelectedChipTexture(change.NewImageBinNum.ToString(), _mainContainer?.GetChipListImage(change.NewImageBinNum));
                     }
                     // TODO : The process of redoing to the MapStructs area.
                     else
