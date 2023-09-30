@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/09/17
+//      Last update     : 2023/09/30
 //
-//      File version    : 8
+//      File version    : 9
 //
 //
 /**************************************************************/
@@ -36,11 +36,12 @@ namespace MapEditor.src.main
         ///  Open the binary file and expand it to the panel.
         /// </summary>
         /// <param name="panel">An object responsible for deploying other objects</param>
-        internal void OpenBinaryMapFile(ref TableLayoutPanel panel)
+        internal void OpenBinaryMapFile(ref Panel panel)
         {
             if (null != _mainContainer && _mainContainer.IsChipLists())
             {
                 _mainContainer?.LoadMapFileFromGraphic(ref panel);
+                cursorSelectButton.Tag = 0;
             }
             else
             {
@@ -52,7 +53,7 @@ namespace MapEditor.src.main
         ///  Close the binary file.
         /// </summary>
         /// <param name="panel">The target object to demolish</param>
-        internal void CloseBinaryMapFile(ref TableLayoutPanel panel)
+        internal void CloseBinaryMapFile(ref Panel panel)
         {
             _mainContainer?.DestroyMapFile(ref panel);
         }

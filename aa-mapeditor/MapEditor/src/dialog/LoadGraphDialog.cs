@@ -17,15 +17,16 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/08/10
+//      Last update     : 2023/09/30
 //
-//      File version    : 1
+//      File version    : 2
 //
 //
 /**************************************************************/
 
 /* using namespace */
 using MapEditor.src.common;
+using MapEditor.src.logger;
 using System.Media;
 
 
@@ -64,23 +65,33 @@ namespace MapEditor.src.dialog
         /// </summary>
         /// <param name="graphfile">Subjects of graphic data</param>
         /// <returns>True if the image data is valid.</returns>
+        /// <exception cref="OutOfMemoryException"></exception>
         private bool CheckOfGraphicFile(string graphfile)
         {
-            // Investigate the extension to prove that it is an image file.
-            string extension = Path.GetExtension(graphfile).ToLower();
-            if (File.Exists(graphfile) && (extension == ".jpeg" || extension == ".jpg" || extension == ".png" || extension == ".bmp"))
+            try
             {
-                using Image image = Image.FromFile(graphfile);
-                // Determine whether the size of the image to be read is within the specified size.
-                if (null != image && 0xFFFF >= (image.Height * image.Width))
+                // Investigate the extension to prove that it is an image file.
+                string extension = Path.GetExtension(graphfile).ToLower();
+                if (File.Exists(graphfile) && (extension == ".jpeg" || extension == ".jpg" || extension == ".png" || extension == ".bmp"))
                 {
-                    GraphicHeight = image.Height / ConstGraphicData.CHIPRAWSIZE;
-                    GraphicWidth = image.Width / ConstGraphicData.CHIPRAWSIZE;
-                    FileName = graphfile;
-                    return true;
+                    using Image image = Image.FromFile(graphfile);
+                    // Determine whether the size of the image to be read is within the specified size.
+                    if (null != image && 0xFFFF >= (image.Height * image.Width))
+                    {
+                        GraphicHeight = image.Height / ConstGraphicData.CHIPRAWSIZE;
+                        GraphicWidth = image.Width / ConstGraphicData.CHIPRAWSIZE;
+                        FileName = graphfile;
+                        return true;
+                    }
                 }
+                return false;
             }
-            return false;
+            catch (OutOfMemoryException ex)
+            {
+                MessageBox.Show("Empty or invalid file. Please select valid image data.", "UNEXPECTED EXCEPTION INFO");
+                DefaultLogger.LogError(ex.ToString());
+                return false;
+            }
         }
 
         /// <summary>

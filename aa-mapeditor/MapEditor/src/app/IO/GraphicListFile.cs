@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/09/17
+//      Last update     : 2023/09/30
 //
-//      File version    : 7
+//      File version    : 8
 //
 //
 /**************************************************************/
@@ -117,12 +117,12 @@ namespace MapEditor.src.app.IO
         }
 
         /// <summary>
-        ///  Gets an empty <seealso cref="TableLayoutPanel"/> of the specified size.
+        ///  Gets an empty <see cref="TableLayoutPanel"/> of the specified size.
         /// </summary>
         /// <param name="rowcount">Specifies the number of rows in the <seealso cref="TableLayoutPanel"/> to construct</param>
         /// <param name="columncount">Specifies the number of columns in the <seealso cref="TableLayoutPanel"/> to construct</param>
         /// <param name="larger">Cell size (square absolute value)</param>
-        /// <returns><seealso cref="TableLayoutPanel"/> instance.</returns>
+        /// <returns><see cref="TableLayoutPanel"/> instance.</returns>
         private static TableLayoutPanel GetLayoutPanel(uint rowcount, uint columncount, int larger)
         {
             TableLayoutPanel table = new()
@@ -227,15 +227,21 @@ namespace MapEditor.src.app.IO
         }
 
 
-        /// <summary>
-        ///  Click event when the graphic chip button is clicked.
-        /// </summary>
-        /// <param name="sender">Sender object</param>
-        /// <param name="e">Event args</param>
         private void GraphicChipList_Click(object? sender, EventArgs e)
-        {
+        { 
             Button button = (Button)sender!;
             GraphicChipClick?.Invoke(button, e, _toolTip.GetToolTip(button));
+
+            /*
+             * NOTE : 
+             * Clears the focus.
+             * This is done because when editing the map field, changing the chip list can sometimes cause a loss of focus.
+             */
+            var form = (sender as Control)?.FindForm();
+            if (null != form)
+            {
+                form.ActiveControl = null;
+            }
         }
     }
 }

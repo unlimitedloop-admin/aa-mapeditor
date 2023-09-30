@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/09/17
+//      Last update     : 2023/09/30
 //
-//      File version    : 10
+//      File version    : 11
 //
 //
 /**************************************************************/
@@ -62,8 +62,8 @@ namespace MapEditor.src.app.applet
         /// <summary>
         ///  Load the map structure of the selected binary file.
         /// </summary>
-        /// <param name="instance">A <see cref="TableLayoutPanel"/> that expands the loaded map data</param>
-        internal void LoadMapFileFromHexText(ref TableLayoutPanel instance)
+        /// <param name="instance">A <see cref="Panel"/> that expands the loaded map data</param>
+        internal void LoadMapFileFromHexText(ref Panel instance)
         {
             using OpenFileDialog openbin = new()
             {
@@ -85,8 +85,8 @@ namespace MapEditor.src.app.applet
         /// <summary>
         ///  Load the map structure of the selected binary file.
         /// </summary>
-        /// <param name="instance">A <see cref="TableLayoutPanel"/> that expands the loaded map data</param>
-        internal void LoadMapFileFromGraphic(ref TableLayoutPanel instance)
+        /// <param name="instance">A <see cref="Panel"/> that expands the loaded map data</param>
+        internal void LoadMapFileFromGraphic(ref Panel instance)
         {
             using OpenFileDialog openbin = new()
             {
@@ -110,13 +110,23 @@ namespace MapEditor.src.app.applet
         }
 
         /// <summary>
-        ///  Destroy loaded map data.
+        ///  Changes the selection mode of the map field.
         /// </summary>
-        /// <param name="instance">A <see cref="TableLayoutPanel"/> that deletion map data</param>
-        internal void DestroyMapFile(ref TableLayoutPanel instance)
+        /// <param name="transparent">Specified transparency of the block</param>
+        internal void ChangeSelectModeForMapStruct(bool transparent)
+        {
+            _mapStruct?.ChangeTextureAlphaLvl(transparent);
+        }
+
+        /// <summary>
+        ///  Destroy MapStruct instance.
+        /// </summary>
+        /// <param name="instance">A <see cref="Panel"/> that deletion map data</param>
+        internal void DestroyMapFile(ref Panel instance)
         {
             if (null != _mapStruct)
             {
+                _mapStruct.RemoveControlForAll();
                 instance.Controls.Clear();
                 _mapStruct = null;
             }
@@ -142,14 +152,15 @@ namespace MapEditor.src.app.applet
         }
 
         /// <summary>
-        ///  Delete the graphic chip list.
+        ///  Destroy the ChipLists.
         /// </summary>
         /// <param name="instance"><seealso cref="Panel"/> to place the chip list</param>
         internal void DestroyGraphicChip(ref Panel instance)
         {
             if (null != _chipLists)
             {
-                _chipLists.Drop(ref instance);
+                _chipLists.RemoveControlForAll(ref instance);
+                instance.Controls.Clear();
                 _chipLists = null;
             }
         }
@@ -164,24 +175,17 @@ namespace MapEditor.src.app.applet
             {
                 return true;
             }
-            return false;
+            else
+            {
+                return false;
+            }
         }
 
         /// <summary>
         ///  Retrieve the chip list image at the specified index number.
         /// </summary>
-        /// <param name="index">Numerical value of the array index</param>
-        /// <returns>Chip list image object.</returns>
-        internal Image? GetChipListImage(int index)
-        {
-            return _chipLists?.GetBackgroundImage(index);
-        }
-
-        /// <summary>
-        ///  Retrieve the chip list image at the specified index number.
-        /// </summary>
-        /// <param name="index">Numerical value of the array index for byte type</param>
-        /// <returns>Chip list image object.</returns>
+        /// <param name="index">Numerical value of the array index for <see cref="byte"/> type</param>
+        /// <returns>Chip list <see cref="Image"/> object.</returns>
         internal Image? GetChipListImage(byte? index)
         {
             if (index.HasValue && IsChipLists())
@@ -192,6 +196,38 @@ namespace MapEditor.src.app.applet
             {
                 return null;
             }
+        }
+
+        /// <summary>
+        ///  Indirectly invokes the process of filling chips into the selected area of the map field.
+        /// </summary>
+        /// <param name="reset">True if you want to clear the selected range.</param>
+        internal void MapStruct_ReplaceRangeCell(bool reset)
+        {
+            // Recalling methods of the MapStruct.
+            _mapStruct?.CallReplaceOnMapRangePanel(reset);
+        }
+
+        /// <summary>
+        ///  Get the current map page value.
+        /// </summary>
+        /// <returns>MapPages member value.</returns>
+        internal int GetMapPages()
+        {
+            return _mapStruct!.MapPages;
+        }
+
+        /// <summary>
+        ///  Indirectly calls the SetPanelFromMapFieldPosition method of the MapStruct class.
+        /// </summary>
+        /// <param name="x">The x-coordinate of the target cell position</param>
+        /// <param name="y">The y-coordinate of the target cell position</param>
+        /// <param name="picturebox">The source <see cref="PictureBox"/> containing the data to be copied</param>
+        /// <param name="transparent">A flag indicating if the image should be made semi-transparent</param>
+        internal void SetPanelFromMapFieldPosition(int x, int y, PictureBox picturebox, bool transparent)
+        {
+            // Recalling methods of the MapStruct.
+            _mapStruct?.SetPanelFromMapFieldPosition(x, y, picturebox, transparent);
         }
     }
 }

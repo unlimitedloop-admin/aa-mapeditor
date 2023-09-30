@@ -199,4 +199,10 @@
   <data name="icons8_マイナス_30" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\image\icons8-マイナス-30.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="icons8_カーソル_30" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\image\icons8-カーソル-30.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="icons8_セルを選択_30" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\image\icons8-セルを選択-30.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

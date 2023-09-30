@@ -17,12 +17,17 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/09/17
+//      Last update     : 2023/09/30
 //
-//      File version    : 2
+//      File version    : 3
 //
 //
 /**************************************************************/
+
+/* using namespace */
+using MapEditor.src.common;
+
+
 
 /* sources */
 namespace MapEditor.src.main
@@ -32,8 +37,7 @@ namespace MapEditor.src.main
     /// </summary>
     internal class MementoParameter
     {
-        public int? MapRow { get; set; } = null;
-        public int? MapColumn { get; set; } = null;
+        public int? MapAddress { get; set; } = null;
         public bool Holder { get; set; } = false;
         public byte? OldImageBinNum { get; set; } = null;
         public byte? NewImageBinNum { get; set; } = null;
@@ -83,10 +87,21 @@ namespace MapEditor.src.main
                     {
                         _mainContainer?._chipHolder.SetSelectedChipTexture(change.OldImageBinNum.ToString(), _mainContainer?.GetChipListImage(change.OldImageBinNum));
                     }
-                    // TODO : The process of reverting to the MapStructs area.
                     else
                     {
-
+                        if (null != change.MapAddress && null != cursorSelectButton.Tag && (_mainContainer?.GetMapPages()) == (change.MapAddress / 0x100))
+                        {
+                            PictureBox picturebox = new()
+                            {
+                                Text = change.OldImageBinNum.ToString(),
+                                Image = _mainContainer?.GetChipListImage(change.OldImageBinNum),
+                            };
+                            // Calculates and identifies the TableLayoutPanel cell position from a binary address.
+                            int row = ((int)(change.MapAddress % 0x100) - ConstBinaryData.MAP_HEADERSIZE) / 0x10;
+                            int col = ((int)(change.MapAddress % 0x100) - ConstBinaryData.MAP_HEADERSIZE) % 0x10;
+                            bool transparents = 1 == (int)cursorSelectButton.Tag;
+                            _mainContainer?.SetPanelFromMapFieldPosition(col, row, picturebox, transparents);
+                        }
                     }
                 }
                 _redoMemento.Push(changes);
@@ -108,10 +123,21 @@ namespace MapEditor.src.main
                     {
                         _mainContainer?._chipHolder.SetSelectedChipTexture(change.NewImageBinNum.ToString(), _mainContainer?.GetChipListImage(change.NewImageBinNum));
                     }
-                    // TODO : The process of redoing to the MapStructs area.
                     else
                     {
-
+                        if (null != change.MapAddress && null != cursorSelectButton.Tag && (_mainContainer?.GetMapPages()) == (change.MapAddress / 0x100))
+                        {
+                            PictureBox picturebox = new()
+                            {
+                                Text = change.NewImageBinNum.ToString(),
+                                Image = _mainContainer?.GetChipListImage(change.NewImageBinNum),
+                            };
+                            // Calculates and identifies the TableLayoutPanel cell position from a binary address.
+                            int row = ((int)(change.MapAddress % 0x100) - ConstBinaryData.MAP_HEADERSIZE) / 0x10;
+                            int col = ((int)(change.MapAddress % 0x100) - ConstBinaryData.MAP_HEADERSIZE) % 0x10;
+                            bool transparents = 1 == (int)cursorSelectButton.Tag;
+                            _mainContainer?.SetPanelFromMapFieldPosition(col, row, picturebox, transparents);
+                        }
                     }
                 }
                 _undoMemento.Push(changes);

@@ -17,12 +17,17 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/08/13
+//      Last update     : 2023/09/30
 //
-//      File version    : 5
+//      File version    : 6
 //
 //
 /**************************************************************/
+
+/* using namespace */
+using MapEditor.src.logger;
+
+
 
 /* sources */
 namespace MapEditor.src.app.IO
@@ -46,6 +51,12 @@ namespace MapEditor.src.app.IO
         ///  Array of binary file data.
         /// </summary>
         private byte[]? _data;
+
+        /// <summary>
+        ///  Cache collection of graphics data.
+        /// </summary>
+        private readonly Dictionary<int, Bitmap> _semiTransparentCache = new();
+        private readonly Dictionary<int, Bitmap> _opaqueCache = new();
 
 
         /// <summary>
@@ -72,12 +83,16 @@ namespace MapEditor.src.app.IO
         /// </summary>
         /// <param name="path">Specify the full path of the binary file</param>
         /// <returns>When the file is successfully opened, true is returned.</returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="Exception"></exception>
         public bool FileOpen(string path)
         {
             try
             {
                 // Check the existence of the file and place the contents of the file in memory.
-                if (!File.Exists(path)) { return false; }
+                if (!File.Exists(path))
+                    return false;
+
                 using var fs = File.OpenRead(path);
                 var binary = new BinaryReader(fs);
                 long len = fs.Length;
@@ -86,14 +101,16 @@ namespace MapEditor.src.app.IO
                 _data = data;
                 FilePath = path;
             }
-            catch (ArgumentNullException)
+            catch (ArgumentNullException ex)
             {
-                MessageBox.Show("選択されたファイルは空であるか、読み取れないようです。");
+                MessageBox.Show("The selected file appears to be empty or unreadable. Is there a mistake in the file?", "UNEXPECTED EXCEPTION INFO");
+                DefaultLogger.LogError(ex.ToString());
                 return false;
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show(ex.Message, "UNEXPECTED EXCEPTION INFO");
+                DefaultLogger.LogError(ex.ToString());
                 return false;
             }
             return true;
@@ -146,43 +163,98 @@ namespace MapEditor.src.app.IO
         ///  Create a <see cref="TextBox"/> object to be any placed.
         /// </summary>
         /// <param name="address">Hex number to write in the textbox</param>
-        /// <param name="rectangle">Text box scaler</param>
+        /// <param name="scales">Text box scaler</param>
         /// <returns>Generated <see cref="TextBox"/> object.</returns>
-        internal TextBox CreateMapTextBox(int address, Size rectangle, Font? font = null)
+        internal TextBox CreateMapTextBox(int address, Size scales, Font? font = null)
         {
-            Font default_font = new("Yu Gothic UI", 12, FontStyle.Regular);
-            Font selected_font = font ?? default_font;
-            
-            var picx = new TextBox()
+            Font defaultFont = new("Yu Gothic UI", 12, FontStyle.Regular);
+            Font selectedFont = font ?? defaultFont;
+
+            TextBox pict = new()
             {
                 Text = (GetDataByte(address)?.ToString("X2")) ?? "",
-                Size = new(rectangle.Width, rectangle.Height),
+                Size = new(scales.Width, scales.Height),
                 Margin = new(0),
                 BackColor = SystemColors.Control,
                 TextAlign = HorizontalAlignment.Center,
                 Multiline = true,
-                Font = selected_font,
+                Font = selectedFont,
             };
-            return picx;
+            return pict;
         }
 
         /// <summary>
         ///  Generate a <seealso cref="PictureBox"/> to place the graphics chip.
         /// </summary>
         /// <param name="address">Hex number to graphic list number</param>
-        /// <param name="image">Graphic image <seealso cref="Image"/></param>
+        /// <param name="image">Graphic <seealso cref="Image"/></param>
         /// <param name="rectangle">Graphics chip size</param>
         /// <returns>Generated <seealso cref="PictureBox"/> object.</returns>
         internal static PictureBox CreateTextureBox(int address, Image? image, Size rectangle)
         {
-            var picx = new PictureBox()
+            Bitmap bitmap = (Bitmap)image!;
+            PictureBox pict = new()
             {
                 Name = "Texture_X" + address.ToString(),
                 Size = rectangle,
                 Margin = new(0),
-                BackgroundImage = image,
+                Image = bitmap,
             };
-            return picx;
+            return pict;
+        }
+
+        /// <summary>
+        ///  Creates a no transparent version of the provided bitmap image.
+        /// </summary>
+        /// <param name="original">The original image data used for bitmapization.</param>
+        /// <returns>Semi-transparent image data <see cref="Bitmap"/>.</returns>
+        internal Bitmap MakeImageOpaque(Bitmap original)
+        {
+            int hash = original.GetHashCode();
+            if (_opaqueCache.TryGetValue(hash, out Bitmap? cacheBitmap) && null != cacheBitmap)
+            {
+                return cacheBitmap;
+            }
+            Bitmap bitmap = new(original.Width, original.Height);
+            for (int i = 0; i < original.Width; i++)
+            {
+                for (int j = 0; j < original.Height; j++)
+                {
+                    // Changing the RGB values to semi-transparent.
+                    Color originalColor = original.GetPixel(i, j);
+                    Color brightlycolor = Color.FromArgb(255, originalColor.R, originalColor.G, originalColor.B);
+                    bitmap.SetPixel(i, j, brightlycolor);
+                }
+            }
+            _opaqueCache[hash] = bitmap;
+            return bitmap;
+        }
+
+        /// <summary>
+        ///  Creates a semi-transparent version of the provided <see cref="Bitmap"/>.
+        /// </summary>
+        /// <param name="original">The original image data used for bitmapization.</param>
+        /// <returns>Semi-transparent image data <see cref="Bitmap"/>.</returns>
+        internal Bitmap MakeImageSemiTransparent(Bitmap original)
+        {
+            int hash = original.GetHashCode();
+            if (_semiTransparentCache.TryGetValue(hash, out Bitmap? cacheBitmap) && null != cacheBitmap)
+            {
+                return cacheBitmap;
+            }
+            Bitmap semitransparentBitmap = new(original.Width, original.Height);
+            for (int i = 0; i < original.Width; i++)
+            {
+                for (int j = 0; j < original.Height; j++)
+                {
+                    // Changing the RGB values to semi-transparent.
+                    Color originalColor = original.GetPixel(i, j);
+                    Color semitransparentColor = Color.FromArgb(128, originalColor.R, originalColor.G, originalColor.B);
+                    semitransparentBitmap.SetPixel(i, j, semitransparentColor);
+                }
+            }
+            _semiTransparentCache[hash] = semitransparentBitmap;
+            return semitransparentBitmap;
         }
     }
 }

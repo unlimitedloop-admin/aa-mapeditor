@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/09/17
+//      Last update     : 2023/09/30
 //
-//      File version    : 5
+//      File version    : 6
 //
 //
 /**************************************************************/
@@ -27,6 +27,9 @@
 /* using namespace */
 using MapEditor.src.app.IO;
 using MapEditor.src.common;
+using MapEditor.src.logger;
+using MapEditor.src.main;
+using static MapEditor.src.common.ConstMapFieldTable;
 
 
 
@@ -36,7 +39,7 @@ namespace MapEditor.src.app.models
     /// <summary>
     ///  The algorithm class for constructing map data.
     /// </summary>
-    internal class MapStructs
+    internal partial class MapStructs
     {
         /// <summary>
         ///  Binary map file manager class.
@@ -53,15 +56,22 @@ namespace MapEditor.src.app.models
         /// </summary>
         private readonly ChipHolder _chipHolder;
 
-        // The coordinates held to determine the selected area of the map field.
-        private Point _mouseDownPoint;
-        //private Point _mouseUpPoint;
+        /// <summary>
+        ///  Map field page number.
+        /// </summary>
+        public int MapPages { get; set; }
+
+        /// <summary>
+        ///  A boolean value representing the active state of a tile.
+        /// </summary>
+        private bool _foldType = false;
 
 
         /// <summary>
         ///  This is the constructor for MapStructs.
         /// </summary>
         /// <param name="name">Binary file name label.</param>
+        /// <param name="chipHolder">A reference instance of the ChipHolder class.</param>
         internal MapStructs(string name, ChipHolder chipHolder)
         {
             _binMapFile = new(name);
@@ -81,19 +91,54 @@ namespace MapEditor.src.app.models
         }
 
         /// <summary>
+        ///  Creates a new TableLayoutPanel configured as a map field with the specified parameters.
+        /// </summary>
+        /// <param name="name">Specify the name of the object</param>
+        /// <param name="columncount">The number of columns for the table</param>
+        /// <param name="rowcount">The number of rows for the table</param>
+        /// <param name="size">The overall size of the table</param>
+        /// <param name="location">The location of the table on its parent control</param>
+        /// <param name="cellsize">The absolute size in pixels for each cell (both rows and columns)</param>
+        /// <returns>Returns a configured TableLayoutPanel representing the map field.</returns>
+        private static TableLayoutPanel CreateMapFieldTable(string name, int columncount, int rowcount, Size size, Point location, float cellsize)
+        {
+            TableLayoutPanel table = new()
+            {
+                BackColor = Color.Transparent,
+                ColumnCount = columncount,
+                Location = location,
+                Margin = new Padding(0),
+                Name = name,
+                RowCount = rowcount,
+                Size = size,
+                TabIndex = 0
+            };
+            for (int i = 0; i < table.ColumnCount; i++)
+            {
+                _ = table.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, cellsize));
+            }
+            for (int j = 0; j < table.RowCount; j++)
+            {
+                _ = table.RowStyles.Add(new RowStyle(SizeType.Absolute, cellsize));
+            }
+            return table;
+        }
+
+        /// <summary>
         ///  Unzip the map data file.
         /// </summary>
         /// <param name="path">File path to unzip</param>
-        /// <param name="objects">A reference to the <see cref="TableLayoutPanel"/> object for adding objects</param>
+        /// <param name="objects">A reference to the <see cref="Panel"/> object to add map fields.</param>
         /// <returns>True if successful.</returns>
-        internal bool Unzip(string path, ref TableLayoutPanel objects)
+        internal bool Unzip(string path, ref Panel objects)
         {
             if (null != _binMapFile && _binMapFile.FileOpen(path))
             {
-                int row_number = objects.RowCount;
-                int col_number = objects.ColumnCount;
-                int cellheight = objects.Height / row_number;
-                int cellwidth = objects.Width / col_number;
+                _mapTable = CreateMapFieldTable(MAPFIELDNAME, MAPCOLUMNS, MAPROWS, new Size(MAPSIZES_X, MAPSIZES_Y), new Point(MAPLOCATIONS_X, MAPLOCATIONS_Y), MAPCELLSIZES);
+                int row_number = _mapTable.RowCount;
+                int col_number = _mapTable.ColumnCount;
+                int cellheight = _mapTable.Height / row_number;
+                int cellwidth = _mapTable.Width / col_number;
                 Size boxsize = new(cellwidth, cellheight);
                 int index = 0x00, chipindex = ConstBinaryData.MAP_HEADERSIZE;
 
@@ -103,17 +148,18 @@ namespace MapEditor.src.app.models
                     for (int j = 0; j < col_number; j++)
                     {
                         TextBox textbox = _binMapFile.CreateMapTextBox(chipindex, boxsize);
-                        textbox.MouseDown += MapStruct_FieldMouseDown;
-                        textbox.MouseUp += MapStruct_FieldMouseUp;
-                        textbox.MouseMove += MapStruct_FieldMouseMove;
-                        objects.Controls.Add(textbox, j, i);
+                        _mapTable.Controls.Add(textbox, j, i);
                         index++; chipindex++;
                     }
                 }
-                _mapTable = objects;
+                objects.Controls.Add(_mapTable);
+                MapPages = 0;
                 return true;
             }
-            return false;
+            else
+            {
+                return false;
+            }
         }
 
         /// <summary>
@@ -121,18 +167,19 @@ namespace MapEditor.src.app.models
         /// </summary>
         /// <param name="path">File path to unzip</param>
         /// <param name="imagelist">A list of extracted graphic images</param>
-        /// <param name="objects">A reference to the <see cref="TableLayoutPanel"/> object for adding objects</param>
+        /// <param name="objects">A reference to the <see cref="Panel"/> object to add map fields.</param>
         /// <returns>True if successful.</returns>
-        internal bool Unzip(string path, List<Image> imagelist, ref TableLayoutPanel objects)
+        internal bool Unzip(string path, List<Image> imagelist, ref Panel objects)
         {
             if (null != _binMapFile && _binMapFile.FileOpen(path))
             {
-                int row_number = objects.RowCount;
-                int col_number = objects.ColumnCount;
-                int cellheight = objects.Height / row_number;
-                int cellwidth = objects.Width / col_number;
+                _mapTable = CreateMapFieldTable(MAPFIELDNAME, MAPCOLUMNS, MAPROWS, new Size(MAPSIZES_X, MAPSIZES_Y), new Point(MAPLOCATIONS_X, MAPLOCATIONS_Y), MAPCELLSIZES);
+                int row_number = _mapTable.RowCount;
+                int col_number = _mapTable.ColumnCount;
+                int cellheight = _mapTable.Height / row_number;
+                int cellwidth = _mapTable.Width / col_number;
                 Size boxsize = new(cellwidth, cellheight);
-                int index = 0x00, chipindex = 0x10;
+                int index = 0x00, chipindex = ConstBinaryData.MAP_HEADERSIZE;
 
                 // An iterative process that sequentially accesses each split panel in a TableLayoutPanel.
                 for (int i = 0; i < row_number; i++)
@@ -143,14 +190,18 @@ namespace MapEditor.src.app.models
                         byte chipimage = _binMapFile.GetDataByte(chipindex) ?? 0xFF;
                         var chipno = imagelist.Count < chipimage ? imagelist.Count : chipimage;
                         PictureBox picturebox = BinMapFile.CreateTextureBox(index, imagelist[chipno], boxsize);
-                        picturebox.MouseDown += MapStruct_FieldMouseDown;
-                        picturebox.MouseUp += MapStruct_FieldMouseUp;
-                        picturebox.MouseMove += MapStruct_FieldMouseMove;
-                        objects.Controls.Add(picturebox, j, i);
+                        picturebox.Text = chipno.ToString();
+                        picturebox.MouseDown += MapFieldChip_MouseDown;
+                        picturebox.MouseUp += MapFieldChip_MouseUp;
+                        picturebox.MouseMove += MapFieldChip_MouseMove;
+                        picturebox.Click += MapFieldChip_Click;
+                        _mapTable.Controls.Add(picturebox, j, i);
                         index++; chipindex++;
                     }
                 }
-                _mapTable = objects;
+                objects.Controls.Add(_mapTable);
+                MapPages = 0;
+                SetupMapStructure();
                 return true;
             }
             else
@@ -159,49 +210,151 @@ namespace MapEditor.src.app.models
             }
         }
 
-
-
-        // ★Work in progress
         /// <summary>
-        ///  The event when the mouse is pressed down on the MapStruct.
+        ///  Changes the alpha level of the image tile.
         /// </summary>
-        /// <param name="sender">The control of the map field</param>
-        /// <param name="e">Mouse event argument</param>
-        private void MapStruct_FieldMouseDown(object? sender, MouseEventArgs e)
+        /// <param name="transparent">Specified transparency of the texture at the maptable</param>
+        internal void ChangeTextureAlphaLvl(bool transparent)
         {
-            if (null != _mapTable)
+            if (null != _binMapFile && null != _mapTable)
             {
-                Point mousepos = _mapTable.PointToClient(Control.MousePosition);
-                int clickedcol = mousepos.X / (_mapTable.Width / _mapTable.ColumnCount);
-                int clickedrow = mousepos.Y / (_mapTable.Height / _mapTable.RowCount);
-                _mouseDownPoint = new(clickedcol, clickedrow);
+                foreach (Control control in _mapTable.Controls)
+                {
+                    if (control is PictureBox picturebox && picturebox.Image is Bitmap bitmap_org)
+                    {
+                        if (transparent)
+                        {
+                            picturebox.Image = _binMapFile.MakeImageSemiTransparent(bitmap_org);
+                        }
+                        else
+                        {
+                            picturebox.Image = _binMapFile.MakeImageOpaque(bitmap_org);
+                        }
+                    }
+                }
+                _foldType = transparent;
+                
+                if (!_foldType)
+                    RangeModeOff();
             }
         }
 
-        // ★Work in progress
         /// <summary>
-        ///  The event when the mouse is moved over on the MapStruct.
+        ///  Sets the image and text of the target PictureBox at the specified cell position with the data from the provided source PictureBox.
         /// </summary>
-        /// <param name="sender">The control of the map field</param>
-        /// <param name="e">Mouse event argument</param>
-        private void MapStruct_FieldMouseMove(object? sender, MouseEventArgs e)
+        /// <param name="x">The x-coordinate of the target cell position</param>
+        /// <param name="y">The y-coordinate of the target cell position</param>
+        /// <param name="objects">The source PictureBox containing the data to be copied</param>
+        /// <param name="transparent">A flag indicating if the image should be made semi-transparent</param>
+        /// <exception cref="ArgumentException"></exception>
+        internal void SetPanelFromMapFieldPosition(int x, int y, PictureBox objects, bool transparent)
         {
-
+            try
+            {
+                if (null != _binMapFile && _mapTable?.GetControlFromPosition(x, y) is PictureBox target)
+                {
+                    target.Text = objects.Text;
+                    if (transparent)
+                    {
+                        target.Image = _binMapFile.MakeImageSemiTransparent((Bitmap)objects.Image!);
+                    }
+                    else
+                    {
+                        target.Image = objects.Image;
+                    }
+                }
+            }
+            catch (ArgumentException ex)
+            {
+                MessageBox.Show("The map range is not correct. Please retry the operation.", "UNEXPECTED EXCEPTION INFO");
+                DefaultLogger.LogError(ex.ToString());
+            }
         }
 
-        // ★Work in progress
         /// <summary>
-        ///  The event when the mouse is released on the MapStruct.
+        ///  Fill the area selected as the selection range with pre-specified image chips.
         /// </summary>
-        /// <param name="sender">The control of the map field</param>
-        /// <param name="e">Mouse event argument</param>
-        private void MapStruct_FieldMouseUp(object? sender, MouseEventArgs e)
+        /// <exception cref="ArgumentException"></exception>
+        private void ReplaceOnMapRangePanel()
         {
-            if (null != _mapTable && _mapTable.GetControlFromPosition(_mouseDownPoint.X, _mouseDownPoint.Y) is PictureBox target && "" != _chipHolder.GetChipHolderNumberText())
+            try
             {
-                target.Text = _chipHolder.GetChipHolderNumberText();
-                target.Image = _chipHolder.GetChipHolderImage();
+                // An iterative process that, if there is a selected graphic chip and the selected range refers to a valid area,
+                // places it throughout the specified range.
+                if (null != _binMapFile && "" != _chipHolder.GetChipHolderNumberText())
+                {
+                    // Ensure startCell is the top-left and endCell is the bottom-right.
+                    Point start = new(
+                        Math.Min(_ranger.startCell.X, _ranger.endCell.X),
+                        Math.Min(_ranger.startCell.Y, _ranger.endCell.Y)
+                    );
+                    Point end = new(
+                        Math.Max(_ranger.startCell.X, _ranger.endCell.X),
+                        Math.Max(_ranger.startCell.Y, _ranger.endCell.Y)
+                    );
+
+                    List<MementoParameter> parameters = new();
+                    for (int col = start.X; col <= end.X; col++)
+                    {
+                        for (int row = start.Y; row <= end.Y; row++)
+                        {
+                            if (_mapTable?.GetControlFromPosition(col, row) is PictureBox picture)
+                            {
+                                parameters.Add(new MementoParameter
+                                {
+                                    OldImageBinNum = byte.Parse(picture.Text),
+                                    NewImageBinNum = byte.Parse(_chipHolder.GetChipHolderNumberText()!),
+                                    MapAddress = (MapPages * 0x100) + (ConstBinaryData.MAP_HEADERSIZE + (0x10 * row) + col),
+                                });
+                            }
+                            SetPanelFromMapFieldPosition(col, row, _chipHolder.GetSelectedChipTexture(), true);
+                        }
+                    }
+                    MainForm.Recollection(parameters);
+                }
             }
+            catch (ArgumentException ex)
+            {
+                MessageBox.Show("The map range is not correct. Please retry the operation.", "UNEXPECTED EXCEPTION INFO");
+                DefaultLogger.LogError(ex.ToString());
+            }
+        }
+
+        /// <summary>
+        ///  Indirectly invokes the <see cref="ReplaceOnMapRangePanel">ReplaceOnMapRangePanel</see> method.
+        /// </summary>
+        /// <param name="reset">True if you want to clear the selected range</param>
+        internal void CallReplaceOnMapRangePanel(bool reset)
+        {
+            // If the Enter key is pressed, it performs tile filling and clears the selection mode.
+            // If the Insert key is pressed, it only performs tile filling.
+            if (_ranger.selectionAnimationTimer.Enabled)
+            {
+                ReplaceOnMapRangePanel();
+                if (reset)
+                    RangeModeOff();
+            }
+        }
+
+        /// <summary>
+        ///  Remove all MapTable controls.
+        /// </summary>
+        internal void RemoveControlForAll()
+        {
+            _mapTable?.SuspendLayout();
+            for (int row = 0; row < _mapTable?.RowCount; row++)
+            {
+                for (int col = 0; col < _mapTable?.ColumnCount; col++)
+                {
+                    Control? control = _mapTable?.GetControlFromPosition(col, row);
+                    if (control is PictureBox || control is TextBox)
+                    {
+                        _mapTable?.Controls.Remove(control);
+                        control.Dispose();
+                    }
+                }
+            }
+            _mapTable?.ResumeLayout(true);
         }
     }
 }

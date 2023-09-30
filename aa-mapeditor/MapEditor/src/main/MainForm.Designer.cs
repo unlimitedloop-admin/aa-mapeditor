@@ -1,3 +1,5 @@
+using MapEditor.src.common;
+
 namespace MapEditor.src.main
 {
     partial class MainForm
@@ -170,7 +172,6 @@ namespace MapEditor.src.main
             mapFieldContextMenu = new ContextMenuStrip(components);
             マップデータを読み込みToolStripMenuItem = new ToolStripMenuItem();
             マップデータ消去ToolStripMenuItem = new ToolStripMenuItem();
-            mapFieldTable = new TableLayoutPanel();
             mapInfoPanel = new Panel();
             graphicChipPanel = new Panel();
             chipListContextMenu = new ContextMenuStrip(components);
@@ -178,6 +179,7 @@ namespace MapEditor.src.main
             グラフィックチップリスト消去ToolStripMenuItem = new ToolStripMenuItem();
             statusStrip = new StatusStrip();
             debugContextMenu = new ContextMenuStrip(components);
+            cursorSelectButton = new Button();
             mainMenuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)mainContainer).BeginInit();
             mainContainer.Panel1.SuspendLayout();
@@ -187,7 +189,6 @@ namespace MapEditor.src.main
             leftContainer.Panel1.SuspendLayout();
             leftContainer.Panel2.SuspendLayout();
             leftContainer.SuspendLayout();
-            mapStructPanel.SuspendLayout();
             mapFieldContextMenu.SuspendLayout();
             chipListContextMenu.SuspendLayout();
             SuspendLayout();
@@ -432,12 +433,14 @@ namespace MapEditor.src.main
             クリックで選択SToolStripMenuItem.Name = "クリックで選択SToolStripMenuItem";
             クリックで選択SToolStripMenuItem.Size = new Size(186, 22);
             クリックで選択SToolStripMenuItem.Text = "クリックで選択 (&S)";
+            クリックで選択SToolStripMenuItem.Click += クリックで選択SToolStripMenuItem_Click;
             // 
             // クリックでチップ配置PToolStripMenuItem
             // 
             クリックでチップ配置PToolStripMenuItem.Name = "クリックでチップ配置PToolStripMenuItem";
             クリックでチップ配置PToolStripMenuItem.Size = new Size(186, 22);
             クリックでチップ配置PToolStripMenuItem.Text = "クリックでチップ配置 (&P)";
+            クリックでチップ配置PToolStripMenuItem.Click += クリックでチップ配置PToolStripMenuItem_Click;
             // 
             // ぺージ移動MToolStripMenuItem
             // 
@@ -1220,12 +1223,13 @@ namespace MapEditor.src.main
             mapStructPanel.BackColor = SystemColors.ControlLight;
             mapStructPanel.BorderStyle = BorderStyle.Fixed3D;
             mapStructPanel.ContextMenuStrip = mapFieldContextMenu;
-            mapStructPanel.Controls.Add(mapFieldTable);
             mapStructPanel.Dock = DockStyle.Fill;
             mapStructPanel.Location = new Point(0, 0);
             mapStructPanel.Name = "mapStructPanel";
             mapStructPanel.Size = new Size(563, 504);
             mapStructPanel.TabIndex = 0;
+            mapStructPanel.ControlAdded += MapStructPanel_ControlAdded;
+            mapStructPanel.ControlRemoved += MapStructPanel_ControlRemoved;
             // 
             // mapFieldContextMenu
             // 
@@ -1246,47 +1250,6 @@ namespace MapEditor.src.main
             マップデータ消去ToolStripMenuItem.Size = new Size(190, 22);
             マップデータ消去ToolStripMenuItem.Text = "マップデータ消去";
             マップデータ消去ToolStripMenuItem.Click += バイナリデータを閉じるBToolStripMenuItem_Click;
-            // 
-            // mapFieldTable
-            // 
-            mapFieldTable.ColumnCount = 16;
-            mapFieldTable.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 32F));
-            mapFieldTable.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 32F));
-            mapFieldTable.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 32F));
-            mapFieldTable.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 32F));
-            mapFieldTable.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 32F));
-            mapFieldTable.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 32F));
-            mapFieldTable.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 32F));
-            mapFieldTable.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 32F));
-            mapFieldTable.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 32F));
-            mapFieldTable.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 32F));
-            mapFieldTable.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 32F));
-            mapFieldTable.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 32F));
-            mapFieldTable.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 32F));
-            mapFieldTable.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 32F));
-            mapFieldTable.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 32F));
-            mapFieldTable.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 32F));
-            mapFieldTable.Location = new Point(24, 10);
-            mapFieldTable.Margin = new Padding(0);
-            mapFieldTable.Name = "mapFieldTable";
-            mapFieldTable.RowCount = 15;
-            mapFieldTable.RowStyles.Add(new RowStyle(SizeType.Absolute, 32F));
-            mapFieldTable.RowStyles.Add(new RowStyle(SizeType.Absolute, 32F));
-            mapFieldTable.RowStyles.Add(new RowStyle(SizeType.Absolute, 32F));
-            mapFieldTable.RowStyles.Add(new RowStyle(SizeType.Absolute, 32F));
-            mapFieldTable.RowStyles.Add(new RowStyle(SizeType.Absolute, 32F));
-            mapFieldTable.RowStyles.Add(new RowStyle(SizeType.Absolute, 32F));
-            mapFieldTable.RowStyles.Add(new RowStyle(SizeType.Absolute, 32F));
-            mapFieldTable.RowStyles.Add(new RowStyle(SizeType.Absolute, 32F));
-            mapFieldTable.RowStyles.Add(new RowStyle(SizeType.Absolute, 32F));
-            mapFieldTable.RowStyles.Add(new RowStyle(SizeType.Absolute, 32F));
-            mapFieldTable.RowStyles.Add(new RowStyle(SizeType.Absolute, 32F));
-            mapFieldTable.RowStyles.Add(new RowStyle(SizeType.Absolute, 32F));
-            mapFieldTable.RowStyles.Add(new RowStyle(SizeType.Absolute, 32F));
-            mapFieldTable.RowStyles.Add(new RowStyle(SizeType.Absolute, 32F));
-            mapFieldTable.RowStyles.Add(new RowStyle(SizeType.Absolute, 32F));
-            mapFieldTable.Size = new Size(512, 480);
-            mapFieldTable.TabIndex = 0;
             // 
             // mapInfoPanel
             // 
@@ -1342,6 +1305,21 @@ namespace MapEditor.src.main
             debugContextMenu.Name = "debugContextMenu";
             debugContextMenu.Size = new Size(61, 4);
             // 
+            // cursorSelectButton
+            // 
+            cursorSelectButton.BackColor = SystemColors.ButtonHighlight;
+            cursorSelectButton.BackgroundImage = Properties.Resources.icons8_セルを選択_30;
+            cursorSelectButton.FlatStyle = FlatStyle.Flat;
+            cursorSelectButton.Font = new Font("Yu Gothic UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            cursorSelectButton.ForeColor = SystemColors.ButtonFace;
+            cursorSelectButton.Location = new Point(15, 95);
+            cursorSelectButton.Name = "cursorSelectButton";
+            cursorSelectButton.Size = new Size(32, 32);
+            cursorSelectButton.TabIndex = 29;
+            cursorSelectButton.UseVisualStyleBackColor = false;
+            cursorSelectButton.Click += CursorSelectButton_Click;
+            cursorSelectButton.KeyDown += CursorSelectButton_KeyDown;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(6F, 12F);
@@ -1349,6 +1327,7 @@ namespace MapEditor.src.main
             BackColor = SystemColors.Control;
             ClientSize = new Size(1284, 841);
             ContextMenuStrip = debugContextMenu;
+            Controls.Add(cursorSelectButton);
             Controls.Add(statusStrip);
             Controls.Add(mainContainer);
             Controls.Add(selectedChipPanel);
@@ -1385,8 +1364,9 @@ namespace MapEditor.src.main
             MainMenuStrip = mainMenuStrip;
             Name = "MainForm";
             StartPosition = FormStartPosition.Manual;
-            Text = "MainForm";
+            Text = "MapEditor demo v1";
             Activated += MainForm_Activated;
+            Load += MainForm_Load;
             Click += MainForm_Click;
             KeyDown += MainForm_KeyDown;
             mainMenuStrip.ResumeLayout(false);
@@ -1399,7 +1379,6 @@ namespace MapEditor.src.main
             leftContainer.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)leftContainer).EndInit();
             leftContainer.ResumeLayout(false);
-            mapStructPanel.ResumeLayout(false);
             mapFieldContextMenu.ResumeLayout(false);
             chipListContextMenu.ResumeLayout(false);
             ResumeLayout(false);
@@ -1541,7 +1520,6 @@ namespace MapEditor.src.main
         private SplitContainer mainContainer;
         private SplitContainer leftContainer;
         private Panel mapStructPanel;
-        private TableLayoutPanel mapFieldTable;
         private Panel mapInfoPanel;
         private Panel graphicChipPanel;
         private StatusStrip statusStrip;
@@ -1556,5 +1534,6 @@ namespace MapEditor.src.main
         private ContextMenuStrip chipListContextMenu;
         private ToolStripMenuItem グラフィックチップデータを読み込みToolStripMenuItem;
         private ToolStripMenuItem グラフィックチップリスト消去ToolStripMenuItem;
+        private Button cursorSelectButton;
     }
 }

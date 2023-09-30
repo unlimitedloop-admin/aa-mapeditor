@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/09/17
+//      Last update     : 2023/09/30
 //
-//      File version    : 6
+//      File version    : 7
 //
 //
 /**************************************************************/
@@ -53,6 +53,7 @@ namespace MapEditor.src.app.models
         ///  This is the constructor for ChipLists.
         /// </summary>
         /// <param name="name">Graphic chip file name label</param>
+        /// <param name="chipHolder">A reference instance of the ChipHolder class.</param>
         internal ChipLists(string name, ChipHolder chipHolder)
         {
             _graphicListFile = new(name);
@@ -78,7 +79,7 @@ namespace MapEditor.src.app.models
                     objects.Controls.Add(table);
                     objects.BackColor = SystemColors.ControlLight;
                     objects.AutoScroll = true;
-                    _graphicListFile.GraphicChipClick += ChipLists_GraphicChipClick;
+                    _graphicListFile.GraphicChipClick += ChipLists_Click;
                     return true;
                 }
             }
@@ -86,14 +87,33 @@ namespace MapEditor.src.app.models
         }
 
         /// <summary>
-        ///  Discard the graphics chip list.
+        ///  Remove all ChipLists controls.
         /// </summary>
         /// <param name="objects">A panel object to drop</param>
-        internal void Drop(ref Panel objects)
+        internal void RemoveControlForAll(ref Panel objects)
         {
             if (null != _graphicListFile)
             {
-                objects.Controls.Clear();
+                foreach (Control control in objects.Controls)
+                {
+                    if (control is TableLayoutPanel table)
+                    {
+                        table.SuspendLayout();
+                        for (int row = 0; row < table.RowCount; row++)
+                        {
+                            for (int col = 0; col < table.ColumnCount; col++)
+                            {
+                                Control? childcontrol = table.GetControlFromPosition(col, row);
+                                if (childcontrol is Button)
+                                {
+                                    table.Controls.Remove(childcontrol);
+                                    childcontrol.Dispose();
+                                }
+                            }
+                        }
+                        table.ResumeLayout(true);
+                    }
+                }
                 _graphicListFile?.FileClose(_graphicListFile.FilePath);
             }
         }
@@ -118,13 +138,7 @@ namespace MapEditor.src.app.models
         }
 
 
-        /// <summary>
-        ///  Physical button click event handler for graphics chip list.
-        /// </summary>
-        /// <param name="sender">Image data set in <see cref="PictureBox"/></param>
-        /// <param name="e">Unused event argument</param>
-        /// <param name="tooltip_text">The text on the tooltip</param>
-        private void ChipLists_GraphicChipClick(Button sender, EventArgs e, string tooltip_text)
+        private void ChipLists_Click(Button sender, EventArgs e, string tooltip_text)
         {
             Button button = sender!;
             List<MementoParameter> parameters = new()
@@ -143,7 +157,7 @@ namespace MapEditor.src.app.models
 
 
     /// <summary>
-    ///  A dedicated event handler for retrieving information about the graphic chip.
+    /// A dedicated event handler for retrieving information about the graphic chip.
     /// </summary>
     /// <param name="sender">Button object</param>
     /// <param name="e">Event args</param>

@@ -153,9 +153,29 @@ namespace MapEditor.Properties {
         /// <summary>
         ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
         /// </summary>
+        internal static System.Drawing.Bitmap icons8_カーソル_30 {
+            get {
+                object obj = ResourceManager.GetObject("icons8_カーソル_30", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
+        /// </summary>
         internal static System.Drawing.Bitmap icons8_セーブ_30 {
             get {
                 object obj = ResourceManager.GetObject("icons8_セーブ_30", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
+        /// </summary>
+        internal static System.Drawing.Bitmap icons8_セルを選択_30 {
+            get {
+                object obj = ResourceManager.GetObject("icons8_セルを選択_30", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

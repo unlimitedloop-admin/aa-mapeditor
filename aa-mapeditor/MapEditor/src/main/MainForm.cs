@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/09/17
+//      Last update     : 2023/09/30
 //
-//      File version    : 12
+//      File version    : 13
 //
 //
 /**************************************************************/
@@ -57,12 +57,12 @@ namespace MapEditor.src.main
 
         private void バイナリデータを開くBToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            OpenBinaryMapFile(ref mapFieldTable);
+            OpenBinaryMapFile(ref mapStructPanel);
         }
 
         private void バイナリデータを閉じるBToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            CloseBinaryMapFile(ref mapFieldTable);
+            CloseBinaryMapFile(ref mapStructPanel);
         }
 
         private void グラフィックチップリストを開くGToolStripMenuItem_Click(object sender, EventArgs e)
@@ -95,10 +95,92 @@ namespace MapEditor.src.main
             Redo();
         }
 
+        private void クリックで選択SToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (null != cursorSelectButton.Tag && 0 == (int)cursorSelectButton.Tag)
+            {
+                _mainContainer.ChangeSelectModeForMapStruct(true);
+                cursorSelectButton.BackgroundImage = Properties.Resources.icons8_カーソル_30;
+                cursorSelectButton.Tag = 1;
+                ActiveControl = null;
+            }
+        }
+
+        private void クリックでチップ配置PToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (null != cursorSelectButton.Tag && 1 == (int)cursorSelectButton.Tag)
+            {
+                _mainContainer.ChangeSelectModeForMapStruct(false);
+                cursorSelectButton.BackgroundImage = Properties.Resources.icons8_セルを選択_30;
+                cursorSelectButton.Tag = 0;
+            }
+        }
+
         #endregion  // EDIT_MENU_EVENT
 
 
+        #region UI_CONTROL_EVENT_HANDLER
+
+        private void CursorSelectButton_Click(object sender, EventArgs e)
+        {
+            if (null != cursorSelectButton.Tag && 0 == (int)cursorSelectButton.Tag)
+            {
+                _mainContainer.ChangeSelectModeForMapStruct(true);
+                cursorSelectButton.BackgroundImage = Properties.Resources.icons8_カーソル_30;
+                cursorSelectButton.Tag = 1;
+                ActiveControl = null;
+            }
+            else if (null != cursorSelectButton.Tag && 1 == (int)cursorSelectButton.Tag)
+            {
+                _mainContainer.ChangeSelectModeForMapStruct(false);
+                cursorSelectButton.BackgroundImage = Properties.Resources.icons8_セルを選択_30;
+                cursorSelectButton.Tag = 0;
+            }
+        }
+
+        private void CursorSelectButton_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.SuppressKeyPress = true;
+            }
+        }
+
+        #endregion  // UI_CONTROL_EVENT_HANDLER
+
+
+        #region CONTROL_EVENT_HANDLER
+
+        private void MapStructPanel_ControlAdded(object sender, ControlEventArgs e)
+        {
+            if (_mainContainer.IsChipLists())
+            {
+                cursorSelectButton.Visible = true;
+            }
+        }
+
+        private void MapStructPanel_ControlRemoved(object sender, ControlEventArgs e)
+        {
+            cursorSelectButton.Visible = false;
+        }
+
+        private void GraphicChipPanel_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.SuppressKeyPress = true;
+            }
+        }
+
+        #endregion  // CONTROL_EVENT_HANDLER
+
+
         #region COMMON_EVENT_HANDLER
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            cursorSelectButton.Visible = false;
+        }
 
         private void MainForm_Activated(object sender, EventArgs e)
         {
@@ -116,6 +198,21 @@ namespace MapEditor.src.main
             {
                 e.SuppressKeyPress = true;
                 ActiveControl = null;
+                return;
+            }
+
+            if (e.KeyData == Keys.Enter)
+            {
+                _mainContainer?.MapStruct_ReplaceRangeCell(true);
+                _mainContainer?.ChangeSelectModeForMapStruct(false);
+                cursorSelectButton.BackgroundImage = Properties.Resources.icons8_セルを選択_30;
+                cursorSelectButton.Tag = 0;
+                return;
+            }
+
+            if (e.KeyData == Keys.Insert)
+            {
+                _mainContainer?.MapStruct_ReplaceRangeCell(false);
                 return;
             }
         }

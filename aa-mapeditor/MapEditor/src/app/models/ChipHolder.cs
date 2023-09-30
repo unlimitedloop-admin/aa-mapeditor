@@ -1,7 +1,7 @@
 /**************************************************************/
 //
 //
-//      Copyright (c) 20XX UNLIMITED LOOP ROOT-ONE
+//      Copyright (c) 2023 UNLIMITED LOOP ROOT-ONE
 //
 //
 //      This software(and source code) is completely Unlicense.
@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/09/17
+//      Last update     : 2023/09/30
 //
-//      File version    : 1
+//      File version    : 2
 //
 //
 /**************************************************************/
@@ -69,18 +69,27 @@ namespace MapEditor.src.app.models
         }
 
         /// <summary>
+        ///  Gets the <see cref="PictureBox"/> body object.
+        /// </summary>
+        /// <returns><see cref="PictureBox"/> object.</returns>
+        internal PictureBox GetSelectedChipTexture()
+        {
+            return ChipHolderInstance;
+        }
+
+        /// <summary>
         ///  Get the text of the selected ChipTexture object.
         /// </summary>
-        /// <returns>String text.</returns>
+        /// <returns><see cref="string"/> text.</returns>
         internal string? GetChipHolderNumberText()
         {
             return ChipHolderInstance.Text;
         }
 
         /// <summary>
-        ///  Get the image of the selected ChipTexture object.
+        ///  Get the <see cref="Image"/> of the selected ChipTexture object.
         /// </summary>
-        /// <returns>Image data.</returns>
+        /// <returns><see cref="Image"/> data.</returns>
         internal Image? GetChipHolderImage()
         {
             return ChipHolderInstance.Image;
