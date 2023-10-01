@@ -25,7 +25,7 @@
 /**************************************************************/
 
 /* using namespace */
-using MapEditor.src.common;
+using static MapEditor.src.common.ConstBinaryData;
 
 
 
@@ -97,8 +97,8 @@ namespace MapEditor.src.main
                                 Image = _mainContainer?.GetChipListImage(change.OldImageBinNum),
                             };
                             // Calculates and identifies the TableLayoutPanel cell position from a binary address.
-                            int row = ((int)(change.MapAddress % 0x100) - ConstBinaryData.MAP_HEADERSIZE) / 0x10;
-                            int col = ((int)(change.MapAddress % 0x100) - ConstBinaryData.MAP_HEADERSIZE) % 0x10;
+                            int row = ((int)(change.MapAddress % MAP_PAGESIZE) - MAP_HEADERSIZE) / 0x10;
+                            int col = ((int)(change.MapAddress % MAP_PAGESIZE) - MAP_HEADERSIZE) % 0x10;
                             bool transparents = 1 == (int)cursorSelectButton.Tag;
                             _mainContainer?.SetPanelFromMapFieldPosition(col, row, picturebox, transparents);
                         }
@@ -133,8 +133,8 @@ namespace MapEditor.src.main
                                 Image = _mainContainer?.GetChipListImage(change.NewImageBinNum),
                             };
                             // Calculates and identifies the TableLayoutPanel cell position from a binary address.
-                            int row = ((int)(change.MapAddress % 0x100) - ConstBinaryData.MAP_HEADERSIZE) / 0x10;
-                            int col = ((int)(change.MapAddress % 0x100) - ConstBinaryData.MAP_HEADERSIZE) % 0x10;
+                            int row = ((int)(change.MapAddress % MAP_PAGESIZE) - MAP_HEADERSIZE) / 0x10;
+                            int col = ((int)(change.MapAddress % MAP_PAGESIZE) - MAP_HEADERSIZE) % 0x10;
                             bool transparents = 1 == (int)cursorSelectButton.Tag;
                             _mainContainer?.SetPanelFromMapFieldPosition(col, row, picturebox, transparents);
                         }

@@ -17,16 +17,16 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/09/30
+//      Last update     : 2023/10/01
 //
-//      File version    : 1
+//      File version    : 2
 //
 //
 /**************************************************************/
 
 /* using namespace */
-using MapEditor.src.common;
 using MapEditor.src.main;
+using static MapEditor.src.common.ConstBinaryData;
 
 
 
@@ -111,7 +111,7 @@ namespace MapEditor.src.app.models
                         {
                             OldImageBinNum = byte.Parse(picture.Text),
                             NewImageBinNum = byte.Parse(_chipHolder.GetChipHolderNumberText()!),
-                            MapAddress = (MapPages * ConstBinaryData.BINARYMAP_PAGESIZE) + ConstBinaryData.MAP_HEADERSIZE + (0x10 * position.Row) + position.Column,
+                            MapAddress = (MapPages * MAP_PAGESIZE) + MAP_HEADERSIZE + (0x10 * position.Row) + position.Column,
                         }
                     };
                     MainForm.Recollection(parameters);

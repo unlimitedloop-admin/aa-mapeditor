@@ -17,15 +17,16 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/09/30
+//      Last update     : 2023/10/01
 //
-//      File version    : 13
+//      File version    : 14
 //
 //
 /**************************************************************/
 
 /* using namespace */
 using MapEditor.src.app.applet;
+using static MapEditor.src.common.ConstMapFieldTable;
 
 
 
@@ -97,23 +98,12 @@ namespace MapEditor.src.main
 
         private void クリックで選択SToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (null != cursorSelectButton.Tag && 0 == (int)cursorSelectButton.Tag)
-            {
-                _mainContainer.ChangeSelectModeForMapStruct(true);
-                cursorSelectButton.BackgroundImage = Properties.Resources.icons8_カーソル_30;
-                cursorSelectButton.Tag = 1;
-                ActiveControl = null;
-            }
+            Change_CursorSelectButtonDesign(MAPFIELD_MODE_RANGE);
         }
 
         private void クリックでチップ配置PToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (null != cursorSelectButton.Tag && 1 == (int)cursorSelectButton.Tag)
-            {
-                _mainContainer.ChangeSelectModeForMapStruct(false);
-                cursorSelectButton.BackgroundImage = Properties.Resources.icons8_セルを選択_30;
-                cursorSelectButton.Tag = 0;
-            }
+            Change_CursorSelectButtonDesign(MAPFIELD_MODE_CLICK);
         }
 
         #endregion  // EDIT_MENU_EVENT
@@ -123,19 +113,9 @@ namespace MapEditor.src.main
 
         private void CursorSelectButton_Click(object sender, EventArgs e)
         {
-            if (null != cursorSelectButton.Tag && 0 == (int)cursorSelectButton.Tag)
-            {
-                _mainContainer.ChangeSelectModeForMapStruct(true);
-                cursorSelectButton.BackgroundImage = Properties.Resources.icons8_カーソル_30;
-                cursorSelectButton.Tag = 1;
-                ActiveControl = null;
-            }
-            else if (null != cursorSelectButton.Tag && 1 == (int)cursorSelectButton.Tag)
-            {
-                _mainContainer.ChangeSelectModeForMapStruct(false);
-                cursorSelectButton.BackgroundImage = Properties.Resources.icons8_セルを選択_30;
-                cursorSelectButton.Tag = 0;
-            }
+            // Take the Tag property of the cursor selection mode button object as an argument.
+            int changetag = MAPFIELD_MODE_CLICK == (int)((Button)sender).Tag! ? MAPFIELD_MODE_RANGE : MAPFIELD_MODE_CLICK;
+            Change_CursorSelectButtonDesign(changetag);
         }
 
         private void CursorSelectButton_KeyDown(object sender, KeyEventArgs e)
@@ -204,9 +184,7 @@ namespace MapEditor.src.main
             if (e.KeyData == Keys.Enter)
             {
                 _mainContainer?.MapStruct_ReplaceRangeCell(true);
-                _mainContainer?.ChangeSelectModeForMapStruct(false);
-                cursorSelectButton.BackgroundImage = Properties.Resources.icons8_セルを選択_30;
-                cursorSelectButton.Tag = 0;
+                Change_CursorSelectButtonDesign(MAPFIELD_MODE_CLICK);
                 return;
             }
 

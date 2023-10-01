@@ -17,18 +17,18 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/09/30
+//      Last update     : 2023/10/01
 //
-//      File version    : 6
+//      File version    : 7
 //
 //
 /**************************************************************/
 
 /* using namespace */
 using MapEditor.src.app.IO;
-using MapEditor.src.common;
 using MapEditor.src.logger;
 using MapEditor.src.main;
+using static MapEditor.src.common.ConstBinaryData;
 using static MapEditor.src.common.ConstMapFieldTable;
 
 
@@ -140,7 +140,7 @@ namespace MapEditor.src.app.models
                 int cellheight = _mapTable.Height / row_number;
                 int cellwidth = _mapTable.Width / col_number;
                 Size boxsize = new(cellwidth, cellheight);
-                int index = 0x00, chipindex = ConstBinaryData.MAP_HEADERSIZE;
+                int index = 0x00, chipindex = MAP_HEADERSIZE;
 
                 // An iterative process that sequentially accesses each split panel in a TableLayoutPanel.
                 for (int i = 0; i < row_number; i++)
@@ -179,7 +179,7 @@ namespace MapEditor.src.app.models
                 int cellheight = _mapTable.Height / row_number;
                 int cellwidth = _mapTable.Width / col_number;
                 Size boxsize = new(cellwidth, cellheight);
-                int index = 0x00, chipindex = ConstBinaryData.MAP_HEADERSIZE;
+                int index = 0x00, chipindex = MAP_HEADERSIZE;
 
                 // An iterative process that sequentially accesses each split panel in a TableLayoutPanel.
                 for (int i = 0; i < row_number; i++)
@@ -304,7 +304,7 @@ namespace MapEditor.src.app.models
                                 {
                                     OldImageBinNum = byte.Parse(picture.Text),
                                     NewImageBinNum = byte.Parse(_chipHolder.GetChipHolderNumberText()!),
-                                    MapAddress = (MapPages * 0x100) + (ConstBinaryData.MAP_HEADERSIZE + (0x10 * row) + col),
+                                    MapAddress = (MapPages * MAP_PAGESIZE) + MAP_HEADERSIZE + (0x10 * row) + col,
                                 });
                             }
                             SetPanelFromMapFieldPosition(col, row, _chipHolder.GetSelectedChipTexture(), true);

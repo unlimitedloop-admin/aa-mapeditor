@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/09/30
+//      Last update     : 2023/10/01
 //
-//      File version    : 9
+//      File version    : 10
 //
 //
 /**************************************************************/
@@ -56,6 +56,7 @@ namespace MapEditor.src.main
         internal void CloseBinaryMapFile(ref Panel panel)
         {
             _mainContainer?.DestroyMapFile(ref panel);
+            Change_CursorSelectButtonDesign(0);
         }
 
         /// <summary>

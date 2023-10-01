@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/09/30
+//      Last update     : 2023/10/01
 //
-//      File version    : 1
+//      File version    : 2
 //
 //
 /**************************************************************/
@@ -40,5 +40,8 @@ namespace MapEditor.src.common
         public const int MAPLOCATIONS_X = 23;
         public const int MAPLOCATIONS_Y = 11;
         public const float MAPCELLSIZES = 32F;
+
+        public const int MAPFIELD_MODE_CLICK = 0;
+        public const int MAPFIELD_MODE_RANGE = 1;
     }
 }
