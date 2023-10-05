@@ -26,6 +26,7 @@
 
 /* using namespace */
 using static MapEditor.src.common.ConstBinaryData;
+using static MapEditor.src.common.ConstMapFieldTable;
 
 
 
@@ -89,7 +90,7 @@ namespace MapEditor.src.main
                     }
                     else
                     {
-                        if (null != change.MapAddress && null != cursorSelectButton.Tag && (_mainContainer?.GetMapPages()) == (change.MapAddress / 0x100))
+                        if (null != change.MapAddress && null != cursorSelectButton.Tag && (_mainContainer?.GetMapPages()) == (change.MapAddress / BINARYMAP_PAGESIZE))
                         {
                             PictureBox picturebox = new()
                             {
@@ -99,7 +100,7 @@ namespace MapEditor.src.main
                             // Calculates and identifies the TableLayoutPanel cell position from a binary address.
                             int row = ((int)(change.MapAddress % MAP_PAGESIZE) - MAP_HEADERSIZE) / 0x10;
                             int col = ((int)(change.MapAddress % MAP_PAGESIZE) - MAP_HEADERSIZE) % 0x10;
-                            bool transparents = 1 == (int)cursorSelectButton.Tag;
+                            bool transparents = MAPFIELD_MODE_RANGE == (int)cursorSelectButton.Tag;
                             _mainContainer?.SetPanelFromMapFieldPosition(col, row, picturebox, transparents);
                         }
                     }
@@ -125,7 +126,7 @@ namespace MapEditor.src.main
                     }
                     else
                     {
-                        if (null != change.MapAddress && null != cursorSelectButton.Tag && (_mainContainer?.GetMapPages()) == (change.MapAddress / 0x100))
+                        if (null != change.MapAddress && null != cursorSelectButton.Tag && (_mainContainer?.GetMapPages()) == (change.MapAddress / BINARYMAP_PAGESIZE))
                         {
                             PictureBox picturebox = new()
                             {
@@ -135,7 +136,7 @@ namespace MapEditor.src.main
                             // Calculates and identifies the TableLayoutPanel cell position from a binary address.
                             int row = ((int)(change.MapAddress % MAP_PAGESIZE) - MAP_HEADERSIZE) / 0x10;
                             int col = ((int)(change.MapAddress % MAP_PAGESIZE) - MAP_HEADERSIZE) % 0x10;
-                            bool transparents = 1 == (int)cursorSelectButton.Tag;
+                            bool transparents = MAPFIELD_MODE_RANGE == (int)cursorSelectButton.Tag;
                             _mainContainer?.SetPanelFromMapFieldPosition(col, row, picturebox, transparents);
                         }
                     }

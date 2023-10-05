@@ -24,6 +24,11 @@
 //
 /**************************************************************/
 
+/* using namespace */
+using static MapEditor.src.common.ConstMapFieldTable;
+
+
+
 /* sources */
 namespace MapEditor.src.main
 {
@@ -41,18 +46,18 @@ namespace MapEditor.src.main
             // If you are already in the same mode, no operation is necessary.
             if (null != cursorSelectButton.Tag && changetag != (int)cursorSelectButton.Tag)
             {
-                if (0 == (int)cursorSelectButton.Tag)
+                if (MAPFIELD_MODE_CLICK == (int)cursorSelectButton.Tag)
                 {
                     _mainContainer.ChangeSelectModeForMapStruct(true);
                     cursorSelectButton.BackgroundImage = Properties.Resources.icons8_カーソル_30;
-                    cursorSelectButton.Tag = 1;
+                    cursorSelectButton.Tag = MAPFIELD_MODE_RANGE;
                     ActiveControl = null;
                 }
-                else if (1 == (int)cursorSelectButton.Tag)
+                else if (MAPFIELD_MODE_RANGE == (int)cursorSelectButton.Tag)
                 {
                     _mainContainer.ChangeSelectModeForMapStruct(false);
                     cursorSelectButton.BackgroundImage = Properties.Resources.icons8_セルを選択_30;
-                    cursorSelectButton.Tag = 0;
+                    cursorSelectButton.Tag = MAPFIELD_MODE_CLICK;
                 }
             }
         }

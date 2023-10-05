@@ -43,5 +43,8 @@ namespace MapEditor.src.common
 
         public const int MAPFIELD_MODE_CLICK = 0;
         public const int MAPFIELD_MODE_RANGE = 1;
+
+        public const byte MAPFIELD_TRANSPARENT = 128;
+        public const byte MAPFIELD_MAX_VISIBLE = 255;
     }
 }
