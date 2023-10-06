@@ -1,0 +1,195 @@
+namespace ClientForm
+{
+    partial class MainForm
+    {
+        /// <summary>
+        ///  Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
+
+        /// <summary>
+        ///  Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        #region Windows Form Designer generated code
+
+        /// <summary>
+        ///  Required method for Designer support - do not modify
+        ///  the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
+            mainContainer = new SplitContainer();
+            mapFieldContainer = new SplitContainer();
+            mapFieldPanel = new Panel();
+            mapFieldInfoPanel = new Panel();
+            graphicChipPanel = new Panel();
+            mainMenuStrip = new MenuStrip();
+            ファイルFToolStripMenuItem = new ToolStripMenuItem();
+            アプリケーションの終了XToolStripMenuItem = new ToolStripMenuItem();
+            choiceChipPanel = new Panel();
+            statusStrip = new StatusStrip();
+            ((System.ComponentModel.ISupportInitialize)mainContainer).BeginInit();
+            mainContainer.Panel1.SuspendLayout();
+            mainContainer.Panel2.SuspendLayout();
+            mainContainer.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)mapFieldContainer).BeginInit();
+            mapFieldContainer.Panel1.SuspendLayout();
+            mapFieldContainer.Panel2.SuspendLayout();
+            mapFieldContainer.SuspendLayout();
+            mainMenuStrip.SuspendLayout();
+            SuspendLayout();
+            // 
+            // mainContainer
+            // 
+            mainContainer.Location = new Point(12, 148);
+            mainContainer.Name = "mainContainer";
+            // 
+            // mainContainer.Panel1
+            // 
+            mainContainer.Panel1.Controls.Add(mapFieldContainer);
+            // 
+            // mainContainer.Panel2
+            // 
+            mainContainer.Panel2.Controls.Add(graphicChipPanel);
+            mainContainer.Size = new Size(1210, 663);
+            mainContainer.SplitterDistance = 605;
+            mainContainer.TabIndex = 0;
+            // 
+            // mapFieldContainer
+            // 
+            mapFieldContainer.Dock = DockStyle.Fill;
+            mapFieldContainer.Location = new Point(0, 0);
+            mapFieldContainer.Name = "mapFieldContainer";
+            mapFieldContainer.Orientation = Orientation.Horizontal;
+            // 
+            // mapFieldContainer.Panel1
+            // 
+            mapFieldContainer.Panel1.Controls.Add(mapFieldPanel);
+            // 
+            // mapFieldContainer.Panel2
+            // 
+            mapFieldContainer.Panel2.Controls.Add(mapFieldInfoPanel);
+            mapFieldContainer.Size = new Size(605, 663);
+            mapFieldContainer.SplitterDistance = 524;
+            mapFieldContainer.TabIndex = 0;
+            // 
+            // mapFieldPanel
+            // 
+            mapFieldPanel.BackColor = SystemColors.AppWorkspace;
+            mapFieldPanel.BorderStyle = BorderStyle.Fixed3D;
+            mapFieldPanel.Dock = DockStyle.Fill;
+            mapFieldPanel.Location = new Point(0, 0);
+            mapFieldPanel.Name = "mapFieldPanel";
+            mapFieldPanel.Size = new Size(605, 524);
+            mapFieldPanel.TabIndex = 0;
+            // 
+            // mapFieldInfoPanel
+            // 
+            mapFieldInfoPanel.BackColor = SystemColors.ButtonFace;
+            mapFieldInfoPanel.BorderStyle = BorderStyle.Fixed3D;
+            mapFieldInfoPanel.Dock = DockStyle.Fill;
+            mapFieldInfoPanel.Location = new Point(0, 0);
+            mapFieldInfoPanel.Name = "mapFieldInfoPanel";
+            mapFieldInfoPanel.Size = new Size(605, 135);
+            mapFieldInfoPanel.TabIndex = 0;
+            // 
+            // graphicChipPanel
+            // 
+            graphicChipPanel.BackColor = SystemColors.AppWorkspace;
+            graphicChipPanel.BorderStyle = BorderStyle.Fixed3D;
+            graphicChipPanel.Dock = DockStyle.Fill;
+            graphicChipPanel.Location = new Point(0, 0);
+            graphicChipPanel.Name = "graphicChipPanel";
+            graphicChipPanel.Size = new Size(601, 663);
+            graphicChipPanel.TabIndex = 0;
+            // 
+            // mainMenuStrip
+            // 
+            mainMenuStrip.Items.AddRange(new ToolStripItem[] { ファイルFToolStripMenuItem });
+            mainMenuStrip.Location = new Point(0, 0);
+            mainMenuStrip.Name = "mainMenuStrip";
+            mainMenuStrip.Size = new Size(1234, 24);
+            mainMenuStrip.TabIndex = 1;
+            mainMenuStrip.Text = "menuStrip1";
+            // 
+            // ファイルFToolStripMenuItem
+            // 
+            ファイルFToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { アプリケーションの終了XToolStripMenuItem });
+            ファイルFToolStripMenuItem.Name = "ファイルFToolStripMenuItem";
+            ファイルFToolStripMenuItem.Size = new Size(70, 20);
+            ファイルFToolStripMenuItem.Text = "ファイル (&F)";
+            // 
+            // アプリケーションの終了XToolStripMenuItem
+            // 
+            アプリケーションの終了XToolStripMenuItem.Name = "アプリケーションの終了XToolStripMenuItem";
+            アプリケーションの終了XToolStripMenuItem.Size = new Size(195, 22);
+            アプリケーションの終了XToolStripMenuItem.Text = "アプリケーションの終了 (&X)";
+            アプリケーションの終了XToolStripMenuItem.Click += アプリケーションの終了XToolStripMenuItem_Click;
+            // 
+            // choiceChipPanel
+            // 
+            choiceChipPanel.Location = new Point(1180, 100);
+            choiceChipPanel.Name = "choiceChipPanel";
+            choiceChipPanel.Size = new Size(42, 42);
+            choiceChipPanel.TabIndex = 2;
+            // 
+            // statusStrip
+            // 
+            statusStrip.Location = new Point(0, 819);
+            statusStrip.Name = "statusStrip";
+            statusStrip.Size = new Size(1234, 22);
+            statusStrip.TabIndex = 3;
+            statusStrip.Text = "statusStrip1";
+            // 
+            // MainForm
+            // 
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(1234, 841);
+            Controls.Add(statusStrip);
+            Controls.Add(choiceChipPanel);
+            Controls.Add(mainContainer);
+            Controls.Add(mainMenuStrip);
+            Icon = (Icon)resources.GetObject("$this.Icon");
+            MainMenuStrip = mainMenuStrip;
+            Name = "MainForm";
+            Text = "Authentic Action Map Editor (back-end-developer edition)";
+            mainContainer.Panel1.ResumeLayout(false);
+            mainContainer.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)mainContainer).EndInit();
+            mainContainer.ResumeLayout(false);
+            mapFieldContainer.Panel1.ResumeLayout(false);
+            mapFieldContainer.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)mapFieldContainer).EndInit();
+            mapFieldContainer.ResumeLayout(false);
+            mainMenuStrip.ResumeLayout(false);
+            mainMenuStrip.PerformLayout();
+            ResumeLayout(false);
+            PerformLayout();
+        }
+
+        #endregion
+
+        private SplitContainer mainContainer;
+        private SplitContainer mapFieldContainer;
+        private Panel mapFieldPanel;
+        private Panel mapFieldInfoPanel;
+        private Panel graphicChipPanel;
+        private MenuStrip mainMenuStrip;
+        private ToolStripMenuItem ファイルFToolStripMenuItem;
+        private ToolStripMenuItem アプリケーションの終了XToolStripMenuItem;
+        private Panel choiceChipPanel;
+        private StatusStrip statusStrip;
+    }
+}

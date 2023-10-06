@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.6.33801.468
+VisualStudioVersion = 17.7.34031.279
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapEditor", "MapEditor\MapEditor.csproj", "{84667808-29C6-41EE-A3D6-2C15446DD338}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapEditor", "MapEditor\MapEditor.csproj", "{F3044A22-B89E-4334-92C6-29B20B2DCAA4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{84667808-29C6-41EE-A3D6-2C15446DD338}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{84667808-29C6-41EE-A3D6-2C15446DD338}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{84667808-29C6-41EE-A3D6-2C15446DD338}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{84667808-29C6-41EE-A3D6-2C15446DD338}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F3044A22-B89E-4334-92C6-29B20B2DCAA4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3044A22-B89E-4334-92C6-29B20B2DCAA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F3044A22-B89E-4334-92C6-29B20B2DCAA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3044A22-B89E-4334-92C6-29B20B2DCAA4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {9A424F07-F456-412C-AAF5-DED88853F968}
+		SolutionGuid = {9D9E6E25-DFB9-4AB9-A46E-4B77BC1BCBD9}
 	EndGlobalSection
 EndGlobal
