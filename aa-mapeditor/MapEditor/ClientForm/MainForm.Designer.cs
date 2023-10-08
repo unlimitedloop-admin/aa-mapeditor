@@ -31,7 +31,7 @@ namespace ClientForm
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             mainContainer = new SplitContainer();
             mapFieldContainer = new SplitContainer();
-            mapFieldPanel = new Panel();
+            mapFieldPanel = new src.CustomControls.Map.TilingPanel();
             mapFieldInfoPanel = new Panel();
             graphicChipPanel = new Panel();
             mainMenuStrip = new MenuStrip();
@@ -62,8 +62,8 @@ namespace ClientForm
             // mainContainer.Panel2
             // 
             mainContainer.Panel2.Controls.Add(graphicChipPanel);
-            mainContainer.Size = new Size(1210, 663);
-            mainContainer.SplitterDistance = 605;
+            mainContainer.Size = new Size(1150, 605);
+            mainContainer.SplitterDistance = 517;
             mainContainer.TabIndex = 0;
             // 
             // mapFieldContainer
@@ -80,8 +80,8 @@ namespace ClientForm
             // mapFieldContainer.Panel2
             // 
             mapFieldContainer.Panel2.Controls.Add(mapFieldInfoPanel);
-            mapFieldContainer.Size = new Size(605, 663);
-            mapFieldContainer.SplitterDistance = 524;
+            mapFieldContainer.Size = new Size(517, 605);
+            mapFieldContainer.SplitterDistance = 485;
             mapFieldContainer.TabIndex = 0;
             // 
             // mapFieldPanel
@@ -89,9 +89,10 @@ namespace ClientForm
             mapFieldPanel.BackColor = SystemColors.AppWorkspace;
             mapFieldPanel.BorderStyle = BorderStyle.Fixed3D;
             mapFieldPanel.Dock = DockStyle.Fill;
+            mapFieldPanel.ImageList = (List<Image>)resources.GetObject("mapFieldPanel.ImageList");
             mapFieldPanel.Location = new Point(0, 0);
             mapFieldPanel.Name = "mapFieldPanel";
-            mapFieldPanel.Size = new Size(605, 524);
+            mapFieldPanel.Size = new Size(517, 485);
             mapFieldPanel.TabIndex = 0;
             // 
             // mapFieldInfoPanel
@@ -101,7 +102,7 @@ namespace ClientForm
             mapFieldInfoPanel.Dock = DockStyle.Fill;
             mapFieldInfoPanel.Location = new Point(0, 0);
             mapFieldInfoPanel.Name = "mapFieldInfoPanel";
-            mapFieldInfoPanel.Size = new Size(605, 135);
+            mapFieldInfoPanel.Size = new Size(517, 116);
             mapFieldInfoPanel.TabIndex = 0;
             // 
             // graphicChipPanel
@@ -111,7 +112,7 @@ namespace ClientForm
             graphicChipPanel.Dock = DockStyle.Fill;
             graphicChipPanel.Location = new Point(0, 0);
             graphicChipPanel.Name = "graphicChipPanel";
-            graphicChipPanel.Size = new Size(601, 663);
+            graphicChipPanel.Size = new Size(629, 605);
             graphicChipPanel.TabIndex = 0;
             // 
             // mainMenuStrip
@@ -119,7 +120,7 @@ namespace ClientForm
             mainMenuStrip.Items.AddRange(new ToolStripItem[] { ファイルFToolStripMenuItem });
             mainMenuStrip.Location = new Point(0, 0);
             mainMenuStrip.Name = "mainMenuStrip";
-            mainMenuStrip.Size = new Size(1234, 24);
+            mainMenuStrip.Size = new Size(1174, 24);
             mainMenuStrip.TabIndex = 1;
             mainMenuStrip.Text = "menuStrip1";
             // 
@@ -139,16 +140,16 @@ namespace ClientForm
             // 
             // choiceChipPanel
             // 
-            choiceChipPanel.Location = new Point(1180, 100);
+            choiceChipPanel.Location = new Point(1120, 100);
             choiceChipPanel.Name = "choiceChipPanel";
             choiceChipPanel.Size = new Size(42, 42);
             choiceChipPanel.TabIndex = 2;
             // 
             // statusStrip
             // 
-            statusStrip.Location = new Point(0, 819);
+            statusStrip.Location = new Point(0, 763);
             statusStrip.Name = "statusStrip";
-            statusStrip.Size = new Size(1234, 22);
+            statusStrip.Size = new Size(1174, 22);
             statusStrip.TabIndex = 3;
             statusStrip.Text = "statusStrip1";
             // 
@@ -156,7 +157,7 @@ namespace ClientForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1234, 841);
+            ClientSize = new Size(1174, 785);
             Controls.Add(statusStrip);
             Controls.Add(choiceChipPanel);
             Controls.Add(mainContainer);
@@ -164,7 +165,6 @@ namespace ClientForm
             Icon = (Icon)resources.GetObject("$this.Icon");
             MainMenuStrip = mainMenuStrip;
             Name = "MainForm";
-            Text = "Authentic Action Map Editor (back-end-developer edition)";
             mainContainer.Panel1.ResumeLayout(false);
             mainContainer.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)mainContainer).EndInit();
@@ -183,7 +183,6 @@ namespace ClientForm
 
         private SplitContainer mainContainer;
         private SplitContainer mapFieldContainer;
-        private Panel mapFieldPanel;
         private Panel mapFieldInfoPanel;
         private Panel graphicChipPanel;
         private MenuStrip mainMenuStrip;
@@ -191,5 +190,6 @@ namespace ClientForm
         private ToolStripMenuItem アプリケーションの終了XToolStripMenuItem;
         private Panel choiceChipPanel;
         private StatusStrip statusStrip;
+        private src.CustomControls.Map.TilingPanel mapFieldPanel;
     }
 }
