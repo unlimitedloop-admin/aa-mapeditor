@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/10/06
+//      Last update     : 2023/10/12
 //
-//      File version    : 1
+//      File version    : 2
 //
 //
 /**************************************************************/
@@ -35,10 +35,35 @@ namespace ClientForm
         [STAThread]
         static void Main()
         {
-            // To customize application configuration such as set high DPI settings or default font,
-            // see https://aka.ms/applicationconfiguration.
-            ApplicationConfiguration.Initialize();
-            Application.Run(new MainForm());
+            if (CheckScreenResolution())
+            {
+                // To customize application configuration such as set high DPI settings or default font,
+                // see https://aka.ms/applicationconfiguration.
+                ApplicationConfiguration.Initialize();
+                Application.Run(new MainForm());
+            }
+        }
+
+        /// <summary>
+        ///  Check the resolution and verify that your application can run.
+        /// </summary>
+        /// <returns>False if resolution requirements are not met.</returns>
+        private static bool CheckScreenResolution()
+        {
+            Application.SetHighDpiMode(HighDpiMode.SystemAware);
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+
+            // Get resolution. 
+            int minWidth = 1190;  // Minimum screen width required
+            int minHeight = 824;  // Minimum screen height required
+
+            if (Screen.PrimaryScreen!.Bounds.Width < minWidth || Screen.PrimaryScreen!.Bounds.Height < minHeight)
+            {
+                MessageBox.Show("このアプリケーションは、最低" + minWidth + "x" + minHeight + "の解像度が必要です。", "解像度エラー", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+            return true;
         }
     }
 }

@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/10/08
+//      Last update     : 2023/10/12
 //
-//      File version    : 2
+//      File version    : 3
 //
 //
 /**************************************************************/
@@ -37,7 +37,7 @@ namespace ClientForm
     /// </summary>
     public partial class MainForm : Form
     {
-        LoadRawSampler sampler;     // sample driver.
+        readonly LoadRawSampler _sampler;     // sample driver.
 
         public MainForm()
         {
@@ -49,11 +49,13 @@ namespace ClientForm
             Text = "Authentic Action Map Editor (beta version - v0.0)";
 #endif
             // sample code.
-            sampler = new();
-            sampler.LoadImageList();
-            mapFieldPanel.ImageList = sampler.ImageList;
-            sampler.LoadMapFields();
-            mapFieldPanel.MapTile = sampler.MapFields;
+            graphicChipPanel.BaseImage = Image.FromFile("C:\\Users\\you nanase\\ローカルプロジェクト\\r2-refined\\r2-refined\\r2-refined\\assets\\2_BG\\demostage_BG.png");
+            graphicChipPanel.LoadChipList(8, 16);
+            _sampler = new();
+            _sampler.LoadImageList();
+            mapFieldPanel.ImageList = _sampler.ImageList;
+            _sampler.LoadMapFields();
+            mapFieldPanel.MapTile = _sampler.MapFields;
         }
 
         /// <summary>

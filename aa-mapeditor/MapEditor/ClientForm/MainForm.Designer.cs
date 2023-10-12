@@ -33,7 +33,7 @@ namespace ClientForm
             mapFieldContainer = new SplitContainer();
             mapFieldPanel = new src.CustomControls.Map.TilingPanel();
             mapFieldInfoPanel = new Panel();
-            graphicChipPanel = new Panel();
+            graphicChipPanel = new src.CustomControls.Chip.ShowcasePanel();
             mainMenuStrip = new MenuStrip();
             ファイルFToolStripMenuItem = new ToolStripMenuItem();
             アプリケーションの終了XToolStripMenuItem = new ToolStripMenuItem();
@@ -107,7 +107,9 @@ namespace ClientForm
             // 
             // graphicChipPanel
             // 
+            graphicChipPanel.AutoScroll = true;
             graphicChipPanel.BackColor = SystemColors.AppWorkspace;
+            graphicChipPanel.BaseImage = null;
             graphicChipPanel.BorderStyle = BorderStyle.Fixed3D;
             graphicChipPanel.Dock = DockStyle.Fill;
             graphicChipPanel.Location = new Point(0, 0);
@@ -184,7 +186,7 @@ namespace ClientForm
         private SplitContainer mainContainer;
         private SplitContainer mapFieldContainer;
         private Panel mapFieldInfoPanel;
-        private Panel graphicChipPanel;
+        private src.CustomControls.Chip.ShowcasePanel graphicChipPanel;
         private MenuStrip mainMenuStrip;
         private ToolStripMenuItem ファイルFToolStripMenuItem;
         private ToolStripMenuItem アプリケーションの終了XToolStripMenuItem;

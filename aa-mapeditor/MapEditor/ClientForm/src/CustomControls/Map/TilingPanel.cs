@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/10/08
+//      Last update     : 2023/10/12
 //
-//      File version    : 1
+//      File version    : 2
 //
 //
 /**************************************************************/
@@ -49,7 +49,7 @@ namespace ClientForm.src.CustomControls.Map
 
         /// <summary>
         ///  Complete the picture on the panel using the pieces from ImageList.
-        ///  <para>Override OnPaint for Panel controls.</para>
+        ///  <para>Override <see cref="Control.OnPaint"/> for Panel controls.</para>
         /// </summary>
         protected override void OnPaint(PaintEventArgs e)
         {
