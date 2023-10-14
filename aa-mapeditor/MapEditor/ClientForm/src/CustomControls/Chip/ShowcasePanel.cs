@@ -17,15 +17,16 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/10/12
+//      Last update     : 2023/10/14
 //
-//      File version    : 1
+//      File version    : 2
 //
 //
 /**************************************************************/
 
 /* using namespace */
 using ClientForm.src.Apps.EditsUI;
+using ClientForm.src.Gems.Factory;
 
 
 
@@ -37,18 +38,13 @@ namespace ClientForm.src.CustomControls.Chip
     /// </summary>
     public partial class ShowcasePanel : Panel
     {
-        private readonly ChipButtonFactory _buttonFactory;
-
         /// <summary>
         ///  Fabric <see cref="Image"/> for map chips.
         /// </summary>
         public Image? BaseImage { get; set; } = null;
 
 
-        public ShowcasePanel()
-        {
-            _buttonFactory = new ConcreteChipButtonFactory();
-        }
+        public ShowcasePanel() { }
 
         /// <summary>
         ///  Load chip list.
@@ -59,7 +55,7 @@ namespace ClientForm.src.CustomControls.Chip
         {
             const int GRAPHSIZE = 16;
             const int GRAPHBOXSIZE = 32;
-            const int TABLECELLSIZE = 48!;
+            const int CELLSIZE = 48!;
 
             if (null == BaseImage || 0 >= rows || 0 >= columns) return;
 
@@ -70,14 +66,20 @@ namespace ClientForm.src.CustomControls.Chip
                 for (int x = 0; x < columns; x++)
                 {
                     Rectangle imgRect = new(x % columns / 1 * GRAPHSIZE, y * GRAPHSIZE, GRAPHSIZE - 1, GRAPHSIZE - 1);
-                    Bitmap bitmap = new(TABLECELLSIZE, TABLECELLSIZE);
+                    Bitmap bitmap = new(CELLSIZE, CELLSIZE);
                     Graphics graphics = Graphics.FromImage(bitmap);
                     graphics.DrawImage(BaseImage, new Rectangle(7, 7, GRAPHBOXSIZE, GRAPHBOXSIZE), imgRect, GraphicsUnit.Pixel);
 
-                    Button button = _buttonFactory.CreateButton(y * columns + x, bitmap);
-                    button.Location = new Point(x * TABLECELLSIZE, y * TABLECELLSIZE);
-                    button.Click += Button_Click;
-                    Controls.Add(button);
+                    // Using a Factory Method pattern to get a button instance and downcasting to a custom button.
+                    ButtonFactory buttonFactory = new ChipButtonFactory((y * columns) + x, bitmap);
+                    IButtonProduct product = buttonFactory.GetProduct();
+                    Button createButton = product.Create();
+                    if (createButton is ChipButton button)
+                    {
+                        button.Location = new Point(x * CELLSIZE, y * CELLSIZE);
+                        button.Click += Button_Click;
+                        Controls.Add(button);
+                    }
                 }
             }
         }
@@ -85,11 +87,12 @@ namespace ClientForm.src.CustomControls.Chip
         /// <summary>
         ///  Chip list button click event handler.
         /// </summary>
-        /// <param name="sender">Button object</param>
+        /// <param name="sender"><see cref="ChipButton"/> object</param>
         /// <param name="e">Click event args</param>
         private void Button_Click(object? sender, EventArgs e)
         {
-
+            ChipButton button = (ChipButton)sender!;
+            MessageBox.Show(button.ChipIndex.ToString() + "\r\n(Hex value is) " + button.ChipIndex.ToString("X2"));  // Preview sample code.
         }
     }
 }

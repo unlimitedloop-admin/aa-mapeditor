@@ -17,26 +17,49 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/10/12
+//      Last update     : 2023/10/14
 //
-//      File version    : 1
+//      File version    : 2
 //
 //
 /**************************************************************/
+
+/* using namespace */
+using ClientForm.src.Gems.Factory;
+
+
 
 /* sources */
 namespace ClientForm.src.Apps.EditsUI
 {
     /// <summary>
-    ///  Abstract class for chip list.
+    ///  Concrete class for factory method pattern objects to generate button objects.
     /// </summary>
-    internal abstract class ChipButtonFactory
+    internal class ChipButtonFactory : ButtonFactory
     {
-        protected ChipButtonFactory() { }
+        private readonly int _index;
+        private readonly Bitmap _bitmap;
+
 
         /// <summary>
-        ///  Abstract method to generate chips.
+        ///  Request a custom button.
+        ///  <para>To receive a custom button, you need to call the <see cref="GetProduct"/> from the instance.</para>
         /// </summary>
-        internal abstract Button CreateButton(int index, Bitmap bitmap);
+        /// <param name="index">Index number</param>
+        /// <param name="bitmap">Texture</param>
+        internal ChipButtonFactory(int index, Bitmap bitmap)
+        {
+            _index = index;
+            _bitmap = bitmap;
+        }
+
+        /// <summary>
+        ///  Create a button object.
+        /// </summary>
+        /// <returns>Button for optimized graphics chip.</returns>
+        internal override IButtonProduct GetProduct()
+        {
+            return new ChipButton(_index, _bitmap);
+        }
     }
 }

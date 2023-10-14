@@ -17,12 +17,17 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/10/12
+//      Last update     : 2023/10/14
 //
-//      File version    : 2
+//      File version    : 3
 //
 //
 /**************************************************************/
+
+/* using namespace */
+using static ClientForm.src.Configs.CoreConstants;
+
+
 
 /* sources */
 namespace ClientForm.src.CustomControls.Map
@@ -40,9 +45,9 @@ namespace ClientForm.src.CustomControls.Map
         /// <summary>
         ///  An address book of image data chips arranged on a panel.
         /// </summary>
-        public byte[,] MapTile { get; set; } = new byte[15, 16];
+        public byte[,] MapTile { get; set; } = new byte[MAPFIELD_LINES, MAPFIELD_COLUMNS];
 
-        private const int TILE_SIZE = 32;   // Square tile length.
+        private const int TILE_SIZE = MAPFIELD_CELLSIZE;   // Square tile length.
 
 
         public TilingPanel() { }

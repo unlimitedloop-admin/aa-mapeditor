@@ -1,7 +1,7 @@
 /**************************************************************/
 //
 //
-//      Copyright (c) 20XX UNLIMITED LOOP ROOT-ONE
+//      Copyright (c) 2023 UNLIMITED LOOP ROOT-ONE
 //
 //
 //      This software(and source code) is completely Unlicense.
