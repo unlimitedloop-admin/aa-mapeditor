@@ -19,7 +19,7 @@
 //
 //      Last update     : 2023/10/14
 //
-//      File version    : 2
+//      File version    : 3
 //
 //
 /**************************************************************/
@@ -27,6 +27,7 @@
 /* using namespace */
 using ClientForm.src.Apps.EditsUI;
 using ClientForm.src.Gems.Factory;
+using static ClientForm.src.Configs.CoreConstants;
 
 
 
@@ -53,7 +54,7 @@ namespace ClientForm.src.CustomControls.Chip
         /// <param name="columns">Number of columns in the chip list</param>
         public void LoadChipList(int rows, int columns)
         {
-            const int GRAPHSIZE = 16;
+            const int GRAPHSIZE = CHIP_SIZE;
             const int GRAPHBOXSIZE = 32;
             const int CELLSIZE = 48!;
 

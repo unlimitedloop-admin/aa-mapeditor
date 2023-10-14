@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/10/12
+//      Last update     : 2023/10/14
 //
-//      File version    : 3
+//      File version    : 4
 //
 //
 /**************************************************************/
@@ -49,8 +49,6 @@ namespace ClientForm
             Text = "Authentic Action Map Editor (beta version - v0.0)";
 #endif
             // sample code.
-            graphicChipPanel.BaseImage = Image.FromFile("C:\\Users\\you nanase\\ローカルプロジェクト\\r2-refined\\r2-refined\\r2-refined\\assets\\2_BG\\demostage_BG.png");
-            graphicChipPanel.LoadChipList(8, 16);
             _sampler = new();
             _sampler.LoadImageList();
             mapFieldPanel.ImageList = _sampler.ImageList;
@@ -65,5 +63,10 @@ namespace ClientForm
         {
             Application.Exit();
         }
+
+        /// <summary>
+        ///  Click of openGraphChipButton event handler.
+        /// </summary>
+        private void OpenGraphChipButton_Click(object sender, EventArgs e) => ExecuteLoadGraphDialog(sender, e);
     }
 }

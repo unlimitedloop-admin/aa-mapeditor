@@ -59,5 +59,15 @@ namespace Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
+        /// </summary>
+        internal static System.Drawing.Bitmap icons8_フォルダーを開く_30_blue {
+            get {
+                object obj = ResourceManager.GetObject("icons8_フォルダーを開く_30_blue", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
     }
 }

@@ -39,6 +39,7 @@ namespace ClientForm
             アプリケーションの終了XToolStripMenuItem = new ToolStripMenuItem();
             choiceChipPanel = new Panel();
             statusStrip = new StatusStrip();
+            openGraphChipButton = new Button();
             ((System.ComponentModel.ISupportInitialize)mainContainer).BeginInit();
             mainContainer.Panel1.SuspendLayout();
             mainContainer.Panel2.SuspendLayout();
@@ -155,11 +156,27 @@ namespace ClientForm
             statusStrip.TabIndex = 3;
             statusStrip.Text = "statusStrip1";
             // 
+            // openGraphChipButton
+            // 
+            openGraphChipButton.BackColor = SystemColors.ButtonHighlight;
+            openGraphChipButton.BackgroundImage = Properties.Resources.icons8_フォルダーを開く_30_blue;
+            openGraphChipButton.BackgroundImageLayout = ImageLayout.None;
+            openGraphChipButton.FlatStyle = FlatStyle.Flat;
+            openGraphChipButton.ForeColor = SystemColors.ButtonFace;
+            openGraphChipButton.Location = new Point(533, 110);
+            openGraphChipButton.Margin = new Padding(0);
+            openGraphChipButton.Name = "openGraphChipButton";
+            openGraphChipButton.Size = new Size(32, 32);
+            openGraphChipButton.TabIndex = 4;
+            openGraphChipButton.UseVisualStyleBackColor = false;
+            openGraphChipButton.Click += OpenGraphChipButton_Click;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1174, 785);
+            Controls.Add(openGraphChipButton);
             Controls.Add(statusStrip);
             Controls.Add(choiceChipPanel);
             Controls.Add(mainContainer);
@@ -193,5 +210,6 @@ namespace ClientForm
         private Panel choiceChipPanel;
         private StatusStrip statusStrip;
         private src.CustomControls.Map.TilingPanel mapFieldPanel;
+        private Button openGraphChipButton;
     }
 }
