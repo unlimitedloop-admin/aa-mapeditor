@@ -19,7 +19,7 @@
 //
 //      Last update     : 2023/10/15
 //
-//      File version    : 1
+//      File version    : 2
 //
 //
 /**************************************************************/
@@ -33,10 +33,10 @@ namespace ClientForm.src.CustomControls.Chip
     /// </summary>
     public class IndexerImage
     {
-        public int Index { get; set; }
+        public byte Index { get; set; }
         public Image Img { get; set; }
 
-        public IndexerImage(int index, Image image)
+        public IndexerImage(byte index, Image image)
         {
             Index = index;
             Img = image;
@@ -91,9 +91,15 @@ namespace ClientForm.src.CustomControls.Chip
         /// </summary>
         /// <param name="index">Index number added to the graphic chip list</param>
         /// <param name="image">Graphic chip <see cref="Image"/></param>
-        internal void AddImage(int index, Image image)
+        /// <return>True if successfully added.</return>
+        internal bool AddImage(int index, Image image)
         {
-            _images.Add(new IndexerImage(index, image));
+            if (index is >= byte.MinValue and <= byte.MaxValue)
+            {
+                _images.Add(new IndexerImage((byte)index, image));
+                return true;
+            }
+            return false;
         }
 
         /// <summary>
@@ -101,7 +107,7 @@ namespace ClientForm.src.CustomControls.Chip
         /// </summary>
         /// <param name="index">Index of the image to search</param>
         /// <returns>The <see cref="Image"/> data, or null if the <see cref="Image"/> is not found.</returns>
-        internal Image? GetImageByIndex(int index)
+        internal Image? GetImageByIndex(byte index)
         {
             var indexedImage = _images.FirstOrDefault(x => x.Index == index);
             return indexedImage?.Img;

@@ -19,13 +19,14 @@
 //
 //      Last update     : 2023/10/15
 //
-//      File version    : 4
+//      File version    : 5
 //
 //
 /**************************************************************/
 
 /* using namespace */
 using ClientForm.src.CustomControls.Chip;
+using ClientForm.src.Logger;
 using static ClientForm.src.Configs.CoreConstants;
 
 
@@ -66,26 +67,47 @@ namespace ClientForm.src.CustomControls.Map
         ///  Complete the picture on the panel using the pieces from ImageList.
         ///  <para>Override <see cref="Control.OnPaint"/> for Panel controls.</para>
         /// </summary>
+        /// <exception cref="IndexOutOfRangeException"/>
+        /// <exception cref="ObjectDisposedException"/>
         protected override void OnPaint(PaintEventArgs e)
         {
-            base.OnPaint(e);
-
-            if (null != _chipManager && 0 < _chipManager.Count)
+            try
             {
-                int tileWidth = TILE_SIZE;
-                int tileHeight = TILE_SIZE;
-                for (int y = 0; MapTile.GetLength(0) > y; y++)
+                base.OnPaint(e);
+
+                if (null != _chipManager && 0 < _chipManager.Count)
                 {
-                    for (int x = 0; MapTile.GetLength(1) > x; x++)
+                    int tileWidth = TILE_SIZE;
+                    int tileHeight = TILE_SIZE;
+                    for (int y = 0; MapTile.GetLength(0) > y; y++)
                     {
-                        byte imageIndex = MapTile[y, x];
-                        Image? image = _chipManager.GetImageByIndex(imageIndex);
-                        if (null != image)
+                        for (int x = 0; MapTile.GetLength(1) > x; x++)
                         {
-                            e.Graphics.DrawImage(image, x * tileWidth, y * tileHeight);
+                            byte imageIndex = MapTile[y, x];
+                            Image? image = _chipManager.GetImageByIndex(imageIndex);
+                            if (null != image)
+                            {
+                                e.Graphics.DrawImage(image, x * tileWidth, y * tileHeight);
+                            }
+                            else
+                            {
+                                DefaultLogger.LogInfo("画像が取得できない配列番号が見つかりました。x = " + x + "、y = " + y);
+                            }
                         }
                     }
                 }
+            }
+            catch (IndexOutOfRangeException ex)
+            {
+                MessageBox.Show(ex.Message, "IndexOutOfRangeException info");
+                DefaultLogger.LogError("予期せぬ例外が発生しました。\r\n詳細：" + ex.ToString());
+                return;
+            }
+            catch (ObjectDisposedException ex)
+            {
+                MessageBox.Show(ex.Message, "ObjectDisposedException info");
+                DefaultLogger.LogError("予期せぬ例外が発生しました。\r\n詳細：" + ex.ToString());
+                return;
             }
         }
     }

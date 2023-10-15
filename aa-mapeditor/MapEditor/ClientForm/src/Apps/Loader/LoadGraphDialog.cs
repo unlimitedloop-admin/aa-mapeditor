@@ -17,14 +17,15 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/10/14
+//      Last update     : 2023/10/15
 //
-//      File version    : 1
+//      File version    : 2
 //
 //
 /**************************************************************/
 
 /* using namespace */
+using ClientForm.src.Logger;
 using System.Media;
 using static ClientForm.src.Configs.CoreConstants;
 
@@ -87,9 +88,8 @@ namespace ClientForm.src.Apps.Loader
             }
             catch (OutOfMemoryException ex)
             {
-                _ = MessageBox.Show(ex.Message, "OutOfMemoryException Info");
-                //MessageBox.Show("Empty or invalid file. Please select valid image data.", "UNEXPECTED EXCEPTION INFO");
-                //DefaultLogger.LogError(ex.ToString());
+                _ = MessageBox.Show(ex.Message, "OutOfMemoryException info");
+                DefaultLogger.LogError("予期せぬ例外が発生しました。\r\n詳細：" + ex.ToString());
                 return false;
             }
         }

@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/10/14
+//      Last update     : 2023/10/15
 //
-//      File version    : 2
+//      File version    : 3
 //
 //
 /**************************************************************/
@@ -37,6 +37,7 @@ namespace ClientForm.src.Apps.EditsUI
     /// </summary>
     internal class ChipButtonFactory : ButtonFactory
     {
+        // Adding chip data infomation.
         private readonly int _index;
         private readonly Bitmap _bitmap;
 

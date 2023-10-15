@@ -19,7 +19,7 @@
 //
 //      Last update     : 2023/10/15
 //
-//      File version    : 4
+//      File version    : 5
 //
 //
 /**************************************************************/
@@ -85,17 +85,26 @@ namespace ClientForm.src.CustomControls.Chip
                     Bitmap bitmap = new(GRAPHBOXSIZE, GRAPHBOXSIZE);
                     Graphics graphics = Graphics.FromImage(bitmap);
                     graphics.DrawImage(BaseImage, new Rectangle(0, 0, GRAPHBOXSIZE, GRAPHBOXSIZE), imgRect, GraphicsUnit.Pixel);
-                    _chipManager.AddImage((y * columns) + x, bitmap);
-
-                    // Using a Factory Method pattern to get a button instance and downcasting to a custom button.
-                    ButtonFactory buttonFactory = new ChipButtonFactory((y * columns) + x, bitmap);
-                    IButtonProduct product = buttonFactory.GetProduct();
-                    Button createButton = product.Create();
-                    if (createButton is ChipButton button)
+                    if (_chipManager.AddImage((y * columns) + x, bitmap))
                     {
-                        button.Location = new Point(x * CELLSIZE, y * CELLSIZE);
-                        button.Click += Button_Click;
-                        Controls.Add(button);
+                        // Using a Factory Method pattern to get a button instance and downcasting to a custom button.
+                        ButtonFactory buttonFactory = new ChipButtonFactory((y * columns) + x, bitmap);
+                        IButtonProduct product = buttonFactory.GetProduct();
+                        Button createButton = product.Create();
+                        if (createButton is ChipButton button)
+                        {
+                            button.Location = new Point(x * CELLSIZE, y * CELLSIZE);
+                            button.Click += Button_Click;
+                            Controls.Add(button);
+                        }
+                    }
+                    else
+                    {
+                        /*
+                         * This syntax will pass if you try to register more than 255 chips, for example.
+                         * This is because it falls under an exception pattern due to the structure of binary data.
+                         */ 
+                        return;
                     }
                 }
             }

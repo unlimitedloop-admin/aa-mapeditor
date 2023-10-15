@@ -55,6 +55,7 @@ namespace ClientForm
             // 
             // mainContainer
             // 
+            mainContainer.IsSplitterFixed = true;
             mainContainer.Location = new Point(12, 148);
             mainContainer.Name = "mainContainer";
             // 
@@ -72,6 +73,7 @@ namespace ClientForm
             // mapFieldContainer
             // 
             mapFieldContainer.Dock = DockStyle.Fill;
+            mapFieldContainer.IsSplitterFixed = true;
             mapFieldContainer.Location = new Point(0, 0);
             mapFieldContainer.Name = "mapFieldContainer";
             mapFieldContainer.Orientation = Orientation.Horizontal;
@@ -109,6 +111,7 @@ namespace ClientForm
             // 
             // graphicChipPanel
             // 
+            graphicChipPanel.AutoScroll = true;
             graphicChipPanel.BackColor = SystemColors.AppWorkspace;
             graphicChipPanel.BaseImage = null;
             graphicChipPanel.BorderStyle = BorderStyle.Fixed3D;
@@ -145,7 +148,7 @@ namespace ClientForm
             // 
             choiceChipPanel.BackColor = SystemColors.ControlLight;
             choiceChipPanel.BorderStyle = BorderStyle.Fixed3D;
-            choiceChipPanel.ChoiceChipNumber = 0;
+            choiceChipPanel.ChoiceChipNumber = -1;
             choiceChipPanel.Location = new Point(1120, 100);
             choiceChipPanel.Name = "choiceChipPanel";
             choiceChipPanel.Size = new Size(42, 42);
