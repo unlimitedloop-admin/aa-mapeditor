@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/10/14
+//      Last update     : 2023/10/15
 //
-//      File version    : 1
+//      File version    : 2
 //
 //
 /**************************************************************/
@@ -44,6 +44,7 @@ namespace ClientForm
             {
                 graphicChipPanel.BaseImage = Image.FromFile(loadGraphDialog.FileName);
                 graphicChipPanel.LoadChipList(loadGraphDialog.GraphicHeight, loadGraphDialog.GraphicWidth);
+                mapFieldPanel.Invalidate();
             }
             loadGraphDialog.Dispose();
         }

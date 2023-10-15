@@ -17,14 +17,15 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/10/14
+//      Last update     : 2023/10/15
 //
-//      File version    : 3
+//      File version    : 4
 //
 //
 /**************************************************************/
 
 /* using namespace */
+using ClientForm.src.CustomControls.Chip;
 using static ClientForm.src.Configs.CoreConstants;
 
 
@@ -38,9 +39,9 @@ namespace ClientForm.src.CustomControls.Map
     public partial class TilingPanel : Panel
     {
         /// <summary>
-        ///  Array data of the picture to be painted on the tile.
+        ///  Class for sharing images.
         /// </summary>
-        public List<Image> ImageList { get; set; } = new();
+        private ChipManagedPanel? _chipManager = null;
 
         /// <summary>
         ///  An address book of image data chips arranged on a panel.
@@ -53,6 +54,15 @@ namespace ClientForm.src.CustomControls.Map
         public TilingPanel() { }
 
         /// <summary>
+        ///  Inserts an instance of a required class into a private member.
+        /// </summary>
+        /// <param name="chipmanager">Class reference</param>
+        public void SetPrimaryInstance(ref ChipManagedPanel chipmanager)
+        {
+            _chipManager = chipmanager;
+        }
+
+        /// <summary>
         ///  Complete the picture on the panel using the pieces from ImageList.
         ///  <para>Override <see cref="Control.OnPaint"/> for Panel controls.</para>
         /// </summary>
@@ -60,16 +70,20 @@ namespace ClientForm.src.CustomControls.Map
         {
             base.OnPaint(e);
 
-            int tileWidth = TILE_SIZE;
-            int tileHeight = TILE_SIZE;
-            for (int y = 0; MapTile.GetLength(0) > y; y++)
+            if (null != _chipManager && 0 < _chipManager.Count)
             {
-                for (int x = 0; MapTile.GetLength(1) > x; x++)
+                int tileWidth = TILE_SIZE;
+                int tileHeight = TILE_SIZE;
+                for (int y = 0; MapTile.GetLength(0) > y; y++)
                 {
-                    byte imageIndex = MapTile[y, x];
-                    if (ImageList.Count > imageIndex)
+                    for (int x = 0; MapTile.GetLength(1) > x; x++)
                     {
-                        e.Graphics.DrawImage(ImageList[imageIndex], x * tileWidth, y * tileHeight);
+                        byte imageIndex = MapTile[y, x];
+                        Image? image = _chipManager.GetImageByIndex(imageIndex);
+                        if (null != image)
+                        {
+                            e.Graphics.DrawImage(image, x * tileWidth, y * tileHeight);
+                        }
                     }
                 }
             }

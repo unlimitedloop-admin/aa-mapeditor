@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/10/14
+//      Last update     : 2023/10/15
 //
-//      File version    : 4
+//      File version    : 5
 //
 //
 /**************************************************************/
@@ -37,24 +37,34 @@ namespace ClientForm
     /// </summary>
     public partial class MainForm : Form
     {
-        readonly LoadRawSampler _sampler;     // sample driver.
+        private LoadRawSampler? _sampler;   // sample driver.
 
         public MainForm()
         {
             InitializeComponent();
-
 #if DEBUG
             Text = "Authentic Action Map Editor (back-end-developer edition)";
 #else
             Text = "Authentic Action Map Editor (beta version - v0.0)";
 #endif
+            SetupMapBuilder();  // The primary instance that should be configured uniquely to the application.
+            DoSampleCode();     // Do it sample code.
+        }
+
+        private void SetupMapBuilder()
+        {
+            graphicChipPanel.SetPrimaryInstance(ref choiceChipPanel);
+            mapFieldPanel.SetPrimaryInstance(ref choiceChipPanel);
+        }
+
+        private void DoSampleCode()
+        {
             // sample code.
             _sampler = new();
-            _sampler.LoadImageList();
-            mapFieldPanel.ImageList = _sampler.ImageList;
             _sampler.LoadMapFields();
             mapFieldPanel.MapTile = _sampler.MapFields;
         }
+
 
         /// <summary>
         ///  An event handler that terminates the application.

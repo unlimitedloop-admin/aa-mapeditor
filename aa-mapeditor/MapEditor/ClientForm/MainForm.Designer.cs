@@ -1,3 +1,5 @@
+using ClientForm.src.Apps.EditsUI;
+
 namespace ClientForm
 {
     partial class MainForm
@@ -37,7 +39,7 @@ namespace ClientForm
             mainMenuStrip = new MenuStrip();
             ファイルFToolStripMenuItem = new ToolStripMenuItem();
             アプリケーションの終了XToolStripMenuItem = new ToolStripMenuItem();
-            choiceChipPanel = new Panel();
+            choiceChipPanel = new src.CustomControls.Chip.ChipManagedPanel();
             statusStrip = new StatusStrip();
             openGraphChipButton = new Button();
             ((System.ComponentModel.ISupportInitialize)mainContainer).BeginInit();
@@ -90,7 +92,6 @@ namespace ClientForm
             mapFieldPanel.BackColor = SystemColors.AppWorkspace;
             mapFieldPanel.BorderStyle = BorderStyle.Fixed3D;
             mapFieldPanel.Dock = DockStyle.Fill;
-            mapFieldPanel.ImageList = (List<Image>)resources.GetObject("mapFieldPanel.ImageList");
             mapFieldPanel.Location = new Point(0, 0);
             mapFieldPanel.Name = "mapFieldPanel";
             mapFieldPanel.Size = new Size(517, 485);
@@ -108,7 +109,6 @@ namespace ClientForm
             // 
             // graphicChipPanel
             // 
-            graphicChipPanel.AutoScroll = true;
             graphicChipPanel.BackColor = SystemColors.AppWorkspace;
             graphicChipPanel.BaseImage = null;
             graphicChipPanel.BorderStyle = BorderStyle.Fixed3D;
@@ -143,6 +143,9 @@ namespace ClientForm
             // 
             // choiceChipPanel
             // 
+            choiceChipPanel.BackColor = SystemColors.ControlLight;
+            choiceChipPanel.BorderStyle = BorderStyle.Fixed3D;
+            choiceChipPanel.ChoiceChipNumber = 0;
             choiceChipPanel.Location = new Point(1120, 100);
             choiceChipPanel.Name = "choiceChipPanel";
             choiceChipPanel.Size = new Size(42, 42);
@@ -203,13 +206,13 @@ namespace ClientForm
         private SplitContainer mainContainer;
         private SplitContainer mapFieldContainer;
         private Panel mapFieldInfoPanel;
-        private src.CustomControls.Chip.ShowcasePanel graphicChipPanel;
         private MenuStrip mainMenuStrip;
         private ToolStripMenuItem ファイルFToolStripMenuItem;
         private ToolStripMenuItem アプリケーションの終了XToolStripMenuItem;
-        private Panel choiceChipPanel;
+        private src.CustomControls.Chip.ChipManagedPanel choiceChipPanel;
         private StatusStrip statusStrip;
-        private src.CustomControls.Map.TilingPanel mapFieldPanel;
         private Button openGraphChipButton;
+        private src.CustomControls.Map.TilingPanel mapFieldPanel;
+        private src.CustomControls.Chip.ShowcasePanel graphicChipPanel;
     }
 }

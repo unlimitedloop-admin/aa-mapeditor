@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/10/14
+//      Last update     : 2023/10/15
 //
-//      File version    : 2
+//      File version    : 3
 //
 //
 /**************************************************************/
@@ -60,6 +60,9 @@ namespace ClientForm.src.Apps.EditsUI
             Image = bitmap;
             BackgroundImageLayout = ImageLayout.None;
             FlatAppearance.BorderSize = 0;
+            FlatAppearance.MouseOverBackColor = BackColor;
+            FlatAppearance.MouseDownBackColor = BackColor;
+            SetStyle(ControlStyles.Selectable, false);
             ToolTip toolTip = new();
             toolTip.SetToolTip(this, index.ToString());
         }
