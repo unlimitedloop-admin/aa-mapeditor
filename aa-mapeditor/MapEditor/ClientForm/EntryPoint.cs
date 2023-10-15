@@ -17,17 +17,25 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/10/12
+//      Last update     : 2023/10/15
 //
-//      File version    : 2
+//      File version    : 3
 //
 //
 /**************************************************************/
 
+/* using namespace */
+using ClientForm.src.Configs;
+using Microsoft.Extensions.Configuration;
+using System.Diagnostics;
+using System.Reflection;
+
+
+
 /* sources */
 namespace ClientForm
 {
-    internal static class EntryPoint
+    internal class EntryPoint
     {
         /// <summary>
         ///  The main entry point for the application.
@@ -40,9 +48,31 @@ namespace ClientForm
                 // To customize application configuration such as set high DPI settings or default font,
                 // see https://aka.ms/applicationconfiguration.
                 ApplicationConfiguration.Initialize();
-                Application.Run(new MainForm());
+                Application.Run(new MainForm(GetApplicationName()));
             }
         }
+
+        private static string GetApplicationName()
+        {
+            string filePath = Assembly.GetEntryAssembly()!.Location;
+            FileVersionInfo fileVersionInfo = FileVersionInfo.GetVersionInfo(filePath);
+            string fileVersion = fileVersionInfo.FileVersion ?? "unknown build";
+            string version = fileVersionInfo.ProductVersion ?? "1.0";
+            IConfigurationBuilder builder = new ConfigurationBuilder()
+                .SetBasePath(System.IO.Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+
+            IConfigurationRoot configuration = builder.Build();
+            var fraction = configuration.GetSection("WindowName").Get<WindowName>();
+            string text = string.Empty;
+#if DEBUG
+            text = null != fraction ? fraction.DebugRunApplicationName + " Build-No." + fileVersion : "aa-mapeditor (developer limited) : unknown build";
+#else
+            text = null != fraction ? fraction.ProductionApplicationName + " Ver. " + version : "aa-mapeditor";
+#endif
+            return text;
+        }
+
 
         /// <summary>
         ///  Check the resolution and verify that your application can run.

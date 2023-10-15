@@ -19,7 +19,7 @@
 //
 //      Last update     : 2023/10/15
 //
-//      File version    : 5
+//      File version    : 6
 //
 //
 /**************************************************************/
@@ -39,18 +39,18 @@ namespace ClientForm
     {
         private LoadRawSampler? _sampler;   // sample driver.
 
-        public MainForm()
+        public MainForm(string applicationName)
         {
             InitializeComponent();
-#if DEBUG
-            Text = "Authentic Action Map Editor (back-end-developer edition)";
-#else
-            Text = "Authentic Action Map Editor (beta version - v0.0)";
-#endif
+            Text = applicationName;  // Application name.
+
             SetupMapBuilder();  // The primary instance that should be configured uniquely to the application.
             DoSampleCode();     // Do it sample code.
         }
 
+        /// <summary>
+        ///  Initialization process of map container required instance.
+        /// </summary>
         private void SetupMapBuilder()
         {
             graphicChipPanel.SetPrimaryInstance(ref choiceChipPanel);
