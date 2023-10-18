@@ -17,17 +17,12 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/10/15
+//      Last update     : 2023/10/18
 //
-//      File version    : 6
+//      File version    : 7
 //
 //
 /**************************************************************/
-
-// test modules.
-using ClientForm.driver;
-
-
 
 /* sources */
 namespace ClientForm
@@ -37,15 +32,11 @@ namespace ClientForm
     /// </summary>
     public partial class MainForm : Form
     {
-        private LoadRawSampler? _sampler;   // sample driver.
-
         public MainForm(string applicationName)
         {
             InitializeComponent();
             Text = applicationName;  // Application name.
-
             SetupMapBuilder();  // The primary instance that should be configured uniquely to the application.
-            DoSampleCode();     // Do it sample code.
         }
 
         /// <summary>
@@ -57,26 +48,19 @@ namespace ClientForm
             mapFieldPanel.SetPrimaryInstance(ref choiceChipPanel);
         }
 
-        private void DoSampleCode()
-        {
-            // sample code.
-            _sampler = new();
-            _sampler.LoadMapFields();
-            mapFieldPanel.MapTile = _sampler.MapFields;
-        }
-
-
         /// <summary>
         ///  An event handler that terminates the application.
         /// </summary>
-        private void アプリケーションの終了XToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Application.Exit();
-        }
+        private void アプリケーションの終了XToolStripMenuItem_Click(object sender, EventArgs e) => Application.Exit();
 
         /// <summary>
         ///  Click of openGraphChipButton event handler.
         /// </summary>
         private void OpenGraphChipButton_Click(object sender, EventArgs e) => ExecuteLoadGraphDialog(sender, e);
+
+        /// <summary>
+        ///  Click of openBinaryMapButton event handler.
+        /// </summary>
+        private void OpenBinaryMapButton_Click(object sender, EventArgs e) => mapFieldPanel.Navigator.SetFieldData();
     }
 }

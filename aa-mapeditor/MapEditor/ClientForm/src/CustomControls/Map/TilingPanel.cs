@@ -17,16 +17,17 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/10/15
+//      Last update     : 2023/10/18
 //
-//      File version    : 5
+//      File version    : 6
 //
 //
 /**************************************************************/
 
 /* using namespace */
+using ClientForm.src.Apps.Core;
 using ClientForm.src.CustomControls.Chip;
-using ClientForm.src.Logger;
+using ClientForm.src.Exceptions;
 using static ClientForm.src.Configs.CoreConstants;
 
 
@@ -40,6 +41,11 @@ namespace ClientForm.src.CustomControls.Map
     public partial class TilingPanel : Panel
     {
         /// <summary>
+        ///  A class that manages map data and provides guidance.
+        /// </summary>
+        internal MapFieldNavigator Navigator { get; private set; }
+
+        /// <summary>
         ///  Class for sharing images.
         /// </summary>
         private ChipManagedPanel? _chipManager = null;
@@ -47,12 +53,15 @@ namespace ClientForm.src.CustomControls.Map
         /// <summary>
         ///  An address book of image data chips arranged on a panel.
         /// </summary>
-        public byte[,] MapTile { get; set; } = new byte[MAPFIELD_LINES, MAPFIELD_COLUMNS];
+        private readonly byte[,] _mapTile = new byte[MAPFIELD_LINES, MAPFIELD_COLUMNS];
 
         private const int TILE_SIZE = MAPFIELD_CELLSIZE;   // Square tile length.
 
 
-        public TilingPanel() { }
+        public TilingPanel()
+        {
+            Navigator = new(_mapTile);
+        }
 
         /// <summary>
         ///  Inserts an instance of a required class into a private member.
@@ -67,48 +76,32 @@ namespace ClientForm.src.CustomControls.Map
         ///  Complete the picture on the panel using the pieces from ImageList.
         ///  <para>Override <see cref="Control.OnPaint"/> for Panel controls.</para>
         /// </summary>
-        /// <exception cref="IndexOutOfRangeException"/>
-        /// <exception cref="ObjectDisposedException"/>
         protected override void OnPaint(PaintEventArgs e)
         {
-            try
-            {
-                base.OnPaint(e);
+            base.OnPaint(e);
 
-                if (null != _chipManager && 0 < _chipManager.Count)
+            if (string.IsNullOrEmpty(Navigator.FieldName)) return;
+
+            _ = ExceptionHandler.TryCatchWithLogging(() =>
+            {
+                if (_chipManager == null || _chipManager.Count <= 0) return;
+
+                int tileWidth = TILE_SIZE;
+                int tileHeight = TILE_SIZE;
+
+                for (int y = 0; y < _mapTile.GetLength(0); y++)
                 {
-                    int tileWidth = TILE_SIZE;
-                    int tileHeight = TILE_SIZE;
-                    for (int y = 0; MapTile.GetLength(0) > y; y++)
+                    for (int x = 0; x < _mapTile.GetLength(1); x++)
                     {
-                        for (int x = 0; MapTile.GetLength(1) > x; x++)
+                        byte imageIndex = _mapTile[y, x];
+                        Image? image = _chipManager.GetImageByIndex(imageIndex);
+                        if (image != null)
                         {
-                            byte imageIndex = MapTile[y, x];
-                            Image? image = _chipManager.GetImageByIndex(imageIndex);
-                            if (null != image)
-                            {
-                                e.Graphics.DrawImage(image, x * tileWidth, y * tileHeight);
-                            }
-                            else
-                            {
-                                DefaultLogger.LogInfo("画像が取得できない配列番号が見つかりました。x = " + x + "、y = " + y);
-                            }
+                            e.Graphics.DrawImage(image, x * tileWidth, y * tileHeight);
                         }
                     }
                 }
-            }
-            catch (IndexOutOfRangeException ex)
-            {
-                MessageBox.Show(ex.Message, "IndexOutOfRangeException info");
-                DefaultLogger.LogError("予期せぬ例外が発生しました。\r\n詳細：" + ex.ToString());
-                return;
-            }
-            catch (ObjectDisposedException ex)
-            {
-                MessageBox.Show(ex.Message, "ObjectDisposedException info");
-                DefaultLogger.LogError("予期せぬ例外が発生しました。\r\n詳細：" + ex.ToString());
-                return;
-            }
+            });
         }
     }
 }

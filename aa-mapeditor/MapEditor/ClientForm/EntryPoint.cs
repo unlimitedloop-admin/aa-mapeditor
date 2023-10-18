@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/10/15
+//      Last update     : 2023/10/18
 //
-//      File version    : 3
+//      File version    : 4
 //
 //
 /**************************************************************/
@@ -52,11 +52,15 @@ namespace ClientForm
             }
         }
 
+        /// <summary>
+        ///  Get the application name from the config file.
+        /// </summary>
+        /// <returns>Screen title string.</returns>
         private static string GetApplicationName()
         {
             string filePath = Assembly.GetEntryAssembly()!.Location;
             FileVersionInfo fileVersionInfo = FileVersionInfo.GetVersionInfo(filePath);
-            string fileVersion = fileVersionInfo.FileVersion ?? "unknown build";
+            string buildVersion = fileVersionInfo.FileVersion ?? "unknown build";
             string version = fileVersionInfo.ProductVersion ?? "1.0";
             IConfigurationBuilder builder = new ConfigurationBuilder()
                 .SetBasePath(System.IO.Directory.GetCurrentDirectory())
@@ -66,9 +70,9 @@ namespace ClientForm
             var fraction = configuration.GetSection("WindowName").Get<WindowName>();
             string text = string.Empty;
 #if DEBUG
-            text = null != fraction ? fraction.DebugRunApplicationName + " Build-No." + fileVersion : "aa-mapeditor (developer limited) : unknown build";
+            text = null != fraction ? fraction.DebugRunApplicationName + " Build-No." + buildVersion : "Authentic Action Map Editor (developer limited)";
 #else
-            text = null != fraction ? fraction.ProductionApplicationName + " Ver. " + version : "aa-mapeditor";
+            text = null != fraction ? fraction.ProductionApplicationName + " Ver. " + version : "Authentic Action Map Editor";
 #endif
             return text;
         }

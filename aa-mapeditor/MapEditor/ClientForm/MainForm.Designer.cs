@@ -1,5 +1,3 @@
-using ClientForm.src.Apps.EditsUI;
-
 namespace ClientForm
 {
     partial class MainForm
@@ -42,6 +40,7 @@ namespace ClientForm
             choiceChipPanel = new src.CustomControls.Chip.ChipManagedPanel();
             statusStrip = new StatusStrip();
             openGraphChipButton = new Button();
+            openBinaryMapButton = new Button();
             ((System.ComponentModel.ISupportInitialize)mainContainer).BeginInit();
             mainContainer.Panel1.SuspendLayout();
             mainContainer.Panel2.SuspendLayout();
@@ -177,11 +176,25 @@ namespace ClientForm
             openGraphChipButton.UseVisualStyleBackColor = false;
             openGraphChipButton.Click += OpenGraphChipButton_Click;
             // 
+            // openBinaryMapButton
+            // 
+            openBinaryMapButton.BackColor = SystemColors.ButtonHighlight;
+            openBinaryMapButton.BackgroundImage = Properties.Resources.icons8_フォルダーを開く_30;
+            openBinaryMapButton.FlatStyle = FlatStyle.Flat;
+            openBinaryMapButton.ForeColor = SystemColors.ButtonFace;
+            openBinaryMapButton.Location = new Point(12, 110);
+            openBinaryMapButton.Name = "openBinaryMapButton";
+            openBinaryMapButton.Size = new Size(32, 32);
+            openBinaryMapButton.TabIndex = 5;
+            openBinaryMapButton.UseVisualStyleBackColor = false;
+            openBinaryMapButton.Click += OpenBinaryMapButton_Click;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1174, 785);
+            Controls.Add(openBinaryMapButton);
             Controls.Add(openGraphChipButton);
             Controls.Add(statusStrip);
             Controls.Add(choiceChipPanel);
@@ -217,5 +230,6 @@ namespace ClientForm
         private Button openGraphChipButton;
         private src.CustomControls.Map.TilingPanel mapFieldPanel;
         private src.CustomControls.Chip.ShowcasePanel graphicChipPanel;
+        private Button openBinaryMapButton;
     }
 }
