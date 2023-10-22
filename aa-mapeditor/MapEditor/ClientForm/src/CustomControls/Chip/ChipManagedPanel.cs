@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/10/15
+//      Last update     : 2023/10/22
 //
-//      File version    : 2
+//      File version    : 3
 //
 //
 /**************************************************************/
@@ -77,7 +77,6 @@ namespace ClientForm.src.CustomControls.Chip
         public int ChoiceChipNumber { get; set; } = VOID__;
 
         internal int Count => _images.Count;
-        internal void Clear() => _images.Clear();
 
 
         public ChipManagedPanel()
@@ -125,13 +124,27 @@ namespace ClientForm.src.CustomControls.Chip
         }
 
         /// <summary>
+        ///  Resets (clears) the selected panel information.
+        /// </summary>
+        internal void Clear()
+        {
+            if (ChoiceChipInstance.Image is IDisposable disposableImage)
+            {
+                disposableImage.Dispose();
+                ChoiceChipInstance.Image = null;
+            }
+            ChoiceChipNumber = VOID__;
+            _images.Clear();
+        }
+
+        /// <summary>
         ///  Disposing instance.
         /// </summary>
-        /// <param name="disposing"></param>
+        /// <param name="disposing">True if managed resources should be disposed; otherwise, false</param>
         protected override void Dispose(bool disposing)
         {
-            base.Dispose(disposing);
             Clear();
+            base.Dispose(disposing);
         }
     }
 }

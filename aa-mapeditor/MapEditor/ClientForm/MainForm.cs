@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/10/18
+//      Last update     : 2023/10/22
 //
-//      File version    : 7
+//      File version    : 8
 //
 //
 /**************************************************************/
@@ -54,13 +54,27 @@ namespace ClientForm
         private void アプリケーションの終了XToolStripMenuItem_Click(object sender, EventArgs e) => Application.Exit();
 
         /// <summary>
-        ///  Click of openGraphChipButton event handler.
+        ///  Open graphic chip list event handler.
         /// </summary>
         private void OpenGraphChipButton_Click(object sender, EventArgs e) => ExecuteLoadGraphDialog(sender, e);
+        private void GraphicChipPanel_DoubleClick(object sender, EventArgs e) => ExecuteLoadGraphDialog(sender, e);
+        private void 開く_グラフィックチップ_Click(object sender, EventArgs e) => ExecuteLoadGraphDialog(sender, e);
 
         /// <summary>
-        ///  Click of openBinaryMapButton event handler.
+        ///  Close graphic chip list event handler.
         /// </summary>
-        private void OpenBinaryMapButton_Click(object sender, EventArgs e) => mapFieldPanel.Navigator.SetFieldData();
+        private void 閉じる_グラフィックチップ_Click(object sender, EventArgs e) => ExecuteRemoveGraphicChip(sender, e);
+
+        /// <summary>
+        ///  Open binary map data event handler.
+        /// </summary>
+        private void OpenBinaryMapButton_Click(object sender, EventArgs e) => ExecuteOpenBinaryMapFile(sender, e);
+        private void MapFieldPanel_DoubleClick(object sender, EventArgs e) => ExecuteOpenBinaryMapFile(sender, e);
+        private void 開く_マップデータ_Click(object sender, EventArgs e) => ExecuteOpenBinaryMapFile(sender, e);
+
+        /// <summary>
+        ///  Close binary map event handler.
+        /// </summary>
+        private void 閉じる_マップデータ_Click(object sender, EventArgs e) => ExecuteCloseBinaryMapFile(sender, e);
     }
 }

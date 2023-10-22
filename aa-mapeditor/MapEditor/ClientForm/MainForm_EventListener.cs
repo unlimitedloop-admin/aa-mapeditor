@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/10/15
+//      Last update     : 2023/10/22
 //
-//      File version    : 2
+//      File version    : 3
 //
 //
 /**************************************************************/
@@ -47,6 +47,39 @@ namespace ClientForm
                 mapFieldPanel.Invalidate();
             }
             loadGraphDialog.Dispose();
+        }
+
+        /// <summary>
+        ///  Permanently delete loaded graphics chip information from the entire form.
+        /// </summary>
+        private void ExecuteRemoveGraphicChip(object sender, EventArgs e)
+        {
+            graphicChipPanel.BaseImage = null;
+            graphicChipPanel.DeleteAllControl();
+            mapFieldPanel.Invalidate();
+        }
+
+        /// <summary>
+        ///  Executes the process of opening binary data.
+        /// </summary>
+        private void ExecuteOpenBinaryMapFile(object sender, EventArgs e)
+        {
+            if (mapFieldPanel.Navigator.SetFieldData())
+            {
+                mapFieldPanel.Invalidate();
+            }
+        }
+
+        /// <summary>
+        ///  Executes the process of closing binary data.
+        /// </summary>
+        private void ExecuteCloseBinaryMapFile(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrEmpty(mapFieldPanel.Navigator.FieldName))
+            {
+                mapFieldPanel.DestroyMapField();
+                mapFieldPanel.Invalidate();
+            }
         }
     }
 }

@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/10/15
+//      Last update     : 2023/10/22
 //
-//      File version    : 5
+//      File version    : 6
 //
 //
 /**************************************************************/
@@ -42,15 +42,37 @@ namespace ClientForm.src.CustomControls.Chip
         /// <summary>
         ///  Fabric <see cref="Image"/> for map chips.
         /// </summary>
-        public Image? BaseImage { get; set; } = null;
+        public Image? BaseImage
+        {
+            get { return _baseImage; }
+            set
+            {
+                if (_baseImage != value)
+                {
+                    _baseImage = value;
+                    OnBaseImageChanged(this, EventArgs.Empty);
+                }
+            }
+        }
+
+        /// <summary>
+        ///  Map chip <see cref="Image"/>.
+        /// </summary>
+        private Image? _baseImage = null;
 
         /// <summary>
         ///  Class for sharing images.
         /// </summary>
         private ChipManagedPanel? _chipManager = null;
 
+        private const string TOOLTIP_TEXT = "このパネルをダブルクリックして素材の投入を開始します。";
+        private readonly ToolTip _toolTip = new();  // For annotation.
 
-        public ShowcasePanel() { }
+
+        public ShowcasePanel()
+        {
+            _toolTip.SetToolTip(this, TOOLTIP_TEXT);
+        }
 
         /// <summary>
         ///  Inserts an instance of a required class into a private member.
@@ -69,13 +91,12 @@ namespace ClientForm.src.CustomControls.Chip
         public void LoadChipList(int rows, int columns)
         {
             const int GRAPHSIZE = CHIP_SIZE;
-            const int GRAPHBOXSIZE = 32;
-            const int CELLSIZE = 48;
+            const int GRAPHBOXSIZE = GRAPHIC_BOX_SIZE;
+            const int CELLSIZE = CHIP_CELLSIZE;
 
             if (null == BaseImage || 0 >= rows || 0 >= columns) return;
 
-            Controls.Clear();
-            _chipManager!.Clear();
+            DeleteAllControl();
             // Displays button controls with graphics on a panel at regular intervals.
             for (int y = 0; y < rows; y++)
             {
@@ -85,7 +106,7 @@ namespace ClientForm.src.CustomControls.Chip
                     Bitmap bitmap = new(GRAPHBOXSIZE, GRAPHBOXSIZE);
                     Graphics graphics = Graphics.FromImage(bitmap);
                     graphics.DrawImage(BaseImage, new Rectangle(0, 0, GRAPHBOXSIZE, GRAPHBOXSIZE), imgRect, GraphicsUnit.Pixel);
-                    if (_chipManager.AddImage((y * columns) + x, bitmap))
+                    if (_chipManager!.AddImage((y * columns) + x, bitmap))
                     {
                         // Using a Factory Method pattern to get a button instance and downcasting to a custom button.
                         ButtonFactory buttonFactory = new ChipButtonFactory((y * columns) + x, bitmap);
@@ -120,6 +141,33 @@ namespace ClientForm.src.CustomControls.Chip
             ChipButton button = (ChipButton)sender!;
             _chipManager!.ChoiceChipInstance.Image = button.Image;
             _chipManager!.ChoiceChipNumber = button.ChipIndex;
+        }
+
+        /// <summary>
+        ///  BaseImage property is changed event handler.
+        /// </summary>
+        private void OnBaseImageChanged(object? sender, EventArgs e)
+        {
+            _toolTip.Active = null == _baseImage;
+        }
+
+        /// <summary>
+        ///  Remove all controls from the panel.
+        /// </summary>
+        internal void DeleteAllControl()
+        {
+            SuspendLayout();
+            foreach (Control control in Controls)
+            {
+                if (control is ChipButton button)
+                {
+                    button.Click -= Button_Click;
+                }
+                control.Dispose();
+            }
+            Controls.Clear();
+            ResumeLayout();
+            _chipManager?.Clear();
         }
     }
 }

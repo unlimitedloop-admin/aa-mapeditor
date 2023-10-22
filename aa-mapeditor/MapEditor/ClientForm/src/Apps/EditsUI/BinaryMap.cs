@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/10/18
+//      Last update     : 2023/10/22
 //
-//      File version    : 1
+//      File version    : 2
 //
 //
 /**************************************************************/
@@ -36,12 +36,22 @@ namespace ClientForm.src.Apps.EditsUI
     /// <summary>
     ///  A memory class that reads binary files and manages map data.
     /// </summary>
-    internal class BinaryMap
+    internal class BinaryMap : IDisposable
     {
         /// <summary>
         ///  Original obtained from the selected binary data file.
         /// </summary>
-        private byte[] _binaryData;
+        public byte[] BinaryData { get; private set; }
+
+        /// <summary>
+        ///  It's an asynchronous file stream of binary data that you're reading.
+        /// </summary>
+        private FileStream? _fileStream;
+
+        /// <summary>
+        ///  A storage structure for reading binary file data.
+        /// </summary>
+        private BinaryReader? _binaryReader;
 
         /// <summary>
         ///  Path of the selected file.
@@ -51,7 +61,7 @@ namespace ClientForm.src.Apps.EditsUI
 
         internal BinaryMap()
         {
-            _binaryData = Array.Empty<byte>();
+            BinaryData = Array.Empty<byte>();
         }
 
         /// <summary>
@@ -62,7 +72,7 @@ namespace ClientForm.src.Apps.EditsUI
         {
             using OpenFileDialog openbin = new()
             {
-                Filter = "binファイル(*bin)|*bin|すべてのファイル(*.*)|*.*",
+                Filter = "binファイル|*bin|すべてのファイル(*.*)|*.*",
                 Title = "ファイルを選択",
             };
             if (openbin.ShowDialog() == DialogResult.OK)
@@ -84,12 +94,12 @@ namespace ClientForm.src.Apps.EditsUI
         {
             return ExceptionHandler.TryCatchWithLogging(() =>
             {
-                using FileStream fs = File.OpenRead(FilePath);
-                BinaryReader binary = new(fs);
-                long len = fs.Length;
+                _fileStream = File.OpenRead(FilePath);
+                _binaryReader = new BinaryReader(_fileStream);
+                long len = _fileStream.Length;
                 byte[] data = new byte[len];
-                _ = binary.Read(data, 0, (int)len);
-                _binaryData = data;
+                _ = _binaryReader.Read(data, 0, (int)len);
+                BinaryData = data;
             });
         }
 
@@ -103,15 +113,24 @@ namespace ClientForm.src.Apps.EditsUI
         {
             return ExceptionHandler.TryCatchWithLogging(() =>
             {
-                if (0 > _binaryData.Length || _binaryData.Length <= offset)
+                if (0 > BinaryData.Length || BinaryData.Length <= offset)
                 {
                     // TODO : 例外発生後の挙動について要検証
-                    DefaultLogger.LogError("不測のメモリアクセス違反がありました。_binaryDataのサイズ：[" + _binaryData.Length.ToString() + "]、アクセス要求されたアドレス：[" + offset + "]");
+                    DefaultLogger.LogError("不測のメモリアクセス違反がありました。_binaryDataのサイズ：[" + BinaryData.Length.ToString() + "]、アクセス要求されたアドレス：[" + offset + "]");
                     throw new ArgumentOutOfRangeException(nameof(offset), "The provided offset is out of the range of the binary data.");
                 }
             })
-                ? _binaryData[offset]
+                ? BinaryData[offset]
                 : null;
+        }
+
+        /// <summary>
+        ///  Disposable.
+        /// </summary>
+        public void Dispose()
+        {
+            _binaryReader?.Dispose();
+            _fileStream?.Dispose();
         }
     }
 }

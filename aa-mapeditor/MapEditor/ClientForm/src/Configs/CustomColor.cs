@@ -13,13 +13,13 @@
 //
 //      Arthentic Action Map Editor (Csharp Edition)
 //
-//      File name       : ApplicationConfiguration.cs
+//      File name       : CustomColor.cs
 //
 //      Author          : u7
 //
 //      Last update     : 2023/10/22
 //
-//      File version    : 2
+//      File version    : 1
 //
 //
 /**************************************************************/
@@ -28,22 +28,10 @@
 namespace ClientForm.src.Configs
 {
     /// <summary>
-    ///  Application name property.
+    ///  Define color code.
     /// </summary>
-    public class WindowName
+    public static class CustomColor
     {
-        public string DebugRunApplicationName { get; set; } = string.Empty;
-        public string ProductionApplicationName { get; set; } = string.Empty;
-    }
-
-
-
-    /// <summary>
-    ///  Application window scale information.
-    /// </summary>
-    public class ApplicationWindowScale
-    {
-        public int ClientWindowWidth { get; set; }
-        public int ClientWindowHeight { get; set; }
+        public static Color LightGreen => Color.FromArgb(192, 255, 192);
     }
 }

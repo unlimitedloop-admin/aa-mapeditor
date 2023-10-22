@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/10/18
+//      Last update     : 2023/10/22
 //
-//      File version    : 4
+//      File version    : 5
 //
 //
 /**************************************************************/
@@ -43,30 +43,40 @@ namespace ClientForm
         [STAThread]
         static void Main()
         {
-            if (CheckScreenResolution())
+            IConfigurationRoot configrations = GetConfigurationRoot();
+            if (CheckScreenResolution(configrations))
             {
                 // To customize application configuration such as set high DPI settings or default font,
                 // see https://aka.ms/applicationconfiguration.
                 ApplicationConfiguration.Initialize();
-                Application.Run(new MainForm(GetApplicationName()));
+                Application.Run(new MainForm(GetApplicationName(configrations)));
             }
+        }
+
+        /// <summary>
+        ///  Get an instance holding raw values from environment config file.
+        /// </summary>
+        /// <returns><see cref="IConfigurationRoot"/> for "appsettings.json".</returns>
+        private static IConfigurationRoot GetConfigurationRoot()
+        {
+            IConfigurationBuilder builder = new ConfigurationBuilder()
+                .SetBasePath(System.IO.Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+
+            return builder.Build();
         }
 
         /// <summary>
         ///  Get the application name from the config file.
         /// </summary>
         /// <returns>Screen title string.</returns>
-        private static string GetApplicationName()
+        private static string GetApplicationName(IConfigurationRoot configuration)
         {
             string filePath = Assembly.GetEntryAssembly()!.Location;
             FileVersionInfo fileVersionInfo = FileVersionInfo.GetVersionInfo(filePath);
             string buildVersion = fileVersionInfo.FileVersion ?? "unknown build";
             string version = fileVersionInfo.ProductVersion ?? "1.0";
-            IConfigurationBuilder builder = new ConfigurationBuilder()
-                .SetBasePath(System.IO.Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
 
-            IConfigurationRoot configuration = builder.Build();
             var fraction = configuration.GetSection("WindowName").Get<WindowName>();
             string text = string.Empty;
 #if DEBUG
@@ -82,16 +92,18 @@ namespace ClientForm
         ///  Check the resolution and verify that your application can run.
         /// </summary>
         /// <returns>False if resolution requirements are not met.</returns>
-        private static bool CheckScreenResolution()
+        private static bool CheckScreenResolution(IConfigurationRoot configuration)
         {
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            // Get resolution. 
-            int minWidth = 1190;  // Minimum screen width required
-            int minHeight = 824;  // Minimum screen height required
+            // 
+            var fraction = configuration.GetSection("ApplicationWindowScale").Get<ApplicationWindowScale>();
+            int minWidth = null != fraction ? fraction.ClientWindowWidth : 1;   // Minimum screen width required
+            int minHeight = null != fraction ? fraction.ClientWindowHeight : 1; // Minimum screen height required
 
+            // Get resolution.
             if (Screen.PrimaryScreen!.Bounds.Width < minWidth || Screen.PrimaryScreen!.Bounds.Height < minHeight)
             {
                 MessageBox.Show("このアプリケーションは、最低" + minWidth + "x" + minHeight + "の解像度が必要です。", "解像度エラー", MessageBoxButtons.OK, MessageBoxIcon.Error);

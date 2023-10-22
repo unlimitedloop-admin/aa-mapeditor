@@ -36,6 +36,13 @@ namespace ClientForm
             graphicChipPanel = new src.CustomControls.Chip.ShowcasePanel();
             mainMenuStrip = new MenuStrip();
             ファイルFToolStripMenuItem = new ToolStripMenuItem();
+            開くFToolStripMenuItem = new ToolStripMenuItem();
+            マップデータToolStripMenuItem = new ToolStripMenuItem();
+            グラフィックチップToolStripMenuItem = new ToolStripMenuItem();
+            閉じるCToolStripMenuItem = new ToolStripMenuItem();
+            マップデータMToolStripMenuItem = new ToolStripMenuItem();
+            グラフィックチップLToolStripMenuItem = new ToolStripMenuItem();
+            toolStripMenuItem1 = new ToolStripSeparator();
             アプリケーションの終了XToolStripMenuItem = new ToolStripMenuItem();
             choiceChipPanel = new src.CustomControls.Chip.ChipManagedPanel();
             statusStrip = new StatusStrip();
@@ -66,8 +73,9 @@ namespace ClientForm
             // 
             mainContainer.Panel2.Controls.Add(graphicChipPanel);
             mainContainer.Size = new Size(1150, 605);
-            mainContainer.SplitterDistance = 517;
+            mainContainer.SplitterDistance = 516;
             mainContainer.TabIndex = 0;
+            mainContainer.TabStop = false;
             // 
             // mapFieldContainer
             // 
@@ -84,9 +92,10 @@ namespace ClientForm
             // mapFieldContainer.Panel2
             // 
             mapFieldContainer.Panel2.Controls.Add(mapFieldInfoPanel);
-            mapFieldContainer.Size = new Size(517, 605);
-            mapFieldContainer.SplitterDistance = 485;
+            mapFieldContainer.Size = new Size(516, 605);
+            mapFieldContainer.SplitterDistance = 484;
             mapFieldContainer.TabIndex = 0;
+            mapFieldContainer.TabStop = false;
             // 
             // mapFieldPanel
             // 
@@ -95,8 +104,9 @@ namespace ClientForm
             mapFieldPanel.Dock = DockStyle.Fill;
             mapFieldPanel.Location = new Point(0, 0);
             mapFieldPanel.Name = "mapFieldPanel";
-            mapFieldPanel.Size = new Size(517, 485);
+            mapFieldPanel.Size = new Size(516, 484);
             mapFieldPanel.TabIndex = 0;
+            mapFieldPanel.DoubleClick += MapFieldPanel_DoubleClick;
             // 
             // mapFieldInfoPanel
             // 
@@ -105,7 +115,7 @@ namespace ClientForm
             mapFieldInfoPanel.Dock = DockStyle.Fill;
             mapFieldInfoPanel.Location = new Point(0, 0);
             mapFieldInfoPanel.Name = "mapFieldInfoPanel";
-            mapFieldInfoPanel.Size = new Size(517, 116);
+            mapFieldInfoPanel.Size = new Size(516, 117);
             mapFieldInfoPanel.TabIndex = 0;
             // 
             // graphicChipPanel
@@ -117,8 +127,9 @@ namespace ClientForm
             graphicChipPanel.Dock = DockStyle.Fill;
             graphicChipPanel.Location = new Point(0, 0);
             graphicChipPanel.Name = "graphicChipPanel";
-            graphicChipPanel.Size = new Size(629, 605);
+            graphicChipPanel.Size = new Size(630, 605);
             graphicChipPanel.TabIndex = 0;
+            graphicChipPanel.DoubleClick += GraphicChipPanel_DoubleClick;
             // 
             // mainMenuStrip
             // 
@@ -131,10 +142,57 @@ namespace ClientForm
             // 
             // ファイルFToolStripMenuItem
             // 
-            ファイルFToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { アプリケーションの終了XToolStripMenuItem });
+            ファイルFToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { 開くFToolStripMenuItem, 閉じるCToolStripMenuItem, toolStripMenuItem1, アプリケーションの終了XToolStripMenuItem });
             ファイルFToolStripMenuItem.Name = "ファイルFToolStripMenuItem";
             ファイルFToolStripMenuItem.Size = new Size(70, 20);
             ファイルFToolStripMenuItem.Text = "ファイル (&F)";
+            // 
+            // 開くFToolStripMenuItem
+            // 
+            開くFToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { マップデータToolStripMenuItem, グラフィックチップToolStripMenuItem });
+            開くFToolStripMenuItem.Name = "開くFToolStripMenuItem";
+            開くFToolStripMenuItem.Size = new Size(195, 22);
+            開くFToolStripMenuItem.Text = "開く (&F)";
+            // 
+            // マップデータToolStripMenuItem
+            // 
+            マップデータToolStripMenuItem.Name = "マップデータToolStripMenuItem";
+            マップデータToolStripMenuItem.Size = new Size(176, 22);
+            マップデータToolStripMenuItem.Text = "マップデータ... (&M)";
+            マップデータToolStripMenuItem.Click += 開く_マップデータ_Click;
+            // 
+            // グラフィックチップToolStripMenuItem
+            // 
+            グラフィックチップToolStripMenuItem.Name = "グラフィックチップToolStripMenuItem";
+            グラフィックチップToolStripMenuItem.Size = new Size(176, 22);
+            グラフィックチップToolStripMenuItem.Text = "グラフィックチップ... (&R)";
+            グラフィックチップToolStripMenuItem.Click += 開く_グラフィックチップ_Click;
+            // 
+            // 閉じるCToolStripMenuItem
+            // 
+            閉じるCToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { マップデータMToolStripMenuItem, グラフィックチップLToolStripMenuItem });
+            閉じるCToolStripMenuItem.Name = "閉じるCToolStripMenuItem";
+            閉じるCToolStripMenuItem.Size = new Size(195, 22);
+            閉じるCToolStripMenuItem.Text = "閉じる (&C)";
+            // 
+            // マップデータMToolStripMenuItem
+            // 
+            マップデータMToolStripMenuItem.Name = "マップデータMToolStripMenuItem";
+            マップデータMToolStripMenuItem.Size = new Size(180, 22);
+            マップデータMToolStripMenuItem.Text = "マップデータ (&M)";
+            マップデータMToolStripMenuItem.Click += 閉じる_マップデータ_Click;
+            // 
+            // グラフィックチップLToolStripMenuItem
+            // 
+            グラフィックチップLToolStripMenuItem.Name = "グラフィックチップLToolStripMenuItem";
+            グラフィックチップLToolStripMenuItem.Size = new Size(180, 22);
+            グラフィックチップLToolStripMenuItem.Text = "グラフィックチップ (&R)";
+            グラフィックチップLToolStripMenuItem.Click += 閉じる_グラフィックチップ_Click;
+            // 
+            // toolStripMenuItem1
+            // 
+            toolStripMenuItem1.Name = "toolStripMenuItem1";
+            toolStripMenuItem1.Size = new Size(192, 6);
             // 
             // アプリケーションの終了XToolStripMenuItem
             // 
@@ -231,5 +289,12 @@ namespace ClientForm
         private src.CustomControls.Map.TilingPanel mapFieldPanel;
         private src.CustomControls.Chip.ShowcasePanel graphicChipPanel;
         private Button openBinaryMapButton;
+        private ToolStripMenuItem 開くFToolStripMenuItem;
+        private ToolStripMenuItem マップデータToolStripMenuItem;
+        private ToolStripMenuItem グラフィックチップToolStripMenuItem;
+        private ToolStripMenuItem 閉じるCToolStripMenuItem;
+        private ToolStripMenuItem マップデータMToolStripMenuItem;
+        private ToolStripMenuItem グラフィックチップLToolStripMenuItem;
+        private ToolStripSeparator toolStripMenuItem1;
     }
 }

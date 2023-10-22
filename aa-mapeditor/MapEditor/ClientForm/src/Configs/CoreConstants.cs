@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/10/14
+//      Last update     : 2023/10/22
 //
-//      File version    : 2
+//      File version    : 3
 //
 //
 /**************************************************************/
@@ -30,7 +30,7 @@ namespace ClientForm.src.Configs
     /// <summary>
     ///  Constant definition class.
     /// </summary>
-    static class CoreConstants
+    public static class CoreConstants
     {
         // Map tile configurations.
         public const int MAPFIELD_LINES = 15;
@@ -46,5 +46,11 @@ namespace ClientForm.src.Configs
         // Standard size of graphics chip. (16×16)
         public const int GRAPHIC_CHIP_RAW_SIZE = 16;
         public const int CHIP_SIZE = GRAPHIC_CHIP_RAW_SIZE;
+
+
+        // graphicChipList config.
+        public const int GRAPHIC_BOX_SIZE = 32;
+        public const int GRAPHIC_CHIP_LIST_CELLSIZE = 48!;
+        public const int CHIP_CELLSIZE = GRAPHIC_CHIP_LIST_CELLSIZE;
     }
 }
