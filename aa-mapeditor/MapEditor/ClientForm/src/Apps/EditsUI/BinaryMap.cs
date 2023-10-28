@@ -17,16 +17,15 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/10/22
+//      Last update     : 2023/10/27
 //
-//      File version    : 2
+//      File version    : 3
 //
 //
 /**************************************************************/
 
 /* using namespace */
 using ClientForm.src.Exceptions;
-using ClientForm.src.Logger;
 
 
 
@@ -38,11 +37,6 @@ namespace ClientForm.src.Apps.EditsUI
     /// </summary>
     internal class BinaryMap : IDisposable
     {
-        /// <summary>
-        ///  Original obtained from the selected binary data file.
-        /// </summary>
-        public byte[] BinaryData { get; private set; }
-
         /// <summary>
         ///  It's an asynchronous file stream of binary data that you're reading.
         /// </summary>
@@ -58,6 +52,11 @@ namespace ClientForm.src.Apps.EditsUI
         /// </summary>
         public string FilePath { get; private set; } = string.Empty;
 
+        /// <summary>
+        ///  Original obtained from the selected binary data file.
+        /// </summary>
+        public byte[] BinaryData { get; private set; }
+
 
         internal BinaryMap()
         {
@@ -67,7 +66,7 @@ namespace ClientForm.src.Apps.EditsUI
         /// <summary>
         ///  Hosts the dialog to open a binary file.
         /// </summary>
-        /// <returns>True if successful.</returns>
+        /// <returns>True if Open the binary map file.</returns>
         internal bool BinaryFileOpener()
         {
             using OpenFileDialog openbin = new()
@@ -113,20 +112,15 @@ namespace ClientForm.src.Apps.EditsUI
         {
             return ExceptionHandler.TryCatchWithLogging(() =>
             {
-                if (0 > BinaryData.Length || BinaryData.Length <= offset)
+                if (BinaryData == null || offset < 0 || offset >= BinaryData.Length)
                 {
-                    // TODO : 例外発生後の挙動について要検証
-                    DefaultLogger.LogError("不測のメモリアクセス違反がありました。_binaryDataのサイズ：[" + BinaryData.Length.ToString() + "]、アクセス要求されたアドレス：[" + offset + "]");
-                    throw new ArgumentOutOfRangeException(nameof(offset), "The provided offset is out of the range of the binary data.");
+                    throw new ArgumentOutOfRangeException(nameof(offset), "_binaryDataのサイズ：[" + (BinaryData?.Length ?? 0).ToString() + "]、アクセス要求されたアドレス：[" + offset + "]");
                 }
             })
-                ? BinaryData[offset]
-                : null;
+            ? BinaryData[offset]
+            : null;
         }
 
-        /// <summary>
-        ///  Disposable.
-        /// </summary>
         public void Dispose()
         {
             _binaryReader?.Dispose();

@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/10/15
+//      Last update     : 2023/10/27
 //
-//      File version    : 3
+//      File version    : 4
 //
 //
 /**************************************************************/
@@ -41,7 +41,7 @@ namespace ClientForm.src.Apps.EditsUI
         /// <summary>
         ///  Graphics chip index number.
         /// </summary>
-        public int ChipIndex { get; }
+        public byte ChipIndex { get; }
 
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace ClientForm.src.Apps.EditsUI
         /// </summary>
         /// <param name="index">Graphics chip indexer</param>
         /// <param name="bitmap">Graphic (<see cref="Bitmap"/>) to display on the button</param>
-        public ChipButton(int index, Bitmap bitmap)
+        public ChipButton(byte index, Bitmap bitmap)
         {
             Name = "chip_" + index;
             ChipIndex = index;

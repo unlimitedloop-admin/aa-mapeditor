@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/10/15
+//      Last update     : 2023/10/27
 //
-//      File version    : 3
+//      File version    : 4
 //
 //
 /**************************************************************/
@@ -38,7 +38,7 @@ namespace ClientForm.src.Apps.EditsUI
     internal class ChipButtonFactory : ButtonFactory
     {
         // Adding chip data infomation.
-        private readonly int _index;
+        private readonly byte _index;
         private readonly Bitmap _bitmap;
 
 
@@ -48,7 +48,7 @@ namespace ClientForm.src.Apps.EditsUI
         /// </summary>
         /// <param name="index">Index number</param>
         /// <param name="bitmap">Texture</param>
-        internal ChipButtonFactory(int index, Bitmap bitmap)
+        internal ChipButtonFactory(byte index, Bitmap bitmap)
         {
             _index = index;
             _bitmap = bitmap;

@@ -17,12 +17,17 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/10/22
+//      Last update     : 2023/10/28
 //
-//      File version    : 8
+//      File version    : 9
 //
 //
 /**************************************************************/
+
+/* using namespace */
+using ClientForm.src.Apps.Core;
+
+
 
 /* sources */
 namespace ClientForm
@@ -32,6 +37,12 @@ namespace ClientForm
     /// </summary>
     public partial class MainForm : Form
     {
+        /// <summary>
+        ///  An alchemy cauldron for moving through the changes of history.
+        /// </summary>
+        private RecordSupervision _recorder = new();
+
+
         public MainForm(string applicationName)
         {
             InitializeComponent();
@@ -44,8 +55,8 @@ namespace ClientForm
         /// </summary>
         private void SetupMapBuilder()
         {
-            graphicChipPanel.SetPrimaryInstance(ref choiceChipPanel);
-            mapFieldPanel.SetPrimaryInstance(ref choiceChipPanel);
+            graphicChipPanel.SetPrimaryInstance(ref choiceChipPanel, ref _recorder);
+            mapFieldPanel.SetPrimaryInstance(ref choiceChipPanel, ref _recorder);
         }
 
         /// <summary>
@@ -76,5 +87,15 @@ namespace ClientForm
         ///  Close binary map event handler.
         /// </summary>
         private void 閉じる_マップデータ_Click(object sender, EventArgs e) => ExecuteCloseBinaryMapFile(sender, e);
+
+        /// <summary>
+        ///  Undo event handler.
+        /// </summary>
+        private void 元に戻す_Click(object sender, EventArgs e) => ExecuteUndo(sender, e);
+
+        /// <summary>
+        ///  Redo event handler.
+        /// </summary>
+        private void やり直し_Click(object sender, EventArgs e) => ExecuteRedo(sender, e);
     }
 }

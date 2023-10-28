@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/10/22
+//      Last update     : 2023/10/27
 //
-//      File version    : 2
+//      File version    : 3
 //
 //
 /**************************************************************/
@@ -108,7 +108,7 @@ namespace ClientForm.src.Apps.Core
                     {
                         if (binary.GetBinaryData(0x10 + (i * MapFields.GetLength(1)) + j) is byte data)
                         {
-                            _ = ChangeMapTile(i, j, data);
+                            ChangeMapTile(i, j, data);
                         }
                         else
                         {
@@ -132,15 +132,12 @@ namespace ClientForm.src.Apps.Core
         /// <param name="row">Row number of the array</param>
         /// <param name="col">Column number of the array</param>
         /// <param name="index">Tile index to be replaced</param>
-        /// <returns>True if the array has been replaced; false if there is no change.</returns>
-        internal bool ChangeMapTile(int row, int col, byte index)
+        internal void ChangeMapTile(int row, int col, byte index)
         {
-            if (0 <= row && MapFields.GetLength(0) > row && 0 <= col && MapFields.GetLength(1) > col)
+            if (0 <= row && row < MapFields.GetLength(0) && 0 <= col && col < MapFields.GetLength(1))
             {
                 MapFields[row, col] = index;
-                return true;
             }
-            return false;
         }
 
         /// <summary>

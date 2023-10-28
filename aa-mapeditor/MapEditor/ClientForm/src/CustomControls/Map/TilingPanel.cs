@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/10/22
+//      Last update     : 2023/10/28
 //
-//      File version    : 7
+//      File version    : 8
 //
 //
 /**************************************************************/
@@ -28,6 +28,7 @@
 using ClientForm.src.Apps.Core;
 using ClientForm.src.CustomControls.Chip;
 using ClientForm.src.Exceptions;
+using ClientForm.src.Gems.Command;
 using static ClientForm.src.Configs.CoreConstants;
 using static ClientForm.src.Configs.CustomColor;
 
@@ -41,6 +42,11 @@ namespace ClientForm.src.CustomControls.Map
     /// </summary>
     public partial class TilingPanel : Panel
     {
+        /// <summary>
+        ///  Memento stack reference.
+        /// </summary>
+        private RecordSupervision? _memento;
+
         /// <summary>
         ///  A class that manages map data and provides guidance.
         /// </summary>
@@ -73,9 +79,11 @@ namespace ClientForm.src.CustomControls.Map
         ///  Inserts an instance of a required class into a private member.
         /// </summary>
         /// <param name="chipmanager">Class reference</param>
-        public void SetPrimaryInstance(ref ChipManagedPanel chipmanager)
+        /// <param name="memento">Class reference</param>
+        public void SetPrimaryInstance(ref ChipManagedPanel chipmanager, ref RecordSupervision memento)
         {
             _chipManager = chipmanager;
+            _memento = memento;
         }
 
         /// <summary>
@@ -86,10 +94,8 @@ namespace ClientForm.src.CustomControls.Map
         {
             _ = ExceptionHandler.TryCatchWithLogging(() =>
             {
-                if (_chipManager == null || _chipManager.Count <= 0 || string.IsNullOrEmpty(Navigator.FieldName))
-                {
-                    return;
-                }
+                // Exit if the graphic list is empty.
+                if (_chipManager == null || _chipManager.Count <= 0 || string.IsNullOrEmpty(Navigator.FieldName)) return;
 
                 int tileWidth = TILE_SIZE;
                 int tileHeight = TILE_SIZE;
@@ -126,16 +132,21 @@ namespace ClientForm.src.CustomControls.Map
         /// <param name="point">The mouse coordinate point you clicked</param>
         private void MapFieldClick(Point point)
         {
-            int clickedTileX = point.X / TILE_SIZE;
-            int clickedTileY = point.Y / TILE_SIZE;
-            int chipindex = _chipManager!.ChoiceChipNumber;
-            if (0 <= chipindex && byte.MaxValue >= chipindex && Navigator.ChangeMapTile(clickedTileY, clickedTileX, (byte)chipindex))
+            _ = ExceptionHandler.TryCatchWithLogging(() =>
             {
-                SuspendLayout();
-                Rectangle invalidateRect = new(clickedTileX * TILE_SIZE, clickedTileY * TILE_SIZE, TILE_SIZE, TILE_SIZE);
-                Invalidate(invalidateRect);
-                ResumeLayout();
-            }
+                // Exit if the graphic list is empty.
+                if (_chipManager == null || _chipManager.Count <= 0 || string.IsNullOrEmpty(Navigator.FieldName)) return;
+
+                int clickedTileX = point.X / TILE_SIZE;
+                int clickedTileY = point.Y / TILE_SIZE;
+                byte chipindex = (byte)_chipManager!.ChoiceChipNumber;
+                byte oldindex = _mapTile[clickedTileY, clickedTileX];
+
+                Point clickPoint = new(clickedTileX, clickedTileY);
+                var command = new MapTileChangeCommand(this, clickPoint, clickPoint, chipindex, oldindex);
+                command.Execute();
+                _memento!.PushUndoStack(command);
+            });
         }
 
         /// <summary>
@@ -167,6 +178,14 @@ namespace ClientForm.src.CustomControls.Map
         }
 
         /// <summary>
+        ///  Indirectly references the <see cref="MapFieldNavigator.ChangeMapTile"/> method.
+        /// </summary>
+        /// <param name="clickedTileX">Column number of the array</param>
+        /// <param name="clickedTileY">Row number of the array</param>
+        /// <param name="chipindex">Tile index to be replaced</param>
+        internal void SetMapTile(int clickedTileX, int clickedTileY, byte chipindex) => Navigator.ChangeMapTile(clickedTileY, clickedTileX, chipindex);
+
+        /// <summary>
         ///  Destroys the binary data of MapFieldPanel.
         /// </summary>
         internal void DestroyMapField()
@@ -180,6 +199,7 @@ namespace ClientForm.src.CustomControls.Map
             }
             Navigator.FieldName = string.Empty;
             Navigator.Clear();
+            _memento?.Clear();
         }
     }
 }

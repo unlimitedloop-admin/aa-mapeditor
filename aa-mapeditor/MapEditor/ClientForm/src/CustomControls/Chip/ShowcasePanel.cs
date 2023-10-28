@@ -17,15 +17,18 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/10/22
+//      Last update     : 2023/10/28
 //
-//      File version    : 6
+//      File version    : 7
 //
 //
 /**************************************************************/
 
 /* using namespace */
+using ClientForm.src.Apps.Core;
 using ClientForm.src.Apps.EditsUI;
+using ClientForm.src.Exceptions;
+using ClientForm.src.Gems.Command;
 using ClientForm.src.Gems.Factory;
 using static ClientForm.src.Configs.CoreConstants;
 
@@ -39,6 +42,11 @@ namespace ClientForm.src.CustomControls.Chip
     /// </summary>
     public partial class ShowcasePanel : Panel
     {
+        /// <summary>
+        ///  Memento stack reference.
+        /// </summary>
+        private RecordSupervision? _memento;
+
         /// <summary>
         ///  Fabric <see cref="Image"/> for map chips.
         /// </summary>
@@ -63,7 +71,7 @@ namespace ClientForm.src.CustomControls.Chip
         /// <summary>
         ///  Class for sharing images.
         /// </summary>
-        private ChipManagedPanel? _chipManager = null;
+        private ChipManagedPanel? _chipManager;
 
         private const string TOOLTIP_TEXT = "このパネルをダブルクリックして素材の投入を開始します。";
         private readonly ToolTip _toolTip = new();  // For annotation.
@@ -78,9 +86,11 @@ namespace ClientForm.src.CustomControls.Chip
         ///  Inserts an instance of a required class into a private member.
         /// </summary>
         /// <param name="chipmanager">Class reference</param>
-        public void SetPrimaryInstance(ref ChipManagedPanel chipmanager)
+        /// <param name="memento">Class reference</param>
+        public void SetPrimaryInstance(ref ChipManagedPanel chipmanager, ref RecordSupervision memento)
         {
             _chipManager = chipmanager;
+            _memento = memento;
         }
 
         /// <summary>
@@ -97,38 +107,40 @@ namespace ClientForm.src.CustomControls.Chip
             if (null == BaseImage || 0 >= rows || 0 >= columns) return;
 
             DeleteAllControl();
-            // Displays button controls with graphics on a panel at regular intervals.
-            for (int y = 0; y < rows; y++)
+
+            _ = ExceptionHandler.TryCatchWithLogging(() =>
             {
-                for (int x = 0; x < columns; x++)
+                // Displays button controls with graphics on a panel at regular intervals.
+                for (int y = 0; y < rows; y++)
                 {
-                    Rectangle imgRect = new(x % columns / 1 * GRAPHSIZE, y * GRAPHSIZE, GRAPHSIZE - 1, GRAPHSIZE - 1);
-                    Bitmap bitmap = new(GRAPHBOXSIZE, GRAPHBOXSIZE);
-                    Graphics graphics = Graphics.FromImage(bitmap);
-                    graphics.DrawImage(BaseImage, new Rectangle(0, 0, GRAPHBOXSIZE, GRAPHBOXSIZE), imgRect, GraphicsUnit.Pixel);
-                    if (_chipManager!.AddImage((y * columns) + x, bitmap))
+                    for (int x = 0; x < columns; x++)
                     {
-                        // Using a Factory Method pattern to get a button instance and downcasting to a custom button.
-                        ButtonFactory buttonFactory = new ChipButtonFactory((y * columns) + x, bitmap);
-                        IButtonProduct product = buttonFactory.GetProduct();
-                        Button createButton = product.Create();
-                        if (createButton is ChipButton button)
+                        Bitmap bitmap = new(GRAPHBOXSIZE, GRAPHBOXSIZE);
+                        Graphics graphics = Graphics.FromImage(bitmap);
+                        Rectangle imgRect = new(x % columns * GRAPHSIZE, y * GRAPHSIZE, GRAPHSIZE - 1, GRAPHSIZE - 1);
+                        graphics.DrawImage(BaseImage, new Rectangle(0, 0, GRAPHBOXSIZE, GRAPHBOXSIZE), imgRect, GraphicsUnit.Pixel);
+
+                        byte location = (byte)(y * columns + x);
+                        if (_chipManager!.AddImage(location, bitmap))
                         {
-                            button.Location = new Point(x * CELLSIZE, y * CELLSIZE);
-                            button.Click += Button_Click;
-                            Controls.Add(button);
+                            ButtonFactory buttonFactory = new ChipButtonFactory(location, bitmap);
+                            IButtonProduct product = buttonFactory.GetProduct();
+                            Button createButton = product.Create();
+
+                            if (createButton is ChipButton button)
+                            {
+                                button.Location = new Point(x * CELLSIZE, y * CELLSIZE);
+                                button.Click += Button_Click;
+                                Controls.Add(button);
+                            }
+                        }
+                        else
+                        {
+                            throw new Exception("Failed to add image to _chipManager");
                         }
                     }
-                    else
-                    {
-                        /*
-                         * This syntax will pass if you try to register more than 255 chips, for example.
-                         * This is because it falls under an exception pattern due to the structure of binary data.
-                         */ 
-                        return;
-                    }
                 }
-            }
+            });
         }
 
         /// <summary>
@@ -139,8 +151,9 @@ namespace ClientForm.src.CustomControls.Chip
         private void Button_Click(object? sender, EventArgs e)
         {
             ChipButton button = (ChipButton)sender!;
-            _chipManager!.ChoiceChipInstance.Image = button.Image;
-            _chipManager!.ChoiceChipNumber = button.ChipIndex;
+            var command = new ChipSelectCommand(_chipManager!, button.Image, button.ChipIndex);
+            command.Execute();
+            _memento!.PushUndoStack(command);
         }
 
         /// <summary>
@@ -168,6 +181,7 @@ namespace ClientForm.src.CustomControls.Chip
             Controls.Clear();
             ResumeLayout();
             _chipManager?.Clear();
+            _memento?.Clear();
         }
     }
 }

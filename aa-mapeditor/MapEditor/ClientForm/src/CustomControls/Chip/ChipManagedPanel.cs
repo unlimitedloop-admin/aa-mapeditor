@@ -17,15 +17,14 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/10/22
+//      Last update     : 2023/10/28
 //
-//      File version    : 3
+//      File version    : 4
 //
 //
 /**************************************************************/
 
 /* sources */
-
 namespace ClientForm.src.CustomControls.Chip
 {
     /// <summary>
@@ -54,11 +53,10 @@ namespace ClientForm.src.CustomControls.Chip
         /// </summary>
         private readonly List<IndexerImage> _images = new();
 
-        // TODO : 不要な代入が発生しないようにメンバの隠蔽が必要
         /// <summary>
         ///  The PictureBox to be placed within the choiceChipPanel.
         /// </summary>
-        public PictureBox ChoiceChipInstance { get; set; } = new()
+        private readonly PictureBox _choiceChipInstance = new()
         {
             Image = null,
             Location = new Point(3, 3),
@@ -71,6 +69,8 @@ namespace ClientForm.src.CustomControls.Chip
 
         private const int VOID__ = -1;  // The void value defined.
 
+        public Image? ChoiceChip { get => _choiceChipInstance.Image; set => _choiceChipInstance.Image = value; }
+
         /// <summary>
         ///  Graphic chip collection indexer.
         /// </summary>
@@ -81,8 +81,8 @@ namespace ClientForm.src.CustomControls.Chip
 
         public ChipManagedPanel()
         {
-            Controls.Add(ChoiceChipInstance);
-            ChoiceChipInstance.Click += ChoiceChipInstance_Click;
+            Controls.Add(_choiceChipInstance);
+            _choiceChipInstance.Click += ChoiceChipInstance_Click;
         }
 
         /// <summary>
@@ -128,10 +128,10 @@ namespace ClientForm.src.CustomControls.Chip
         /// </summary>
         internal void Clear()
         {
-            if (ChoiceChipInstance.Image is IDisposable disposableImage)
+            if (_choiceChipInstance.Image is IDisposable disposableImage)
             {
                 disposableImage.Dispose();
-                ChoiceChipInstance.Image = null;
+                _choiceChipInstance.Image = null;
             }
             ChoiceChipNumber = VOID__;
             _images.Clear();

@@ -17,15 +17,16 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/10/22
+//      Last update     : 2023/10/28
 //
-//      File version    : 3
+//      File version    : 4
 //
 //
 /**************************************************************/
 
 /* using namespace */
 using ClientForm.src.Apps.Loader;
+using ClientForm.src.Gems.Command;
 
 
 
@@ -80,6 +81,24 @@ namespace ClientForm
                 mapFieldPanel.DestroyMapField();
                 mapFieldPanel.Invalidate();
             }
+        }
+
+        /// <summary>
+        ///  The main of the Undo process.
+        /// </summary>
+        private void ExecuteUndo(object sender, EventArgs e)
+        {
+            Command? command = _recorder!.PopUndoStack();
+            command?.Undo();
+        }
+
+        /// <summary>
+        ///  The main of the redo process.
+        /// </summary>
+        private void ExecuteRedo(object sender, EventArgs e)
+        {
+            Command? command = _recorder!.PopRedoStack();
+            command?.Execute();
         }
     }
 }

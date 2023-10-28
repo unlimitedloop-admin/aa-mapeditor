@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/10/18
+//      Last update     : 2023/10/28
 //
-//      File version    : 1
+//      File version    : 2
 //
 //
 /**************************************************************/
@@ -74,6 +74,14 @@ namespace ClientForm.src.Exceptions
                 else if (ex is IndexOutOfRangeException)
                 {
                     _ = MessageBox.Show("インデックスが配列の境界外でした。" + "\r\n" + ex, "IndexOutOfRangeException info");
+                }
+                else if (ex is InvalidCastException)
+                {
+                    _ = MessageBox.Show("無効なキャストが行われようとしました。" + "\r\n" + ex, "InvalidCastException info");
+                }
+                else if (ex is NullReferenceException)
+                {
+                    _ = MessageBox.Show("nullオブジェクトは参照できません。" + "\r\n" + ex, "NullReferenceException info");
                 }
                 else if (ex is ObjectDisposedException)
                 {

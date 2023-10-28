@@ -44,6 +44,9 @@ namespace ClientForm
             グラフィックチップLToolStripMenuItem = new ToolStripMenuItem();
             toolStripMenuItem1 = new ToolStripSeparator();
             アプリケーションの終了XToolStripMenuItem = new ToolStripMenuItem();
+            編集EToolStripMenuItem = new ToolStripMenuItem();
+            元に戻すUToolStripMenuItem = new ToolStripMenuItem();
+            やり直しRToolStripMenuItem = new ToolStripMenuItem();
             choiceChipPanel = new src.CustomControls.Chip.ChipManagedPanel();
             statusStrip = new StatusStrip();
             openGraphChipButton = new Button();
@@ -133,7 +136,7 @@ namespace ClientForm
             // 
             // mainMenuStrip
             // 
-            mainMenuStrip.Items.AddRange(new ToolStripItem[] { ファイルFToolStripMenuItem });
+            mainMenuStrip.Items.AddRange(new ToolStripItem[] { ファイルFToolStripMenuItem, 編集EToolStripMenuItem });
             mainMenuStrip.Location = new Point(0, 0);
             mainMenuStrip.Name = "mainMenuStrip";
             mainMenuStrip.Size = new Size(1174, 24);
@@ -178,14 +181,14 @@ namespace ClientForm
             // マップデータMToolStripMenuItem
             // 
             マップデータMToolStripMenuItem.Name = "マップデータMToolStripMenuItem";
-            マップデータMToolStripMenuItem.Size = new Size(180, 22);
+            マップデータMToolStripMenuItem.Size = new Size(167, 22);
             マップデータMToolStripMenuItem.Text = "マップデータ (&M)";
             マップデータMToolStripMenuItem.Click += 閉じる_マップデータ_Click;
             // 
             // グラフィックチップLToolStripMenuItem
             // 
             グラフィックチップLToolStripMenuItem.Name = "グラフィックチップLToolStripMenuItem";
-            グラフィックチップLToolStripMenuItem.Size = new Size(180, 22);
+            グラフィックチップLToolStripMenuItem.Size = new Size(167, 22);
             グラフィックチップLToolStripMenuItem.Text = "グラフィックチップ (&R)";
             グラフィックチップLToolStripMenuItem.Click += 閉じる_グラフィックチップ_Click;
             // 
@@ -200,6 +203,29 @@ namespace ClientForm
             アプリケーションの終了XToolStripMenuItem.Size = new Size(195, 22);
             アプリケーションの終了XToolStripMenuItem.Text = "アプリケーションの終了 (&X)";
             アプリケーションの終了XToolStripMenuItem.Click += アプリケーションの終了XToolStripMenuItem_Click;
+            // 
+            // 編集EToolStripMenuItem
+            // 
+            編集EToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { 元に戻すUToolStripMenuItem, やり直しRToolStripMenuItem });
+            編集EToolStripMenuItem.Name = "編集EToolStripMenuItem";
+            編集EToolStripMenuItem.Size = new Size(60, 20);
+            編集EToolStripMenuItem.Text = "編集 (&E)";
+            // 
+            // 元に戻すUToolStripMenuItem
+            // 
+            元に戻すUToolStripMenuItem.Name = "元に戻すUToolStripMenuItem";
+            元に戻すUToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.Z;
+            元に戻すUToolStripMenuItem.Size = new Size(180, 22);
+            元に戻すUToolStripMenuItem.Text = "元に戻す (&U)";
+            元に戻すUToolStripMenuItem.Click += 元に戻す_Click;
+            // 
+            // やり直しRToolStripMenuItem
+            // 
+            やり直しRToolStripMenuItem.Name = "やり直しRToolStripMenuItem";
+            やり直しRToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.Y;
+            やり直しRToolStripMenuItem.Size = new Size(180, 22);
+            やり直しRToolStripMenuItem.Text = "やり直し (&R)";
+            やり直しRToolStripMenuItem.Click += やり直し_Click;
             // 
             // choiceChipPanel
             // 
@@ -259,6 +285,7 @@ namespace ClientForm
             Controls.Add(mainContainer);
             Controls.Add(mainMenuStrip);
             Icon = (Icon)resources.GetObject("$this.Icon");
+            KeyPreview = true;
             MainMenuStrip = mainMenuStrip;
             Name = "MainForm";
             mainContainer.Panel1.ResumeLayout(false);
@@ -296,5 +323,8 @@ namespace ClientForm
         private ToolStripMenuItem マップデータMToolStripMenuItem;
         private ToolStripMenuItem グラフィックチップLToolStripMenuItem;
         private ToolStripSeparator toolStripMenuItem1;
+        private ToolStripMenuItem 編集EToolStripMenuItem;
+        private ToolStripMenuItem 元に戻すUToolStripMenuItem;
+        private ToolStripMenuItem やり直しRToolStripMenuItem;
     }
 }
