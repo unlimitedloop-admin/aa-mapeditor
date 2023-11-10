@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/10/28
+//      Last update     : 2023/11/09
 //
-//      File version    : 9
+//      File version    : 10
 //
 //
 /**************************************************************/
@@ -40,13 +40,15 @@ namespace ClientForm
         /// <summary>
         ///  An alchemy cauldron for moving through the changes of history.
         /// </summary>
-        private RecordSupervision _recorder = new();
+        private RecordSupervision _recorder;
 
 
         public MainForm(string applicationName)
         {
             InitializeComponent();
             Text = applicationName;  // Application name.
+            
+            _recorder = new(this);
             SetupMapBuilder();  // The primary instance that should be configured uniquely to the application.
         }
 
@@ -58,6 +60,11 @@ namespace ClientForm
             graphicChipPanel.SetPrimaryInstance(ref choiceChipPanel, ref _recorder);
             mapFieldPanel.SetPrimaryInstance(ref choiceChipPanel, ref _recorder);
         }
+
+        /// <summary>
+        ///  Keypress event handler for MainForm.
+        /// </summary>
+        private void MainForm_KeyDown(object sender, KeyEventArgs e) => KeyDownEvent(sender, e);
 
         /// <summary>
         ///  An event handler that terminates the application.
@@ -92,10 +99,12 @@ namespace ClientForm
         ///  Undo event handler.
         /// </summary>
         private void 元に戻す_Click(object sender, EventArgs e) => ExecuteUndo(sender, e);
+        internal void 元に戻す_ChangeEnabled(bool enabled) => 元に戻すUToolStripMenuItem.Enabled = enabled;
 
         /// <summary>
         ///  Redo event handler.
         /// </summary>
         private void やり直し_Click(object sender, EventArgs e) => ExecuteRedo(sender, e);
+        internal void やり直し_ChangeEnabled(bool enabled) => やり直しRToolStripMenuItem.Enabled = enabled;
     }
 }

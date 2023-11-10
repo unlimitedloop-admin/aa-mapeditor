@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/10/28
+//      Last update     : 2023/11/09
 //
-//      File version    : 1
+//      File version    : 2
 //
 //
 /**************************************************************/
@@ -50,6 +50,23 @@ namespace ClientForm.src.Apps.Core
         /// </summary>
         private readonly MementoStack<Command> _redoStack = new(new CommonOption().MementoListNumber);
 
+        private readonly MainForm _mainForm;
+
+
+        internal RecordSupervision(MainForm mainForm)
+        {
+            _mainForm = mainForm;
+            EnableMenuCommand();
+        }
+
+        /// <summary>
+        ///  Switches activation/deactivation of Undo and Redo commands.
+        /// </summary>
+        private void EnableMenuCommand()
+        {
+            _mainForm.元に戻す_ChangeEnabled(0 < _undoStack.Count);
+            _mainForm.やり直し_ChangeEnabled(0 < _redoStack.Count);
+        }
 
         /// <summary>
         ///  Push a command onto the undo stack.
@@ -59,6 +76,7 @@ namespace ClientForm.src.Apps.Core
         {
             _undoStack.Push(command);
             _redoStack.Clear();
+            EnableMenuCommand();
         }
 
         /// <summary>
@@ -71,6 +89,7 @@ namespace ClientForm.src.Apps.Core
             {
                 Command command = _undoStack.Pop();
                 _redoStack.Push(command);
+                EnableMenuCommand();
                 return command;
             }
             return null;
@@ -86,6 +105,7 @@ namespace ClientForm.src.Apps.Core
             {
                 Command command = _redoStack.Pop();
                 _undoStack.Push(command);
+                EnableMenuCommand();
                 return command;
             }
             return null;
@@ -98,6 +118,7 @@ namespace ClientForm.src.Apps.Core
         {
             _undoStack.Clear();
             _redoStack.Clear();
+            EnableMenuCommand();
         }
     }
 }

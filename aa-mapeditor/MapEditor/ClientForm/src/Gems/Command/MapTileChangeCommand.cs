@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/10/28
+//      Last update     : 2023/11/09
 //
-//      File version    : 1
+//      File version    : 2
 //
 //
 /**************************************************************/
@@ -45,7 +45,7 @@ namespace ClientForm.src.Gems.Command
         private readonly Point _startCell;
         private readonly Point _endCell;
         private readonly byte _newTileIndex;
-        private readonly byte _oldTileIndex;
+        private readonly List<byte> _oldTileIndex = new();
 
 
         /// <summary>
@@ -55,31 +55,29 @@ namespace ClientForm.src.Gems.Command
         /// <param name="start">Start the cell address</param>
         /// <param name="end">End point the cell address</param>
         /// <param name="newTileIndex">Index number of the tile to change</param>
-        /// <param name="oldTileIndex">The index number of the tile before the change</param>
-        public MapTileChangeCommand(TilingPanel targets, Point start, Point end, byte newTileIndex, byte oldTileIndex)
+        public MapTileChangeCommand(TilingPanel targets, Point start, Point end, byte newTileIndex)
         {
             _targets = targets;
             _startCell = start;
             _endCell = end;
             _newTileIndex = newTileIndex;
-            _oldTileIndex = oldTileIndex;
         }
 
         /// <summary>
         ///  Execute command.
         /// </summary>
-        public override void Execute() => ChangeMapTiles(_newTileIndex);
+        public override void Execute() => ChangeMapTiles(true);
 
         /// <summary>
         ///  Cancel execution of a command.
         /// </summary>
-        public override void Undo() => ChangeMapTiles(_oldTileIndex);
+        public override void Undo() => ChangeMapTiles(false);
 
         /// <summary>
         ///  Changes the map tiles within the specified range of cell locations.
         /// </summary>
-        /// <param name="tileindex">Index number of the tilemap to change</param>
-        private void ChangeMapTiles(byte tileindex)
+        /// <param name="flag">Specify true to embed _newTileIndex, and specify false to return _oldTileIndex data</param>
+        private void ChangeMapTiles(bool flag)
         {
             Point startPoint = new(
                 Math.Min(_startCell.X, _endCell.X),
@@ -90,11 +88,23 @@ namespace ClientForm.src.Gems.Command
                 Math.Max(_startCell.Y, _endCell.Y)
             );
 
+            int index = 0;
             for (int row = startPoint.Y; row <= endPoint.Y; row++)
             {
                 for (int col = startPoint.X; col <= endPoint.X; col++)
                 {
-                    _targets.SetMapTile(col, row, tileindex);
+                    if (flag)
+                    {
+                        // Redo (Execute command)
+                        _oldTileIndex.Add(_targets.GetMapTile(col, row));
+                        _targets.SetMapTile(col, row, _newTileIndex);
+                    }
+                    else
+                    {
+                        // Undo
+                        _targets.SetMapTile(col, row, _oldTileIndex[index]);
+                    }
+                    index++;
                 }
             }
             RefreshTheRectInTargets(startPoint, endPoint);

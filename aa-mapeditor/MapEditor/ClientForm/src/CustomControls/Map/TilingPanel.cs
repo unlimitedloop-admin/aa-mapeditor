@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/10/28
+//      Last update     : 2023/11/09
 //
-//      File version    : 8
+//      File version    : 9
 //
 //
 /**************************************************************/
@@ -112,6 +112,10 @@ namespace ClientForm.src.CustomControls.Map
                         }
                     }
                 }
+                if (null == _rangeTool)
+                {
+                    _rangeTool = new(this);     // Activates the selection tool when all tiles are filled.
+                }
             });
         }
 
@@ -124,18 +128,19 @@ namespace ClientForm.src.CustomControls.Map
             base.OnPaint(e);
 
             TileDrawer(e);
+            DrawRangeTool(e);
         }
 
         /// <summary>
         ///  Event fired when the map field is clicked.
         /// </summary>
         /// <param name="point">The mouse coordinate point you clicked</param>
-        private void MapFieldClick(Point point)
+        private void MapTileChange(Point point)
         {
             _ = ExceptionHandler.TryCatchWithLogging(() =>
             {
                 // Exit if the graphic list is empty.
-                if (_chipManager == null || _chipManager.Count <= 0 || string.IsNullOrEmpty(Navigator.FieldName)) return;
+                if (null == _chipManager?.ChoiceChip || string.IsNullOrEmpty(Navigator.FieldName)) return;
 
                 int clickedTileX = point.X / TILE_SIZE;
                 int clickedTileY = point.Y / TILE_SIZE;
@@ -143,21 +148,36 @@ namespace ClientForm.src.CustomControls.Map
                 byte oldindex = _mapTile[clickedTileY, clickedTileX];
 
                 Point clickPoint = new(clickedTileX, clickedTileY);
-                var command = new MapTileChangeCommand(this, clickPoint, clickPoint, chipindex, oldindex);
+                var command = new MapTileChangeCommand(this, clickPoint, clickPoint, chipindex);
                 command.Execute();
                 _memento!.PushUndoStack(command);
             });
         }
 
         /// <summary>
-        ///  OnClick of TilingPanel event handler.
-        ///  <para>Override <see cref="Control.OnClick"/> for Panel controls.</para>
+        ///  Event fired when the map field is selected.
         /// </summary>
-        protected override void OnClick(EventArgs e)
+        /// <param name="start">starting point of selection</param>
+        /// <param name="end">end of selection</param>
+        private void MapTileChange(Point start, Point end)
         {
-            base.OnClick(e);
+            _ = ExceptionHandler.TryCatchWithLogging(() =>
+            {
+                // Exit if the graphic list is empty.
+                if (null == _chipManager?.ChoiceChip || string.IsNullOrEmpty(Navigator.FieldName)) return;
 
-            MapFieldClick(PointToClient(Cursor.Position));
+                int startTileX = start.X / TILE_SIZE;
+                int startTileY = start.Y / TILE_SIZE;
+                int endTileX = end.X / TILE_SIZE;
+                int endTileY = end.Y / TILE_SIZE;
+                byte chipindex = (byte)_chipManager!.ChoiceChipNumber;
+
+                Point startPoint = new(startTileX, startTileY);
+                Point endPoint = new(endTileX, endTileY);
+                var command = new MapTileChangeCommand(this, startPoint, endPoint, chipindex);
+                command.Execute();
+                _memento!.PushUndoStack(command);
+            });
         }
 
         /// <summary>
@@ -186,6 +206,14 @@ namespace ClientForm.src.CustomControls.Map
         internal void SetMapTile(int clickedTileX, int clickedTileY, byte chipindex) => Navigator.ChangeMapTile(clickedTileY, clickedTileX, chipindex);
 
         /// <summary>
+        ///  Get map tile index.
+        /// </summary>
+        /// <param name="clickedTileX">Column number of the array</param>
+        /// <param name="clickedTileY">Row number of the array</param>
+        /// <returns>Map tiles byte index.</returns>
+        internal byte GetMapTile(int clickedTileX, int clickedTileY) => _mapTile[clickedTileY, clickedTileX];
+
+        /// <summary>
         ///  Destroys the binary data of MapFieldPanel.
         /// </summary>
         internal void DestroyMapField()
@@ -197,6 +225,7 @@ namespace ClientForm.src.CustomControls.Map
                     _mapTile[i, j] = 0;
                 }
             }
+            _rangeTool = null;
             Navigator.FieldName = string.Empty;
             Navigator.Clear();
             _memento?.Clear();

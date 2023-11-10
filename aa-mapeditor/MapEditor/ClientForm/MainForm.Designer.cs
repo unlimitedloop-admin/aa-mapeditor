@@ -231,6 +231,7 @@ namespace ClientForm
             // 
             choiceChipPanel.BackColor = SystemColors.ControlLight;
             choiceChipPanel.BorderStyle = BorderStyle.Fixed3D;
+            choiceChipPanel.ChoiceChip = null;
             choiceChipPanel.ChoiceChipNumber = -1;
             choiceChipPanel.Location = new Point(1120, 100);
             choiceChipPanel.Name = "choiceChipPanel";
@@ -288,6 +289,7 @@ namespace ClientForm
             KeyPreview = true;
             MainMenuStrip = mainMenuStrip;
             Name = "MainForm";
+            KeyDown += MainForm_KeyDown;
             mainContainer.Panel1.ResumeLayout(false);
             mainContainer.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)mainContainer).EndInit();

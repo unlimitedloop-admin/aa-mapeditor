@@ -15,6 +15,12 @@ namespace ClientForm.src.CustomControls.Map
         {
             if (disposing && (components != null))
             {
+                // Dispose managed resources.
+                if (_rangeTool != null)
+                {
+                    _rangeTool.Dispose();
+                    _rangeTool = null;
+                }
                 components.Dispose();
             }
             base.Dispose(disposing);

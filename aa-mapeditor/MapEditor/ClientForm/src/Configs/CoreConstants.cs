@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/10/22
+//      Last update     : 2023/11/10
 //
-//      File version    : 3
+//      File version    : 4
 //
 //
 /**************************************************************/
@@ -32,7 +32,9 @@ namespace ClientForm.src.Configs
     /// </summary>
     public static class CoreConstants
     {
-        // Map tile configurations.
+        // Map tile panel configurations.
+        public const int MAPFIELD_PANEL_WIDTH = 512;
+        public const int MAPFIELD_PANEL_HEIGHT = 480;
         public const int MAPFIELD_LINES = 15;
         public const int MAPFIELD_COLUMNS = 16;
         public const int MAPFIELD_CELLSIZE = 32;
