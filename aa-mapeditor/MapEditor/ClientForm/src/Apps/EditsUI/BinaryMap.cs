@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/10/27
+//      Last update     : 2023/11/18
 //
-//      File version    : 3
+//      File version    : 4
 //
 //
 /**************************************************************/
@@ -66,8 +66,8 @@ namespace ClientForm.src.Apps.EditsUI
         /// <summary>
         ///  Hosts the dialog to open a binary file.
         /// </summary>
-        /// <returns>True if Open the binary map file.</returns>
-        internal bool BinaryFileOpener()
+        /// <returns>Binary data of the opened file.</returns>
+        internal byte[] BinaryFileOpener()
         {
             using OpenFileDialog openbin = new()
             {
@@ -77,12 +77,12 @@ namespace ClientForm.src.Apps.EditsUI
             if (openbin.ShowDialog() == DialogResult.OK)
             {
                 FilePath = openbin.FileName;
-                return FileOpen();
+                if (!FileOpen())
+                {
+                    return Array.Empty<byte>();
+                }
             }
-            else
-            {
-                return false;
-            }
+            return BinaryData;
         }
 
         /// <summary>
@@ -100,25 +100,6 @@ namespace ClientForm.src.Apps.EditsUI
                 _ = _binaryReader.Read(data, 0, (int)len);
                 BinaryData = data;
             });
-        }
-
-        /// <summary>
-        ///  Extracts the binary data at the specified position.
-        /// </summary>
-        /// <param name="offset">Sequence number</param>
-        /// <returns>binary data address (byte).</returns>
-        /// <exception cref="ArgumentOutOfRangeException"></exception>
-        internal byte? GetBinaryData(int offset)
-        {
-            return ExceptionHandler.TryCatchWithLogging(() =>
-            {
-                if (BinaryData == null || offset < 0 || offset >= BinaryData.Length)
-                {
-                    throw new ArgumentOutOfRangeException(nameof(offset), "_binaryDataのサイズ：[" + (BinaryData?.Length ?? 0).ToString() + "]、アクセス要求されたアドレス：[" + offset + "]");
-                }
-            })
-            ? BinaryData[offset]
-            : null;
         }
 
         public void Dispose()

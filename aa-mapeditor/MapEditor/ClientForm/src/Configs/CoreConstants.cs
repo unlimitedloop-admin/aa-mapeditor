@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/11/10
+//      Last update     : 2023/11/18
 //
-//      File version    : 4
+//      File version    : 5
 //
 //
 /**************************************************************/
@@ -54,5 +54,11 @@ namespace ClientForm.src.Configs
         public const int GRAPHIC_BOX_SIZE = 32;
         public const int GRAPHIC_CHIP_LIST_CELLSIZE = 48!;
         public const int CHIP_CELLSIZE = GRAPHIC_CHIP_LIST_CELLSIZE;
+
+
+        // Binary file config.
+        public const int BINARY_DATA_1PAGE_SIZE = 0x100;
+        public const int BINARY_HEADER_SIZE = 0x10;
+        public const int BINARY_LINE_SIZE = 0x10;
     }
 }

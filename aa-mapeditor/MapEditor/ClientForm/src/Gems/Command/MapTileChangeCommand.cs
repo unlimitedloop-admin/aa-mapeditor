@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/11/09
+//      Last update     : 2023/11/18
 //
-//      File version    : 2
+//      File version    : 3
 //
 //
 /**************************************************************/
@@ -42,6 +42,7 @@ namespace ClientForm.src.Gems.Command
         
         // Resource.
         private readonly TilingPanel _targets;
+        private readonly int _pagesIndex;
         private readonly Point _startCell;
         private readonly Point _endCell;
         private readonly byte _newTileIndex;
@@ -52,12 +53,14 @@ namespace ClientForm.src.Gems.Command
         ///  Setting command parameter.
         /// </summary>
         /// <param name="targets">MapTile <see cref="Panel"/></param>
+        /// <param name="pagesIndex">Target page index</param>
         /// <param name="start">Start the cell address</param>
         /// <param name="end">End point the cell address</param>
         /// <param name="newTileIndex">Index number of the tile to change</param>
-        public MapTileChangeCommand(TilingPanel targets, Point start, Point end, byte newTileIndex)
+        public MapTileChangeCommand(TilingPanel targets, int pagesIndex, Point start, Point end, byte newTileIndex)
         {
             _targets = targets;
+            _pagesIndex = pagesIndex;
             _startCell = start;
             _endCell = end;
             _newTileIndex = newTileIndex;
@@ -96,13 +99,13 @@ namespace ClientForm.src.Gems.Command
                     if (flag)
                     {
                         // Redo (Execute command)
-                        _oldTileIndex.Add(_targets.GetMapTile(col, row));
-                        _targets.SetMapTile(col, row, _newTileIndex);
+                        _oldTileIndex.Add(_targets.Navigator.GetBinaryData(_pagesIndex, row, col));
+                        _targets.Navigator.UpdateBinaryData(_pagesIndex, row, col, _newTileIndex);  // TODO : バイナリデータへ設定できなかった場合はどうしますか？
                     }
                     else
                     {
                         // Undo
-                        _targets.SetMapTile(col, row, _oldTileIndex[index]);
+                        _targets.Navigator.UpdateBinaryData(_pagesIndex, row, col, _oldTileIndex[index]);  // TODO : バイナリデータへ設定できなかった場合はどうしますか？
                     }
                     index++;
                 }

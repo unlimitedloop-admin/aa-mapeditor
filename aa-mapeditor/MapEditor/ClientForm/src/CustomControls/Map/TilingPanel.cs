@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/11/09
+//      Last update     : 2023/11/18
 //
-//      File version    : 9
+//      File version    : 10
 //
 //
 /**************************************************************/
@@ -148,7 +148,7 @@ namespace ClientForm.src.CustomControls.Map
                 byte oldindex = _mapTile[clickedTileY, clickedTileX];
 
                 Point clickPoint = new(clickedTileX, clickedTileY);
-                var command = new MapTileChangeCommand(this, clickPoint, clickPoint, chipindex);
+                var command = new MapTileChangeCommand(this, Navigator.PageIndex, clickPoint, clickPoint, chipindex);
                 command.Execute();
                 _memento!.PushUndoStack(command);
             });
@@ -174,7 +174,7 @@ namespace ClientForm.src.CustomControls.Map
 
                 Point startPoint = new(startTileX, startTileY);
                 Point endPoint = new(endTileX, endTileY);
-                var command = new MapTileChangeCommand(this, startPoint, endPoint, chipindex);
+                var command = new MapTileChangeCommand(this, Navigator.PageIndex, startPoint, endPoint, chipindex);
                 command.Execute();
                 _memento!.PushUndoStack(command);
             });
@@ -196,22 +196,6 @@ namespace ClientForm.src.CustomControls.Map
                 _toolTip.Active = false;
             }
         }
-
-        /// <summary>
-        ///  Indirectly references the <see cref="MapFieldNavigator.ChangeMapTile"/> method.
-        /// </summary>
-        /// <param name="clickedTileX">Column number of the array</param>
-        /// <param name="clickedTileY">Row number of the array</param>
-        /// <param name="chipindex">Tile index to be replaced</param>
-        internal void SetMapTile(int clickedTileX, int clickedTileY, byte chipindex) => Navigator.ChangeMapTile(clickedTileY, clickedTileX, chipindex);
-
-        /// <summary>
-        ///  Get map tile index.
-        /// </summary>
-        /// <param name="clickedTileX">Column number of the array</param>
-        /// <param name="clickedTileY">Row number of the array</param>
-        /// <returns>Map tiles byte index.</returns>
-        internal byte GetMapTile(int clickedTileX, int clickedTileY) => _mapTile[clickedTileY, clickedTileX];
 
         /// <summary>
         ///  Destroys the binary data of MapFieldPanel.

@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/11/09
+//      Last update     : 2023/11/18
 //
-//      File version    : 10
+//      File version    : 11
 //
 //
 /**************************************************************/
@@ -47,7 +47,7 @@ namespace ClientForm
         {
             InitializeComponent();
             Text = applicationName;  // Application name.
-            
+
             _recorder = new(this);
             SetupMapBuilder();  // The primary instance that should be configured uniquely to the application.
         }
@@ -62,7 +62,7 @@ namespace ClientForm
         }
 
         /// <summary>
-        ///  Keypress event handler for MainForm.
+        ///  KeyDown event handler for MainForm.
         /// </summary>
         private void MainForm_KeyDown(object sender, KeyEventArgs e) => KeyDownEvent(sender, e);
 
@@ -87,13 +87,21 @@ namespace ClientForm
         ///  Open binary map data event handler.
         /// </summary>
         private void OpenBinaryMapButton_Click(object sender, EventArgs e) => ExecuteOpenBinaryMapFile(sender, e);
-        private void MapFieldPanel_DoubleClick(object sender, EventArgs e) => ExecuteOpenBinaryMapFile(sender, e);
+        private void MapFieldPanel_DoubleClick(object? sender, EventArgs e) => ExecuteOpenBinaryMapFile(sender!, e);
         private void 開く_マップデータ_Click(object sender, EventArgs e) => ExecuteOpenBinaryMapFile(sender, e);
 
         /// <summary>
         ///  Close binary map event handler.
         /// </summary>
         private void 閉じる_マップデータ_Click(object sender, EventArgs e) => ExecuteCloseBinaryMapFile(sender, e);
+
+        /// <summary>
+        ///  User interface for page transitions.
+        /// </summary>
+        private void PrevPagesButton_Click(object sender, EventArgs e) => ExecuteChangePages(-1);
+        private void NextPagesButton_Click(object sender, EventArgs e) => ExecuteChangePages(1);
+        private void ShowPagesTextBox_Leave(object sender, EventArgs e) => ExecuteChangePages((TextBox)sender!);
+        private void ShowPagesTextBox_KeyDown(object sender, KeyEventArgs e) => KeyDownEvent(sender, e);
 
         /// <summary>
         ///  Undo event handler.

@@ -51,6 +51,10 @@ namespace ClientForm
             statusStrip = new StatusStrip();
             openGraphChipButton = new Button();
             openBinaryMapButton = new Button();
+            nextPagesButton = new Button();
+            showPagesTextBox = new TextBox();
+            maxPagesLabel = new Label();
+            prevPagesButton = new Button();
             ((System.ComponentModel.ISupportInitialize)mainContainer).BeginInit();
             mainContainer.Panel1.SuspendLayout();
             mainContainer.Panel2.SuspendLayout();
@@ -215,7 +219,7 @@ namespace ClientForm
             // 
             元に戻すUToolStripMenuItem.Name = "元に戻すUToolStripMenuItem";
             元に戻すUToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.Z;
-            元に戻すUToolStripMenuItem.Size = new Size(180, 22);
+            元に戻すUToolStripMenuItem.Size = new Size(176, 22);
             元に戻すUToolStripMenuItem.Text = "元に戻す (&U)";
             元に戻すUToolStripMenuItem.Click += 元に戻す_Click;
             // 
@@ -223,7 +227,7 @@ namespace ClientForm
             // 
             やり直しRToolStripMenuItem.Name = "やり直しRToolStripMenuItem";
             やり直しRToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.Y;
-            やり直しRToolStripMenuItem.Size = new Size(180, 22);
+            やり直しRToolStripMenuItem.Size = new Size(176, 22);
             やり直しRToolStripMenuItem.Text = "やり直し (&R)";
             やり直しRToolStripMenuItem.Click += やり直し_Click;
             // 
@@ -274,11 +278,67 @@ namespace ClientForm
             openBinaryMapButton.UseVisualStyleBackColor = false;
             openBinaryMapButton.Click += OpenBinaryMapButton_Click;
             // 
+            // nextPagesButton
+            // 
+            nextPagesButton.BackColor = SystemColors.ButtonHighlight;
+            nextPagesButton.BackgroundImage = Properties.Resources.icons8_次_30;
+            nextPagesButton.FlatAppearance.BorderSize = 0;
+            nextPagesButton.FlatStyle = FlatStyle.Flat;
+            nextPagesButton.ForeColor = SystemColors.ButtonFace;
+            nextPagesButton.Location = new Point(464, 112);
+            nextPagesButton.Name = "nextPagesButton";
+            nextPagesButton.Size = new Size(30, 30);
+            nextPagesButton.TabIndex = 6;
+            nextPagesButton.UseVisualStyleBackColor = false;
+            nextPagesButton.Click += NextPagesButton_Click;
+            // 
+            // showPagesTextBox
+            // 
+            showPagesTextBox.Enabled = false;
+            showPagesTextBox.Font = new Font("Yu Gothic UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
+            showPagesTextBox.Location = new Point(396, 115);
+            showPagesTextBox.MaxLength = 3;
+            showPagesTextBox.Name = "showPagesTextBox";
+            showPagesTextBox.Size = new Size(32, 25);
+            showPagesTextBox.TabIndex = 7;
+            showPagesTextBox.TextAlign = HorizontalAlignment.Center;
+            showPagesTextBox.KeyDown += ShowPagesTextBox_KeyDown;
+            showPagesTextBox.Leave += ShowPagesTextBox_Leave;
+            // 
+            // maxPagesLabel
+            // 
+            maxPagesLabel.AutoSize = true;
+            maxPagesLabel.BackColor = Color.Transparent;
+            maxPagesLabel.Font = new Font("Yu Gothic UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            maxPagesLabel.Location = new Point(430, 120);
+            maxPagesLabel.Name = "maxPagesLabel";
+            maxPagesLabel.Size = new Size(24, 15);
+            maxPagesLabel.TabIndex = 8;
+            maxPagesLabel.Text = "/ N";
+            // 
+            // prevPagesButton
+            // 
+            prevPagesButton.BackColor = SystemColors.ButtonHighlight;
+            prevPagesButton.BackgroundImage = Properties.Resources.icons8_前_30;
+            prevPagesButton.FlatAppearance.BorderSize = 0;
+            prevPagesButton.FlatStyle = FlatStyle.Flat;
+            prevPagesButton.ForeColor = SystemColors.ButtonFace;
+            prevPagesButton.Location = new Point(356, 112);
+            prevPagesButton.Name = "prevPagesButton";
+            prevPagesButton.Size = new Size(30, 30);
+            prevPagesButton.TabIndex = 9;
+            prevPagesButton.UseVisualStyleBackColor = false;
+            prevPagesButton.Click += PrevPagesButton_Click;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1174, 785);
+            Controls.Add(prevPagesButton);
+            Controls.Add(maxPagesLabel);
+            Controls.Add(showPagesTextBox);
+            Controls.Add(nextPagesButton);
             Controls.Add(openBinaryMapButton);
             Controls.Add(openGraphChipButton);
             Controls.Add(statusStrip);
@@ -328,5 +388,9 @@ namespace ClientForm
         private ToolStripMenuItem 編集EToolStripMenuItem;
         private ToolStripMenuItem 元に戻すUToolStripMenuItem;
         private ToolStripMenuItem やり直しRToolStripMenuItem;
+        private Button nextPagesButton;
+        private TextBox showPagesTextBox;
+        private Label maxPagesLabel;
+        private Button prevPagesButton;
     }
 }

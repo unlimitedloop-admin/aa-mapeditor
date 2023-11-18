@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/11/09
+//      Last update     : 2023/11/18
 //
-//      File version    : 1
+//      File version    : 2
 //
 //
 /**************************************************************/
@@ -32,9 +32,15 @@ namespace ClientForm
         /// <summary>
         ///  This is the logic of the KeyDown event.
         /// </summary>
+        /// <param name="e">Key event args</param>
         private void KeyDownEvent(object sender, KeyEventArgs e)
         {
             if (e.KeyData == Keys.Escape)
+            {
+                e.SuppressKeyPress = true;
+                ActiveControl = null;
+            }
+            else if (sender == showPagesTextBox && e.KeyData == Keys.Enter)
             {
                 e.SuppressKeyPress = true;
                 ActiveControl = null;
