@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/11/18
+//      Last update     : 2023/11/21
 //
-//      File version    : 11
+//      File version    : 12
 //
 //
 /**************************************************************/
@@ -59,6 +59,7 @@ namespace ClientForm
         {
             graphicChipPanel.SetPrimaryInstance(ref choiceChipPanel, ref _recorder);
             mapFieldPanel.SetPrimaryInstance(ref choiceChipPanel, ref _recorder);
+            mapFieldPanel.OnChangeバイナリデータを開き直すMenuItemEnabled += Changeバイナリデータを開き直すMenuItemEnabled;
         }
 
         /// <summary>
@@ -94,6 +95,11 @@ namespace ClientForm
         ///  Close binary map event handler.
         /// </summary>
         private void 閉じる_マップデータ_Click(object sender, EventArgs e) => ExecuteCloseBinaryMapFile(sender, e);
+
+        /// <summary>
+        ///  Returns the loaded binary file to its pre-change state (reloads it).
+        /// </summary>
+        private void バイナリデータを開き直す_Click(object sender, EventArgs e) => ExecuteReloadBinaryMapFile(sender, e);
 
         /// <summary>
         ///  User interface for page transitions.

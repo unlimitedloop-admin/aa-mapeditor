@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/11/18
+//      Last update     : 2023/11/22
 //
-//      File version    : 4
+//      File version    : 5
 //
 //
 /**************************************************************/
@@ -60,29 +60,7 @@ namespace ClientForm.src.Apps.EditsUI
 
         internal BinaryMap()
         {
-            BinaryData = Array.Empty<byte>();
-        }
-
-        /// <summary>
-        ///  Hosts the dialog to open a binary file.
-        /// </summary>
-        /// <returns>Binary data of the opened file.</returns>
-        internal byte[] BinaryFileOpener()
-        {
-            using OpenFileDialog openbin = new()
-            {
-                Filter = "binファイル|*bin|すべてのファイル(*.*)|*.*",
-                Title = "ファイルを選択",
-            };
-            if (openbin.ShowDialog() == DialogResult.OK)
-            {
-                FilePath = openbin.FileName;
-                if (!FileOpen())
-                {
-                    return Array.Empty<byte>();
-                }
-            }
-            return BinaryData;
+            BinaryData = [];
         }
 
         /// <summary>
@@ -102,6 +80,43 @@ namespace ClientForm.src.Apps.EditsUI
             });
         }
 
+        /// <summary>
+        ///  Hosts the dialog to open a binary file.
+        /// </summary>
+        /// <returns>Binary data of the opened file.</returns>
+        internal byte[] BinaryFileOpener()
+        {
+            using OpenFileDialog openbin = new()
+            {
+                Filter = "binファイル|*bin|すべてのファイル(*.*)|*.*",
+                Title = "ファイルを選択",
+            };
+            if (openbin.ShowDialog() == DialogResult.OK)
+            {
+                FilePath = openbin.FileName;
+                if (!FileOpen())
+                {
+                    return [];
+                }
+            }
+            return BinaryData;
+        }
+
+        /// <summary>
+        ///  Hosts the dialog to open a binary file.
+        /// </summary>
+        /// <param name="filePath">File path to open</param>
+        /// <returns>Binary data of the opened file.</returns>
+        internal byte[] BinaryFileOpener(string filePath)
+        {
+            BinaryData = [];
+            FilePath = filePath;
+            return !FileOpen() ? ([]) : BinaryData;
+        }
+
+        /// <summary>
+        ///  Disposing instance.
+        /// </summary>
         public void Dispose()
         {
             _binaryReader?.Dispose();

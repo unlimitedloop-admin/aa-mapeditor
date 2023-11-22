@@ -43,6 +43,7 @@ namespace ClientForm
             マップデータMToolStripMenuItem = new ToolStripMenuItem();
             グラフィックチップLToolStripMenuItem = new ToolStripMenuItem();
             toolStripMenuItem1 = new ToolStripSeparator();
+            バイナリデータを開き直すRToolStripMenuItem = new ToolStripMenuItem();
             アプリケーションの終了XToolStripMenuItem = new ToolStripMenuItem();
             編集EToolStripMenuItem = new ToolStripMenuItem();
             元に戻すUToolStripMenuItem = new ToolStripMenuItem();
@@ -149,7 +150,7 @@ namespace ClientForm
             // 
             // ファイルFToolStripMenuItem
             // 
-            ファイルFToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { 開くFToolStripMenuItem, 閉じるCToolStripMenuItem, toolStripMenuItem1, アプリケーションの終了XToolStripMenuItem });
+            ファイルFToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { 開くFToolStripMenuItem, 閉じるCToolStripMenuItem, toolStripMenuItem1, バイナリデータを開き直すRToolStripMenuItem, アプリケーションの終了XToolStripMenuItem });
             ファイルFToolStripMenuItem.Name = "ファイルFToolStripMenuItem";
             ファイルFToolStripMenuItem.Size = new Size(70, 20);
             ファイルFToolStripMenuItem.Text = "ファイル (&F)";
@@ -158,7 +159,7 @@ namespace ClientForm
             // 
             開くFToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { マップデータToolStripMenuItem, グラフィックチップToolStripMenuItem });
             開くFToolStripMenuItem.Name = "開くFToolStripMenuItem";
-            開くFToolStripMenuItem.Size = new Size(195, 22);
+            開くFToolStripMenuItem.Size = new Size(206, 22);
             開くFToolStripMenuItem.Text = "開く (&F)";
             // 
             // マップデータToolStripMenuItem
@@ -179,7 +180,7 @@ namespace ClientForm
             // 
             閉じるCToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { マップデータMToolStripMenuItem, グラフィックチップLToolStripMenuItem });
             閉じるCToolStripMenuItem.Name = "閉じるCToolStripMenuItem";
-            閉じるCToolStripMenuItem.Size = new Size(195, 22);
+            閉じるCToolStripMenuItem.Size = new Size(206, 22);
             閉じるCToolStripMenuItem.Text = "閉じる (&C)";
             // 
             // マップデータMToolStripMenuItem
@@ -199,12 +200,20 @@ namespace ClientForm
             // toolStripMenuItem1
             // 
             toolStripMenuItem1.Name = "toolStripMenuItem1";
-            toolStripMenuItem1.Size = new Size(192, 6);
+            toolStripMenuItem1.Size = new Size(203, 6);
+            // 
+            // バイナリデータを開き直すRToolStripMenuItem
+            // 
+            バイナリデータを開き直すRToolStripMenuItem.Enabled = false;
+            バイナリデータを開き直すRToolStripMenuItem.Name = "バイナリデータを開き直すRToolStripMenuItem";
+            バイナリデータを開き直すRToolStripMenuItem.Size = new Size(206, 22);
+            バイナリデータを開き直すRToolStripMenuItem.Text = "バイナリデータを開き直す (&R)";
+            バイナリデータを開き直すRToolStripMenuItem.Click += バイナリデータを開き直す_Click;
             // 
             // アプリケーションの終了XToolStripMenuItem
             // 
             アプリケーションの終了XToolStripMenuItem.Name = "アプリケーションの終了XToolStripMenuItem";
-            アプリケーションの終了XToolStripMenuItem.Size = new Size(195, 22);
+            アプリケーションの終了XToolStripMenuItem.Size = new Size(206, 22);
             アプリケーションの終了XToolStripMenuItem.Text = "アプリケーションの終了 (&X)";
             アプリケーションの終了XToolStripMenuItem.Click += アプリケーションの終了XToolStripMenuItem_Click;
             // 
@@ -392,5 +401,6 @@ namespace ClientForm
         private TextBox showPagesTextBox;
         private Label maxPagesLabel;
         private Button prevPagesButton;
+        private ToolStripMenuItem バイナリデータを開き直すRToolStripMenuItem;
     }
 }

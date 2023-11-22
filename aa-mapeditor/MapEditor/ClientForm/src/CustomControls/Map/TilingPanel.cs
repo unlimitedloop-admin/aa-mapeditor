@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/11/18
+//      Last update     : 2023/11/21
 //
-//      File version    : 10
+//      File version    : 11
 //
 //
 /**************************************************************/
@@ -189,11 +189,13 @@ namespace ClientForm.src.CustomControls.Map
             {
                 BackColor = SystemColors.AppWorkspace;
                 _toolTip.Active = true;
+                OnChangeバイナリデータを開き直すMenuItemEnabled?.Invoke(false);
             }
             else
             {
                 BackColor = LightGreen;
                 _toolTip.Active = false;
+                OnChangeバイナリデータを開き直すMenuItemEnabled?.Invoke(true);
             }
         }
 
@@ -214,5 +216,7 @@ namespace ClientForm.src.CustomControls.Map
             Navigator.Clear();
             _memento?.Clear();
         }
+
+        public event Action<bool>? OnChangeバイナリデータを開き直すMenuItemEnabled;
     }
 }

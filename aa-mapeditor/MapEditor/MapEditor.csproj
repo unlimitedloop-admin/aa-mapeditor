@@ -1,8 +1,8 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net7.0-windows</TargetFramework>
+    <TargetFramework>net8.0-windows7.0</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -13,8 +13,17 @@
     <PackageIcon>pen_pencil_write_edit_icon_185947.png</PackageIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <ApplicationIcon>pen_pencil_write_edit_icon_185947.ico</ApplicationIcon>
-    <AssemblyVersion>0.0.0.14</AssemblyVersion>
-    <FileVersion>0.0.0.14</FileVersion>
+    <AssemblyVersion>0.0.0.15</AssemblyVersion>
+    <FileVersion>0.0.0.15</FileVersion>
+    <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <GenerateAssemblyInfo>True</GenerateAssemblyInfo>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <GenerateAssemblyInfo>True</GenerateAssemblyInfo>
   </PropertyGroup>
 
   <ItemGroup>
@@ -55,6 +64,12 @@
 
   <ItemGroup>
     <Folder Include="resource\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+    </None>
   </ItemGroup>
 
 </Project>

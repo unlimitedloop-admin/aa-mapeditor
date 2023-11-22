@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/10/15
+//      Last update     : 2023/11/21
 //
-//      File version    : 1
+//      File version    : 3
 //
 //
 /**************************************************************/
@@ -52,8 +52,15 @@ namespace ClientForm.src.Logger
         /// <param name="message">Specify exception messages, etc.</param>
         public static void LogError(string message)
         {
-            var logMessage = $"{DateTime.Now:yyyy-MM-dd HH:mm:ss} [ERROR] {message}";
-            File.AppendAllText(_logFilePath, logMessage + Environment.NewLine);
+            try
+            {
+                var logMessage = $"{DateTime.Now:yyyy-MM-dd HH:mm:ss} [ERROR] {message}";
+                File.AppendAllText(_logFilePath, logMessage + Environment.NewLine);
+            }
+            catch (IOException)
+            {
+                MessageBox.Show("ログの書き込みができませんでした。");
+            }
         }
 
         /// <summary>
@@ -62,8 +69,15 @@ namespace ClientForm.src.Logger
         /// <param name="message">The log content you want to output</param>
         public static void LogInfo(string message)
         {
-            var logMessage = $"{DateTime.Now:yyyy-MM-dd HH:mm:ss} [INFO] {message}";
-            File.AppendAllText(_logFilePath, logMessage + Environment.NewLine);
+            try
+            {
+                var logMessage = $"{DateTime.Now:yyyy-MM-dd HH:mm:ss} [INFO] {message}";
+                File.AppendAllText(_logFilePath, logMessage + Environment.NewLine);
+            }
+            catch (IOException)
+            {
+                MessageBox.Show("ログの書き込みができませんでした。");
+            }
         }
     }
 }

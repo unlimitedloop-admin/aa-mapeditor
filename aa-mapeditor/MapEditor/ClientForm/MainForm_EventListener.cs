@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/11/18
+//      Last update     : 2023/11/21
 //
-//      File version    : 5
+//      File version    : 6
 //
 //
 /**************************************************************/
@@ -69,11 +69,7 @@ namespace ClientForm
         {
             if (mapFieldPanel.Navigator.SetFieldData())
             {
-                mapFieldPanel.DoubleClick -= MapFieldPanel_DoubleClick; // When the map is already loaded, it will not be loaded further.
-                mapFieldPanel.Invalidate();
-                showPagesTextBox.Enabled = true;
-                showPagesTextBox.Text = "1";
-                maxPagesLabel.Text = "/ " + (mapFieldPanel.Navigator.BinaryData.Length / CoreConstants.BINARY_DATA_1PAGE_SIZE).ToString();
+                ActivateMapFieldPanel();
             }
             ActiveControl = null;
         }
@@ -92,6 +88,32 @@ namespace ClientForm
                 showPagesTextBox.Enabled = false;
                 maxPagesLabel.Text = "/ N";
             }
+        }
+
+        /// <summary>
+        ///  Reloads a binary file that has already been loaded.
+        /// </summary>
+        private void ExecuteReloadBinaryMapFile(object sender, EventArgs args)
+        {
+            const string alertText = "マップフィールドの編集は失われ元に戻せません。\r\nバイナリデータを再読み込みしますか？";
+            if (!string.IsNullOrEmpty(mapFieldPanel.Navigator.FieldName) && DialogResult.OK == MessageBox.Show(alertText, "Caution", MessageBoxButtons.OKCancel))
+            {
+                mapFieldPanel.Navigator.ReOpenFieldData();
+                ActivateMapFieldPanel();
+                ActiveControl = null;
+            }
+        }
+
+        /// <summary>
+        ///  The process of activating the map field panel.
+        /// </summary>
+        private void ActivateMapFieldPanel()
+        {
+            mapFieldPanel.DoubleClick -= MapFieldPanel_DoubleClick; // When the map is already loaded, it will not be loaded further.
+            mapFieldPanel.Invalidate();
+            showPagesTextBox.Enabled = true;
+            showPagesTextBox.Text = "1";
+            maxPagesLabel.Text = "/ " + (mapFieldPanel.Navigator.BinaryData.Length / CoreConstants.BINARY_DATA_1PAGE_SIZE).ToString();
         }
 
         /// <summary>
@@ -124,6 +146,15 @@ namespace ClientForm
                 mapFieldPanel.Navigator.PageIndex = number - 1;
                 mapFieldPanel.Refresh();
             }
+        }
+
+        /// <summary>
+        ///  Toggle activation of menu command to reopen binary data.
+        /// </summary>
+        /// <param name="isEnabled"></param>
+        public void Changeバイナリデータを開き直すMenuItemEnabled(bool isEnabled)
+        {
+            バイナリデータを開き直すRToolStripMenuItem.Enabled = isEnabled;
         }
 
         /// <summary>

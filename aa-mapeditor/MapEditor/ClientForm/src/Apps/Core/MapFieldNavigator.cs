@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/11/18
+//      Last update     : 2023/11/21
 //
-//      File version    : 4
+//      File version    : 5
 //
 //
 /**************************************************************/
@@ -89,7 +89,7 @@ namespace ClientForm.src.Apps.Core
         /// <summary>
         ///  This is original formed binary data loaded into memory.
         /// </summary>
-        public byte[] BinaryData { get; private set; } = Array.Empty<byte>();
+        public byte[] BinaryData { get; private set; } = [];
 
 
         /// <summary>
@@ -107,7 +107,7 @@ namespace ClientForm.src.Apps.Core
         /// </summary>
         internal void Clear()
         {
-            BinaryData = Array.Empty<byte>();
+            BinaryData = [];
             _pageIndex = 0;
         }
 
@@ -146,7 +146,7 @@ namespace ClientForm.src.Apps.Core
                         }
                         else
                         {
-                            // If ArgumentOutOfRangeException occurs in GetBinaryData...
+                            // If ArgumentOutOfRangeException occurs in BinaryData...
                             MapFields = currentMapFields;
                             MessageBox.Show("チップリストに含まれないバイナリバイト羅列が見つかったため、マップは表示できませんでした。", "お知らせ");
                             throw new Exception();
@@ -166,11 +166,24 @@ namespace ClientForm.src.Apps.Core
             BinaryData = binary.BinaryFileOpener();
             if (0 < BinaryData.Length)
             {
-                ApplyingMapTiles();
                 FieldName = binary.FilePath;
-                return true;
+                return ApplyingMapTiles();
             }
             return false;
+        }
+
+        /// <summary>
+        ///  Sets the binary array to be drawn in the field.
+        /// </summary>
+        internal void ReOpenFieldData()
+        {
+            if (null != _fieldName)
+            {
+                using BinaryMap binary = new();
+                BinaryData = binary.BinaryFileOpener(_fieldName);
+                _pageIndex = 0;
+                _ = ApplyingMapTiles();
+            }
         }
 
         /// <summary>
