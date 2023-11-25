@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/10/28
+//      Last update     : 2023/11/25
 //
-//      File version    : 4
+//      File version    : 5
 //
 //
 /**************************************************************/
@@ -30,16 +30,10 @@ namespace ClientForm.src.CustomControls.Chip
     /// <summary>
     ///  Parameters to pass to ChipManagedPanel's image sharing member.
     /// </summary>
-    public class IndexerImage
+    public class IndexerImage(byte index, Image image)
     {
-        public byte Index { get; set; }
-        public Image Img { get; set; }
-
-        public IndexerImage(byte index, Image image)
-        {
-            Index = index;
-            Img = image;
-        }
+        public byte Index { get; set; } = index;
+        public Image Img { get; set; } = image;
     }
 
 
@@ -49,12 +43,12 @@ namespace ClientForm.src.CustomControls.Chip
     public class ChipManagedPanel : Panel, IDisposable
     {
         /// <summary>
-        ///  Shared image member list.
+        ///  Shared <see cref="Image"/> member list.
         /// </summary>
-        private readonly List<IndexerImage> _images = new();
+        private readonly List<IndexerImage> _images = [];
 
         /// <summary>
-        ///  The PictureBox to be placed within the choiceChipPanel.
+        ///  The <see cref="PictureBox"/> to be placed within the choiceChipPanel.
         /// </summary>
         private readonly PictureBox _choiceChipInstance = new()
         {
@@ -106,6 +100,7 @@ namespace ClientForm.src.CustomControls.Chip
         /// </summary>
         /// <param name="index">Index of the image to search</param>
         /// <returns>The <see cref="Image"/> data, or null if the <see cref="Image"/> is not found.</returns>
+        /// <exception cref="ArgumentNullException"></exception>
         internal Image? GetImageByIndex(byte index)
         {
             var indexedImage = _images.FirstOrDefault(x => x.Index == index);

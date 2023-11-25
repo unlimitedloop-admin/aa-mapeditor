@@ -43,6 +43,8 @@ namespace ClientForm
             マップデータMToolStripMenuItem = new ToolStripMenuItem();
             グラフィックチップLToolStripMenuItem = new ToolStripMenuItem();
             toolStripMenuItem1 = new ToolStripSeparator();
+            保存SToolStripMenuItem = new ToolStripMenuItem();
+            マップデータをバイナリへ書き出しToolStripMenuItem = new ToolStripMenuItem();
             バイナリデータを開き直すRToolStripMenuItem = new ToolStripMenuItem();
             アプリケーションの終了XToolStripMenuItem = new ToolStripMenuItem();
             編集EToolStripMenuItem = new ToolStripMenuItem();
@@ -114,6 +116,8 @@ namespace ClientForm
             mapFieldPanel.Name = "mapFieldPanel";
             mapFieldPanel.Size = new Size(516, 484);
             mapFieldPanel.TabIndex = 0;
+            mapFieldPanel.OnChangeバイナリデータを開き直すMenuItemEnabled += Changeバイナリデータを開き直すMenuItemEnabled;
+            mapFieldPanel.OnChangeマップデータをバイナリへ書き出しMenuItemEnabled += Changeマップデータをバイナリへ書き出しToolStripMenuItemEnabled;
             mapFieldPanel.DoubleClick += MapFieldPanel_DoubleClick;
             // 
             // mapFieldInfoPanel
@@ -150,7 +154,7 @@ namespace ClientForm
             // 
             // ファイルFToolStripMenuItem
             // 
-            ファイルFToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { 開くFToolStripMenuItem, 閉じるCToolStripMenuItem, toolStripMenuItem1, バイナリデータを開き直すRToolStripMenuItem, アプリケーションの終了XToolStripMenuItem });
+            ファイルFToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { 開くFToolStripMenuItem, 閉じるCToolStripMenuItem, toolStripMenuItem1, 保存SToolStripMenuItem, バイナリデータを開き直すRToolStripMenuItem, アプリケーションの終了XToolStripMenuItem });
             ファイルFToolStripMenuItem.Name = "ファイルFToolStripMenuItem";
             ファイルFToolStripMenuItem.Size = new Size(70, 20);
             ファイルFToolStripMenuItem.Text = "ファイル (&F)";
@@ -201,6 +205,21 @@ namespace ClientForm
             // 
             toolStripMenuItem1.Name = "toolStripMenuItem1";
             toolStripMenuItem1.Size = new Size(203, 6);
+            // 
+            // 保存SToolStripMenuItem
+            // 
+            保存SToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { マップデータをバイナリへ書き出しToolStripMenuItem });
+            保存SToolStripMenuItem.Name = "保存SToolStripMenuItem";
+            保存SToolStripMenuItem.Size = new Size(206, 22);
+            保存SToolStripMenuItem.Text = "保存 (&S)";
+            // 
+            // マップデータをバイナリへ書き出しToolStripMenuItem
+            // 
+            マップデータをバイナリへ書き出しToolStripMenuItem.Enabled = false;
+            マップデータをバイナリへ書き出しToolStripMenuItem.Name = "マップデータをバイナリへ書き出しToolStripMenuItem";
+            マップデータをバイナリへ書き出しToolStripMenuItem.Size = new Size(249, 22);
+            マップデータをバイナリへ書き出しToolStripMenuItem.Text = "マップデータをバイナリへ書き出し... (&B)";
+            マップデータをバイナリへ書き出しToolStripMenuItem.Click += マップデータをバイナリへ書き出しToolStripMenuItem_Click;
             // 
             // バイナリデータを開き直すRToolStripMenuItem
             // 
@@ -304,7 +323,7 @@ namespace ClientForm
             // showPagesTextBox
             // 
             showPagesTextBox.Enabled = false;
-            showPagesTextBox.Font = new Font("Yu Gothic UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
+            showPagesTextBox.Font = new Font("Yu Gothic UI", 9.75F);
             showPagesTextBox.Location = new Point(396, 115);
             showPagesTextBox.MaxLength = 3;
             showPagesTextBox.Name = "showPagesTextBox";
@@ -318,7 +337,7 @@ namespace ClientForm
             // 
             maxPagesLabel.AutoSize = true;
             maxPagesLabel.BackColor = Color.Transparent;
-            maxPagesLabel.Font = new Font("Yu Gothic UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            maxPagesLabel.Font = new Font("Yu Gothic UI", 9F);
             maxPagesLabel.Location = new Point(430, 120);
             maxPagesLabel.Name = "maxPagesLabel";
             maxPagesLabel.Size = new Size(24, 15);
@@ -402,5 +421,7 @@ namespace ClientForm
         private Label maxPagesLabel;
         private Button prevPagesButton;
         private ToolStripMenuItem バイナリデータを開き直すRToolStripMenuItem;
+        private ToolStripMenuItem 保存SToolStripMenuItem;
+        private ToolStripMenuItem マップデータをバイナリへ書き出しToolStripMenuItem;
     }
 }

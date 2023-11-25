@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/11/21
+//      Last update     : 2023/11/25
 //
-//      File version    : 6
+//      File version    : 7
 //
 //
 /**************************************************************/
@@ -95,11 +95,12 @@ namespace ClientForm
         /// </summary>
         private void ExecuteReloadBinaryMapFile(object sender, EventArgs args)
         {
-            const string alertText = "マップフィールドの編集は失われ元に戻せません。\r\nバイナリデータを再読み込みしますか？";
+            const string alertText = "マップフィールドの編集は失われます。この操作は元に戻せません。\r\nバイナリデータを再読み込みしますか？";
             if (!string.IsNullOrEmpty(mapFieldPanel.Navigator.FieldName) && DialogResult.OK == MessageBox.Show(alertText, "Caution", MessageBoxButtons.OKCancel))
             {
                 mapFieldPanel.Navigator.ReOpenFieldData();
                 ActivateMapFieldPanel();
+                _recorder.Clear();
                 ActiveControl = null;
             }
         }
@@ -149,12 +150,14 @@ namespace ClientForm
         }
 
         /// <summary>
-        ///  Toggle activation of menu command to reopen binary data.
+        ///  Output binary data to a binary file.
         /// </summary>
-        /// <param name="isEnabled"></param>
-        public void Changeバイナリデータを開き直すMenuItemEnabled(bool isEnabled)
+        private void ExecuteSavingBinaryFile()
         {
-            バイナリデータを開き直すRToolStripMenuItem.Enabled = isEnabled;
+            if (mapFieldPanel.Navigator.ExportingBinaryData() is string filename && !string.IsNullOrEmpty(filename))
+            {
+                _ = MessageBox.Show("バイナリファイルを保存しました。" + "\r\n" + Path.GetFileName(filename), "名前を付けて保存");
+            }
         }
 
         /// <summary>

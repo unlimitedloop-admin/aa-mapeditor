@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/11/22
+//      Last update     : 2023/11/25
 //
-//      File version    : 5
+//      File version    : 6
 //
 //
 /**************************************************************/
@@ -30,7 +30,7 @@ using ClientForm.src.Exceptions;
 
 
 /* sources */
-namespace ClientForm.src.Apps.EditsUI
+namespace ClientForm.src.Apps.Files.BinaryFile
 {
     /// <summary>
     ///  A memory class that reads binary files and manages map data.
@@ -61,6 +61,11 @@ namespace ClientForm.src.Apps.EditsUI
         internal BinaryMap()
         {
             BinaryData = [];
+        }
+
+        internal BinaryMap(byte[] bytes)
+        {
+            BinaryData = bytes;
         }
 
         /// <summary>
@@ -112,6 +117,32 @@ namespace ClientForm.src.Apps.EditsUI
             BinaryData = [];
             FilePath = filePath;
             return !FileOpen() ? ([]) : BinaryData;
+        }
+
+        /// <summary>
+        ///  Writes a BinaryData byte string to a file as binary data.
+        /// </summary>
+        /// <param name="filepath">Target file path</param>
+        /// <param name="offset">Number of bytes to start writing binary data</param>
+        /// <param name="length">Length of bytes to write</param>
+        /// <returns>True if the operation is complete.</returns>
+        private bool FileWrite(string filepath, int offset, int length)
+        {
+            return ExceptionHandler.TryCatchWithLogging(() =>
+            {
+                using FileStream fileStream = new(filepath, FileMode.Create);
+                fileStream.Write(BinaryData, offset, length);
+            });
+        }
+
+        /// <summary>
+        ///  Save the binary file.
+        /// </summary>
+        /// <param name="filePath">File path to save</param>
+        /// <returns>Saved file path.</returns>
+        internal string SaveBinaryFile(string filePath)
+        {
+            return !FileWrite(filePath, 0, BinaryData.Length) ? string.Empty : filePath;
         }
 
         /// <summary>

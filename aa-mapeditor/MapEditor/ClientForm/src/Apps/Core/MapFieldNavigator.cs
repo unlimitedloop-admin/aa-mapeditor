@@ -17,15 +17,15 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/11/21
+//      Last update     : 2023/11/25
 //
-//      File version    : 5
+//      File version    : 6
 //
 //
 /**************************************************************/
 
 /* using namespace */
-using ClientForm.src.Apps.EditsUI;
+using ClientForm.src.Apps.Files.BinaryFile;
 using ClientForm.src.Exceptions;
 using static ClientForm.src.Configs.CoreConstants;
 
@@ -228,6 +228,28 @@ namespace ClientForm.src.Apps.Core
             return false;
         }
         private void UpdateBinaryData(int address, byte value) => BinaryData[address] = value;
+
+        /// <summary>
+        ///  Execute binary data export by specifying the file name.
+        /// </summary>
+        /// <returns>Saved file name, empty if disabled.</returns>
+        internal string ExportingBinaryData()
+        {
+            if (null != BinaryData && 0 < BinaryData.Length)
+            {
+                using SaveFileDialog saveBin = new()
+                {
+                    Filter = "binファイル|*bin",
+                    Title = "名前を付けて保存",
+                };
+                if (saveBin.ShowDialog() == DialogResult.OK)
+                {
+                    BinaryMap binaryMap = new(BinaryData);  // Pass existing map field information to the binary map class.
+                    return binaryMap.SaveBinaryFile(saveBin.FileName);
+                }
+            }
+            return string.Empty;
+        }
 
 
 

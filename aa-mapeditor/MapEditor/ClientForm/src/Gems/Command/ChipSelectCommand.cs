@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/10/28
+//      Last update     : 2023/11/25
 //
-//      File version    : 1
+//      File version    : 2
 //
 //
 /**************************************************************/
@@ -42,7 +42,9 @@ namespace ClientForm.src.Gems.Command
         private readonly Image? _newImage;
         private readonly byte _newTileIndex;
         private readonly Image? _oldImage;
-        private readonly byte _oldTileIndex;
+        private readonly int _oldTileIndex;
+
+        const int VOID__ = -1;
 
 
         /// <summary>
@@ -57,7 +59,14 @@ namespace ClientForm.src.Gems.Command
             _newImage = newimage;
             _newTileIndex = newtile;
             _oldImage = _targets!.ChoiceChip;
-            _oldTileIndex = (byte)Math.Max(byte.MinValue, Math.Min(byte.MaxValue, _targets!.ChoiceChipNumber));
+            if (VOID__ == _targets!.ChoiceChipNumber)
+            {
+                _oldTileIndex = VOID__;
+            }
+            else
+            {
+                _oldTileIndex = (byte)Math.Max(byte.MinValue, Math.Min(byte.MaxValue, _targets!.ChoiceChipNumber));
+            }
         }
 
         /// <summary>

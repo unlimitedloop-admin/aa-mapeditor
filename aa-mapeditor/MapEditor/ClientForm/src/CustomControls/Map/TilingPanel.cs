@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/11/21
+//      Last update     : 2023/11/25
 //
-//      File version    : 11
+//      File version    : 12
 //
 //
 /**************************************************************/
@@ -132,49 +132,28 @@ namespace ClientForm.src.CustomControls.Map
         }
 
         /// <summary>
-        ///  Event fired when the map field is clicked.
-        /// </summary>
-        /// <param name="point">The mouse coordinate point you clicked</param>
-        private void MapTileChange(Point point)
-        {
-            _ = ExceptionHandler.TryCatchWithLogging(() =>
-            {
-                // Exit if the graphic list is empty.
-                if (null == _chipManager?.ChoiceChip || string.IsNullOrEmpty(Navigator.FieldName)) return;
-
-                int clickedTileX = point.X / TILE_SIZE;
-                int clickedTileY = point.Y / TILE_SIZE;
-                byte chipindex = (byte)_chipManager!.ChoiceChipNumber;
-                byte oldindex = _mapTile[clickedTileY, clickedTileX];
-
-                Point clickPoint = new(clickedTileX, clickedTileY);
-                var command = new MapTileChangeCommand(this, Navigator.PageIndex, clickPoint, clickPoint, chipindex);
-                command.Execute();
-                _memento!.PushUndoStack(command);
-            });
-        }
-
-        /// <summary>
         ///  Event fired when the map field is selected.
         /// </summary>
         /// <param name="start">starting point of selection</param>
         /// <param name="end">end of selection</param>
-        private void MapTileChange(Point start, Point end)
+        private void MapTileChange(Point start, Point? end = null)
         {
             _ = ExceptionHandler.TryCatchWithLogging(() =>
             {
                 // Exit if the graphic list is empty.
                 if (null == _chipManager?.ChoiceChip || string.IsNullOrEmpty(Navigator.FieldName)) return;
 
+                Point endPoint = end ?? start;  // If end is null, start will be used.
+
                 int startTileX = start.X / TILE_SIZE;
                 int startTileY = start.Y / TILE_SIZE;
-                int endTileX = end.X / TILE_SIZE;
-                int endTileY = end.Y / TILE_SIZE;
+                int endTileX = endPoint.X / TILE_SIZE;
+                int endTileY = endPoint.Y / TILE_SIZE;
                 byte chipindex = (byte)_chipManager!.ChoiceChipNumber;
 
                 Point startPoint = new(startTileX, startTileY);
-                Point endPoint = new(endTileX, endTileY);
-                var command = new MapTileChangeCommand(this, Navigator.PageIndex, startPoint, endPoint, chipindex);
+                Point finalEndPoint = new(endTileX, endTileY);
+                var command = new MapTileChangeCommand(this, Navigator.PageIndex, startPoint, finalEndPoint, chipindex);
                 command.Execute();
                 _memento!.PushUndoStack(command);
             });
@@ -190,12 +169,14 @@ namespace ClientForm.src.CustomControls.Map
                 BackColor = SystemColors.AppWorkspace;
                 _toolTip.Active = true;
                 OnChangeバイナリデータを開き直すMenuItemEnabled?.Invoke(false);
+                OnChangeマップデータをバイナリへ書き出しMenuItemEnabled?.Invoke(false);
             }
             else
             {
                 BackColor = LightGreen;
                 _toolTip.Active = false;
                 OnChangeバイナリデータを開き直すMenuItemEnabled?.Invoke(true);
+                OnChangeマップデータをバイナリへ書き出しMenuItemEnabled?.Invoke(true);
             }
         }
 
@@ -218,5 +199,6 @@ namespace ClientForm.src.CustomControls.Map
         }
 
         public event Action<bool>? OnChangeバイナリデータを開き直すMenuItemEnabled;
+        public event Action<bool>? OnChangeマップデータをバイナリへ書き出しMenuItemEnabled;
     }
 }

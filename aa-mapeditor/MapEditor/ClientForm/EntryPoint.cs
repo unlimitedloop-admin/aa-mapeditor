@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/10/22
+//      Last update     : 2023/11/25
 //
-//      File version    : 5
+//      File version    : 6
 //
 //
 /**************************************************************/
@@ -87,7 +87,6 @@ namespace ClientForm
             return text;
         }
 
-
         /// <summary>
         ///  Check the resolution and verify that your application can run.
         /// </summary>
@@ -98,7 +97,6 @@ namespace ClientForm
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            // 
             var fraction = configuration.GetSection("ApplicationWindowScale").Get<ApplicationWindowScale>();
             int minWidth = null != fraction ? fraction.ClientWindowWidth : 1;   // Minimum screen width required
             int minHeight = null != fraction ? fraction.ClientWindowHeight : 1; // Minimum screen height required

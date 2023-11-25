@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/10/28
+//      Last update     : 2023/11/25
 //
-//      File version    : 2
+//      File version    : 3
 //
 //
 /**************************************************************/
@@ -79,9 +79,17 @@ namespace ClientForm.src.Exceptions
                 {
                     _ = MessageBox.Show("無効なキャストが行われようとしました。" + "\r\n" + ex, "InvalidCastException info");
                 }
+                else if (ex is IOException)
+                {
+                    _ = MessageBox.Show("外部ファイルアクセス、またはネットワーク接続ができませんでした。" + "\r\n" + ex, "IOException info");
+                }
+                else if (ex is NotSupportedException)
+                {
+                    _ = MessageBox.Show("このメソッド呼び出しはサポートされない形式を含んでいました。" + "\r\n" + ex, "NotSupportedException info");
+                }
                 else if (ex is NullReferenceException)
                 {
-                    _ = MessageBox.Show("nullオブジェクトは参照できません。" + "\r\n" + ex, "NullReferenceException info");
+                    _ = MessageBox.Show("nullオブジェクトを参照しようとしました。" + "\r\n" + ex, "NullReferenceException info");
                 }
                 else if (ex is ObjectDisposedException)
                 {
