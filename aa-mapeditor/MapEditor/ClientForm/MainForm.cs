@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/11/25
+//      Last update     : 2023/11/26
 //
-//      File version    : 13
+//      File version    : 14
 //
 //
 /**************************************************************/
@@ -102,18 +102,18 @@ namespace ClientForm
         public void Changeバイナリデータを開き直すMenuItemEnabled(bool isEnabled) => バイナリデータを開き直すRToolStripMenuItem.Enabled = isEnabled;
 
         /// <summary>
+        ///  Output binary data to a binary file.
+        /// </summary>
+        private void マップデータをバイナリへ書き出しMenuItem_Click(object sender, EventArgs e) => ExecuteSavingBinaryFile();
+        public void Changeマップデータをバイナリへ書き出しMenuItemEnabled(bool isEnabled) => マップデータをバイナリへ書き出しToolStripMenuItem.Enabled = isEnabled;
+
+        /// <summary>
         ///  User interface for page transitions.
         /// </summary>
         private void PrevPagesButton_Click(object sender, EventArgs e) => ExecuteChangePages(-1);
         private void NextPagesButton_Click(object sender, EventArgs e) => ExecuteChangePages(1);
         private void ShowPagesTextBox_Leave(object sender, EventArgs e) => ExecuteChangePages((TextBox)sender!);
         private void ShowPagesTextBox_KeyDown(object sender, KeyEventArgs e) => KeyDownEvent(sender, e);
-
-        /// <summary>
-        ///  Output binary data to a binary file.
-        /// </summary>
-        private void マップデータをバイナリへ書き出しToolStripMenuItem_Click(object sender, EventArgs e) => ExecuteSavingBinaryFile();
-        public void Changeマップデータをバイナリへ書き出しToolStripMenuItemEnabled(bool isEnabled) => マップデータをバイナリへ書き出しToolStripMenuItem.Enabled = isEnabled;
 
         /// <summary>
         ///  Undo event handler.

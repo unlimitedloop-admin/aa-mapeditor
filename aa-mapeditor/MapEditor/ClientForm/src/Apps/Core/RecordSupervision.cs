@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/11/09
+//      Last update     : 2023/11/26
 //
-//      File version    : 2
+//      File version    : 3
 //
 //
 /**************************************************************/
@@ -39,6 +39,8 @@ namespace ClientForm.src.Apps.Core
     /// </summary>
     public class RecordSupervision
     {
+        private readonly MainForm _mainForm;
+
         /// <summary>
         ///  The stack list of MementoParameter objects for storing undo actions.
         /// </summary>
@@ -49,8 +51,6 @@ namespace ClientForm.src.Apps.Core
         ///  <para>*This is only stacked when the undo operation is performed.</para>
         /// </summary>
         private readonly MementoStack<Command> _redoStack = new(new CommonOption().MementoListNumber);
-
-        private readonly MainForm _mainForm;
 
 
         internal RecordSupervision(MainForm mainForm)

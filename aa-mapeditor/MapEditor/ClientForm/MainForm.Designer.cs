@@ -117,7 +117,7 @@ namespace ClientForm
             mapFieldPanel.Size = new Size(516, 484);
             mapFieldPanel.TabIndex = 0;
             mapFieldPanel.OnChangeバイナリデータを開き直すMenuItemEnabled += Changeバイナリデータを開き直すMenuItemEnabled;
-            mapFieldPanel.OnChangeマップデータをバイナリへ書き出しMenuItemEnabled += Changeマップデータをバイナリへ書き出しToolStripMenuItemEnabled;
+            mapFieldPanel.OnChangeマップデータをバイナリへ書き出しMenuItemEnabled += Changeマップデータをバイナリへ書き出しMenuItemEnabled;
             mapFieldPanel.DoubleClick += MapFieldPanel_DoubleClick;
             // 
             // mapFieldInfoPanel
@@ -169,14 +169,14 @@ namespace ClientForm
             // マップデータToolStripMenuItem
             // 
             マップデータToolStripMenuItem.Name = "マップデータToolStripMenuItem";
-            マップデータToolStripMenuItem.Size = new Size(176, 22);
+            マップデータToolStripMenuItem.Size = new Size(180, 22);
             マップデータToolStripMenuItem.Text = "マップデータ... (&M)";
             マップデータToolStripMenuItem.Click += 開く_マップデータ_Click;
             // 
             // グラフィックチップToolStripMenuItem
             // 
             グラフィックチップToolStripMenuItem.Name = "グラフィックチップToolStripMenuItem";
-            グラフィックチップToolStripMenuItem.Size = new Size(176, 22);
+            グラフィックチップToolStripMenuItem.Size = new Size(180, 22);
             グラフィックチップToolStripMenuItem.Text = "グラフィックチップ... (&R)";
             グラフィックチップToolStripMenuItem.Click += 開く_グラフィックチップ_Click;
             // 
@@ -219,7 +219,7 @@ namespace ClientForm
             マップデータをバイナリへ書き出しToolStripMenuItem.Name = "マップデータをバイナリへ書き出しToolStripMenuItem";
             マップデータをバイナリへ書き出しToolStripMenuItem.Size = new Size(249, 22);
             マップデータをバイナリへ書き出しToolStripMenuItem.Text = "マップデータをバイナリへ書き出し... (&B)";
-            マップデータをバイナリへ書き出しToolStripMenuItem.Click += マップデータをバイナリへ書き出しToolStripMenuItem_Click;
+            マップデータをバイナリへ書き出しToolStripMenuItem.Click += マップデータをバイナリへ書き出しMenuItem_Click;
             // 
             // バイナリデータを開き直すRToolStripMenuItem
             // 

@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/11/25
+//      Last update     : 2023/11/26
 //
-//      File version    : 2
+//      File version    : 3
 //
 //
 /**************************************************************/
@@ -43,8 +43,7 @@ namespace ClientForm.src.Gems.Command
         private readonly byte _newTileIndex;
         private readonly Image? _oldImage;
         private readonly int _oldTileIndex;
-
-        const int VOID__ = -1;
+        private const int VOID__ = -1;
 
 
         /// <summary>

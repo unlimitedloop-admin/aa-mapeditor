@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/11/18
+//      Last update     : 2023/11/26
 //
-//      File version    : 3
+//      File version    : 4
 //
 //
 /**************************************************************/
@@ -36,35 +36,18 @@ namespace ClientForm.src.Gems.Command
     /// <summary>
     ///  Command class for operations that change the <see cref="Image"/> of the <see cref="TilingPanel"/>.
     /// </summary>
-    internal class MapTileChangeCommand : Command
+    /// <remarks>
+    ///  Setting command parameter.
+    /// </remarks>
+    /// <param name="targets">MapTile <see cref="Panel"/></param>
+    /// <param name="pagesIndex">Target page index</param>
+    /// <param name="start">Start the cell address</param>
+    /// <param name="end">End point the cell address</param>
+    /// <param name="newTileIndex">Index number of the tile to change</param>
+    internal class MapTileChangeCommand(TilingPanel targets, int pagesIndex, Point start, Point end, byte newTileIndex) : Command
     {
         private const int TILE_SIZE = MAPFIELD_CELLSIZE;   // Square tile length.
-        
-        // Resource.
-        private readonly TilingPanel _targets;
-        private readonly int _pagesIndex;
-        private readonly Point _startCell;
-        private readonly Point _endCell;
-        private readonly byte _newTileIndex;
-        private readonly List<byte> _oldTileIndex = new();
-
-
-        /// <summary>
-        ///  Setting command parameter.
-        /// </summary>
-        /// <param name="targets">MapTile <see cref="Panel"/></param>
-        /// <param name="pagesIndex">Target page index</param>
-        /// <param name="start">Start the cell address</param>
-        /// <param name="end">End point the cell address</param>
-        /// <param name="newTileIndex">Index number of the tile to change</param>
-        public MapTileChangeCommand(TilingPanel targets, int pagesIndex, Point start, Point end, byte newTileIndex)
-        {
-            _targets = targets;
-            _pagesIndex = pagesIndex;
-            _startCell = start;
-            _endCell = end;
-            _newTileIndex = newTileIndex;
-        }
+        private readonly List<byte> _oldTileIndex = [];
 
         /// <summary>
         ///  Execute command.
@@ -83,12 +66,12 @@ namespace ClientForm.src.Gems.Command
         private void ChangeMapTiles(bool flag)
         {
             Point startPoint = new(
-                Math.Min(_startCell.X, _endCell.X),
-                Math.Min(_startCell.Y, _endCell.Y)
+                Math.Min(start.X, end.X),
+                Math.Min(start.Y, end.Y)
             );
             Point endPoint = new(
-                Math.Max(_startCell.X, _endCell.X),
-                Math.Max(_startCell.Y, _endCell.Y)
+                Math.Max(start.X, end.X),
+                Math.Max(start.Y, end.Y)
             );
 
             int index = 0;
@@ -99,13 +82,13 @@ namespace ClientForm.src.Gems.Command
                     if (flag)
                     {
                         // Redo (Execute command)
-                        _oldTileIndex.Add(_targets.Navigator.GetBinaryData(_pagesIndex, row, col));
-                        _targets.Navigator.UpdateBinaryData(_pagesIndex, row, col, _newTileIndex);  // TODO : バイナリデータへ設定できなかった場合はどうしますか？
+                        _oldTileIndex.Add(targets.Navigator.GetBinaryData(pagesIndex, row, col));
+                        targets.Navigator.UpdateBinaryData(pagesIndex, row, col, newTileIndex);  // TODO : バイナリデータへ設定できなかった場合はどうしますか？
                     }
                     else
                     {
                         // Undo
-                        _targets.Navigator.UpdateBinaryData(_pagesIndex, row, col, _oldTileIndex[index]);  // TODO : バイナリデータへ設定できなかった場合はどうしますか？
+                        targets.Navigator.UpdateBinaryData(pagesIndex, row, col, _oldTileIndex[index]);  // TODO : バイナリデータへ設定できなかった場合はどうしますか？
                     }
                     index++;
                 }
@@ -125,10 +108,10 @@ namespace ClientForm.src.Gems.Command
             int width = (endPoint.X - startPoint.X + 1) * TILE_SIZE;
             int height = (endPoint.Y - startPoint.Y + 1) * TILE_SIZE;
             
-            _targets.SuspendLayout();
+            targets.SuspendLayout();
             Rectangle invalidateRect = new(x, y, width, height);
-            _targets.Invalidate(invalidateRect);
-            _targets.ResumeLayout();
+            targets.Invalidate(invalidateRect);
+            targets.ResumeLayout();
         }
     }
 }

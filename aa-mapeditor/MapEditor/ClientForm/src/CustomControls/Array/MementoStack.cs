@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/10/28
+//      Last update     : 2023/11/26
 //
-//      File version    : 2
+//      File version    : 3
 //
 //
 /**************************************************************/
@@ -36,13 +36,11 @@ namespace ClientForm.src.CustomControls.Array
     ///  Custom stack with upper limit.
     /// </summary>
     /// <typeparam name="T">Typically you specify a custom command class</typeparam>
-    public class MementoStack<T>
+    /// <param name="maxCapacity">
+    ///  It's max capacity.
+    /// </param>
+    public class MementoStack<T>(uint maxCapacity)
     {
-        /// <summary>
-        ///  It's max capacity.
-        /// </summary>
-        private uint _maxCapacity;
-
         /// <summary>
         ///  Customized stack container (Pseudo Deque).
         /// </summary>
@@ -53,21 +51,15 @@ namespace ClientForm.src.CustomControls.Array
         /// </summary>
         public int Count { get => _dequeuedStack.Count; }
 
-
-        public MementoStack(uint maxCapacity)
-        {
-            _maxCapacity = maxCapacity;
-        }
-
         /// <summary>
         ///  Change capacity.
         /// </summary>
         internal uint MaxCapacity
         {
-            get { return _maxCapacity; }
+            get { return maxCapacity; }
             set
             {
-                _maxCapacity = value;
+                maxCapacity = value;
                 AdjustCapacity();
             }
         }
@@ -98,7 +90,7 @@ namespace ClientForm.src.CustomControls.Array
         /// </summary>
         private void AdjustCapacity()
         {
-            while (_dequeuedStack.Count > _maxCapacity)
+            while (_dequeuedStack.Count > maxCapacity)
             {
                 _ = _dequeuedStack.RemoveFront();
             }

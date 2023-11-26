@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/10/28
+//      Last update     : 2023/11/26
 //
-//      File version    : 1
+//      File version    : 2
 //
 //
 /**************************************************************/
@@ -34,6 +34,8 @@ namespace ClientForm.src.Gems.List
     internal class Deque<T>
     {
         private readonly LinkedList<T> _list = new();
+
+        private bool IsEmpty => _list.Count == 0;
 
         internal int Count => _list.Count;
 
@@ -51,7 +53,7 @@ namespace ClientForm.src.Gems.List
 
         internal T RemoveFront()
         {
-            if (!IsEmpty())
+            if (!IsEmpty)
             {
                 T value = _list.First!.Value;
                 _list.RemoveFirst();
@@ -62,7 +64,7 @@ namespace ClientForm.src.Gems.List
 
         internal T RemoveRear()
         {
-            if (!IsEmpty())
+            if (!IsEmpty)
             {
                 T value = _list.Last!.Value;
                 _list.RemoveLast();
@@ -73,7 +75,7 @@ namespace ClientForm.src.Gems.List
 
         internal T PeekFront()
         {
-            if (!IsEmpty())
+            if (!IsEmpty)
             {
                 return _list.First!.Value;
             }
@@ -82,16 +84,11 @@ namespace ClientForm.src.Gems.List
 
         internal T PeekRear()
         {
-            if (!IsEmpty())
+            if (!IsEmpty)
             {
                 return _list.Last!.Value;
             }
             throw new InvalidOperationException("Deque is empty.");
-        }
-
-        private bool IsEmpty()
-        {
-            return _list.Count == 0;
         }
     }
 }

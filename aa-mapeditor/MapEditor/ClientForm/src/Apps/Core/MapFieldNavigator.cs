@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/11/25
+//      Last update     : 2023/11/26
 //
-//      File version    : 6
+//      File version    : 7
 //
 //
 /**************************************************************/
@@ -198,11 +198,10 @@ namespace ClientForm.src.Apps.Core
             int address = (page * BINARY_DATA_1PAGE_SIZE) + BINARY_HEADER_SIZE + (row * BINARY_LINE_SIZE) + column;  // Calculate the location of a binary address.
             if (BinaryData.Length > address)
             {
-                return GetBinaryData(address);
+                return BinaryData[address];
             }
             return byte.MinValue;
         }
-        private byte GetBinaryData(int address) => BinaryData[address];
 
         /// <summary>
         ///  Updates the binary data corresponding to the edited map field.
@@ -217,7 +216,7 @@ namespace ClientForm.src.Apps.Core
             int address = (page * BINARY_DATA_1PAGE_SIZE) + BINARY_HEADER_SIZE + (row * BINARY_LINE_SIZE) + column;  // Calculate the location of a binary address.
             if (address < BinaryData.Length)
             {
-                UpdateBinaryData(address, value);
+                BinaryData[address] = value;
                 // The ChangeMapTile method is executed only if the change is on the same page as the current page.
                 if (page == PageIndex)
                 {
@@ -227,7 +226,6 @@ namespace ClientForm.src.Apps.Core
             }
             return false;
         }
-        private void UpdateBinaryData(int address, byte value) => BinaryData[address] = value;
 
         /// <summary>
         ///  Execute binary data export by specifying the file name.
@@ -269,9 +267,7 @@ namespace ClientForm.src.Apps.Core
                 // If the input value is within the range, keep the value; if it is outside the range, restore the input value.
                 if (number <= 0 || number > maxPages)
                 {
-                    System.Media.SystemSounds.Beep.Play();
-                    sender.Text = _previousPageText;
-                    sender.SelectionStart = sender.Text.Length;
+                    RestorePreviousText(sender);
                 }
                 else
                 {
@@ -280,15 +276,24 @@ namespace ClientForm.src.Apps.Core
             }
             else if (!string.IsNullOrEmpty(sender.Text))
             {
-                System.Media.SystemSounds.Beep.Play();
-                sender.Text = _previousPageText;
-                sender.SelectionStart = sender.Text.Length;
+                RestorePreviousText(sender);
             }
             else // Default behavior when sender.Text is empty.
             {
                 _previousPageText = "1";
                 sender.Text = _previousPageText;
             }
+        }
+
+        /// <summary>
+        ///  Undo <see cref="TextBox"/> changes.
+        /// </summary>
+        /// <param name="sender"><see cref="TextBox"/> object</param>
+        private void RestorePreviousText(TextBox sender)
+        {
+            System.Media.SystemSounds.Beep.Play();
+            sender.Text = _previousPageText;
+            sender.SelectionStart = sender.Text.Length;
         }
 
 

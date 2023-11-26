@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/11/25
+//      Last update     : 2023/11/26
 //
-//      File version    : 6
+//      File version    : 7
 //
 //
 /**************************************************************/
@@ -41,7 +41,7 @@ namespace ClientForm
         ///  The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main()
+        private static void Main()
         {
             IConfigurationRoot configrations = GetConfigurationRoot();
             if (CheckScreenResolution(configrations))
