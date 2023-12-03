@@ -17,17 +17,17 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/11/26
+//      Last update     : 2023/12/03
 //
-//      File version    : 7
+//      File version    : 8
 //
 //
 /**************************************************************/
 
 /* using namespace */
+using ClientForm.src.Apps.EditsUI;
 using ClientForm.src.Apps.Files.BinaryFile;
 using ClientForm.src.Exceptions;
-using static ClientForm.src.Configs.CoreConstants;
 
 
 
@@ -35,121 +35,71 @@ using static ClientForm.src.Configs.CoreConstants;
 namespace ClientForm.src.Apps.Core
 {
     /// <summary>
-    ///  A class that guides and manages map fields.
+    ///  Edit data management class for map fields.
     /// </summary>
-    internal class MapFieldNavigator
+    /// <remarks>Managed of <see cref="IMapFieldViewer"/>, <see cref="IBinaryArrayData"/>, <see cref="IBinaryFile"/>, <see cref="IPageIndex"/> and other interfaces.</remarks>
+    internal class MapFieldNavigator(IMapFieldViewer mapFields, IBinaryArrayData binaryData, IBinaryFile binFile, IPageIndex pageIndex)
     {
-        /// <summary>
-        ///  Binary map filepath.
-        /// </summary>
-        private string _fieldName = string.Empty;
 
         /// <summary>
-        ///  Name (label) of the map field.
+        ///  FileName (label) of the map field.
         /// </summary>
-        public string FieldName
-        {
-            get { return _fieldName; }
-            set
-            {
-                if (_fieldName != value)
-                {
-                    _fieldName = value;
-                    OnFieldNameChanged();
-                }
-            }
-        }
-
-        /// <summary>
-        ///  Index value of the page number currently being drawn.
-        /// </summary>
-        private int _pageIndex;
+        public string BinFileName { get => binFile.BinFileName; set => binFile.BinFileName = value; }
 
         /// <summary>
         ///  The page address of the currently drawn map.
         /// </summary>
         public int PageIndex
         {
-            get => _pageIndex;
+            get => pageIndex!.PageIndex;
             set
             {
-                if (_pageIndex != value && 0 <= value)
+                if (pageIndex!.PageIndex != value && 0 <= value)
                 {
-                    _pageIndex = value;
+                    pageIndex.PageIndex = value;
                     ApplyingMapTiles();
                 }
             }
         }
 
         /// <summary>
-        ///  Binary array of map data to draw.
+        ///  Maximum number of pages of <see cref="IBinaryArrayData"/>.
         /// </summary>
-        public byte[,] MapFields { get; set; }
-
-        /// <summary>
-        ///  This is original formed binary data loaded into memory.
-        /// </summary>
-        public byte[] BinaryData { get; private set; } = [];
+        internal int MaxPages => binaryData.PageSize;
 
 
         /// <summary>
-        ///  Please pass an byte array for drawing map fields.
-        /// </summary>
-        /// <param name="bytes">Byte type array</param>
-        public MapFieldNavigator(byte[,] bytes)
-        {
-            MapFields = bytes;
-            Clear();
-        }
-
-        /// <summary>
-        ///  Delete the binary data enumeration of concealment.
+        ///  Delete the <see cref="IBinaryArrayData"/> data enumeration of concealment.
         /// </summary>
         internal void Clear()
         {
-            BinaryData = [];
-            _pageIndex = 0;
+            binaryData.Reset();
+            pageIndex!.PageIndex = 0;
         }
 
         /// <summary>
-        ///  Stores the chips in the map field array.
-        /// </summary>
-        /// <param name="row">Row number of the array</param>
-        /// <param name="col">Column number of the array</param>
-        /// <param name="index">Tile address to be replaced</param>
-        internal void ChangeMapTile(int row, int col, byte index)
-        {
-            if (0 <= row && row < MapFields.GetLength(0) && 0 <= col && col < MapFields.GetLength(1))
-            {
-                MapFields[row, col] = index;
-            }
-        }
-
-        /// <summary>
-        ///  Applying the map field's tile address.
+        ///  Applying the <see cref="IMapFieldViewer"/> tile address.
         /// </summary>
         /// <returns>A logical value indicating whether the map address distribution is complete.</returns>
         private bool ApplyingMapTiles()
         {
             return ExceptionHandler.TryCatchWithLogging(() =>
             {
-                int targetAddress = BINARY_HEADER_SIZE + (BINARY_DATA_1PAGE_SIZE * PageIndex);
-                byte[,] currentMapFields = MapFields;
+                byte[,] currentMapFields = mapFields.MapFields;
 
-                for (int i = 0; i < MapFields.GetLength(0); i++)
+                for (int i = 0; i < mapFields.MapFields.GetLength(0); i++)
                 {
-                    for (int j = 0; j < MapFields.GetLength(1); j++)
+                    for (int j = 0; j < mapFields.MapFields.GetLength(1); j++)
                     {
-                        if (BinaryData[targetAddress + (i * MapFields.GetLength(1)) + j] is byte data)
+                        if (binaryData.GetBinaryData(pageIndex!.PageIndex, i, j) is byte data)
                         {
-                            ChangeMapTile(i, j, data);
+                            mapFields.ChangeMapTile(i, j, data);
                         }
                         else
                         {
-                            // If ArgumentOutOfRangeException occurs in BinaryData...
-                            MapFields = currentMapFields;
-                            MessageBox.Show("チップリストに含まれないバイナリバイト羅列が見つかったため、マップは表示できませんでした。", "お知らせ");
-                            throw new Exception();
+                            // Rollback information from a partially processed ChangeMapTile and forces the multiple loop to end.
+                            mapFields.MapFields = currentMapFields;
+                            throw new ArgumentOutOfRangeException();
                         }
                     }
                 }
@@ -157,158 +107,47 @@ namespace ClientForm.src.Apps.Core
         }
 
         /// <summary>
-        ///  Sets the binary array to be drawn in the field.
+        ///  Sets the binaryData array to be drawn in the field.
         /// </summary>
         /// <returns>True if the field information could be set.</returns>
         internal bool SetFieldData()
         {
-            using BinaryMap binary = new();
-            BinaryData = binary.BinaryFileOpener();
-            if (0 < BinaryData.Length)
+            binaryData.Set(BinaryMap.BinaryFileOpener(out string filepath));
+            if (0 < binaryData.Length)
             {
-                FieldName = binary.FilePath;
+                BinFileName = filepath;
                 return ApplyingMapTiles();
             }
             return false;
         }
 
         /// <summary>
-        ///  Sets the binary array to be drawn in the field.
+        ///  Sets the binaryData array to be drawn in the field.
         /// </summary>
         internal void ReOpenFieldData()
         {
-            if (null != _fieldName)
+            if (null != BinFileName)
             {
-                using BinaryMap binary = new();
-                BinaryData = binary.BinaryFileOpener(_fieldName);
-                _pageIndex = 0;
+                binaryData.Set(BinaryMap.BinaryFileOpener(BinFileName));
+                pageIndex!.PageIndex = 0;
                 _ = ApplyingMapTiles();
             }
         }
 
         /// <summary>
-        ///  Gets the binary data byte at the specified position.
+        ///  Save the binary file.
         /// </summary>
-        /// <param name="page">Target page index</param>
-        /// <param name="row">Target lines</param>
-        /// <param name="column">Target columns</param>
-        /// <returns>Data bytes.</returns>
-        internal byte GetBinaryData(int page, int row, int column)
-        {
-            int address = (page * BINARY_DATA_1PAGE_SIZE) + BINARY_HEADER_SIZE + (row * BINARY_LINE_SIZE) + column;  // Calculate the location of a binary address.
-            if (BinaryData.Length > address)
-            {
-                return BinaryData[address];
-            }
-            return byte.MinValue;
-        }
+        /// <returns>Saved binary file path.</returns>
+        internal string ExportingBinaryData() => BinaryMap.SaveBinaryFile(binaryData.Get());
 
         /// <summary>
-        ///  Updates the binary data corresponding to the edited map field.
+        ///  Checks the validity of the values entered in a given object.
         /// </summary>
-        /// <param name="page">Target page index</param>
-        /// <param name="row">Target lines</param>
-        /// <param name="column">Target columns</param>
-        /// <param name="value">Update value</param>
-        /// <returns>True if the update is complete, false if there is a problem.</returns>
-        internal bool UpdateBinaryData(int page, int row, int column, byte value)
+        /// <returns>Maximum number of pages of <see cref="IBinaryArrayData"/>.</returns>
+        internal int ValidationInputPagesValues()
         {
-            int address = (page * BINARY_DATA_1PAGE_SIZE) + BINARY_HEADER_SIZE + (row * BINARY_LINE_SIZE) + column;  // Calculate the location of a binary address.
-            if (address < BinaryData.Length)
-            {
-                BinaryData[address] = value;
-                // The ChangeMapTile method is executed only if the change is on the same page as the current page.
-                if (page == PageIndex)
-                {
-                    ChangeMapTile(row, column, value);
-                }
-                return true;
-            }
-            return false;
-        }
-
-        /// <summary>
-        ///  Execute binary data export by specifying the file name.
-        /// </summary>
-        /// <returns>Saved file name, empty if disabled.</returns>
-        internal string ExportingBinaryData()
-        {
-            if (null != BinaryData && 0 < BinaryData.Length)
-            {
-                using SaveFileDialog saveBin = new()
-                {
-                    Filter = "binファイル|*bin",
-                    Title = "名前を付けて保存",
-                };
-                if (saveBin.ShowDialog() == DialogResult.OK)
-                {
-                    BinaryMap binaryMap = new(BinaryData);  // Pass existing map field information to the binary map class.
-                    return binaryMap.SaveBinaryFile(saveBin.FileName);
-                }
-            }
-            return string.Empty;
-        }
-
-
-
-        // Used to hold pre-input information for showPagesTextBox used when moving pages.
-        // This is only manipulated by the ValidationInputPagesValues method. Anything else is not allowed.
-        private string _previousPageText = "1";
-
-        /// <summary>
-        ///  Validate the input value in the page number <see cref="TextBox"/>.
-        /// </summary>
-        /// <param name="sender">showPagesTextBox object</param>
-        /// <param name="maxPages">Maximum number of pages that can be set</param>
-        internal void ValidationInputPagesValues(TextBox sender, int maxPages)
-        {
-            if (int.TryParse(sender.Text, out int number))
-            {
-                // If the input value is within the range, keep the value; if it is outside the range, restore the input value.
-                if (number <= 0 || number > maxPages)
-                {
-                    RestorePreviousText(sender);
-                }
-                else
-                {
-                    _previousPageText = sender.Text;
-                }
-            }
-            else if (!string.IsNullOrEmpty(sender.Text))
-            {
-                RestorePreviousText(sender);
-            }
-            else // Default behavior when sender.Text is empty.
-            {
-                _previousPageText = "1";
-                sender.Text = _previousPageText;
-            }
-        }
-
-        /// <summary>
-        ///  Undo <see cref="TextBox"/> changes.
-        /// </summary>
-        /// <param name="sender"><see cref="TextBox"/> object</param>
-        private void RestorePreviousText(TextBox sender)
-        {
-            System.Media.SystemSounds.Beep.Play();
-            sender.Text = _previousPageText;
-            sender.SelectionStart = sender.Text.Length;
-        }
-
-
-
-        /// <summary>
-        ///  Event when FieldName is changed.
-        /// </summary>
-        public event EventHandler? FieldNameChanged;
-
-        /// <summary>
-        ///  Event when FieldName is changed. (virtual method)
-        /// </summary>
-        protected virtual void OnFieldNameChanged()
-        {
-            FieldNameChanged?.Invoke(this, EventArgs.Empty);
+            pageIndex!.ValidationInputPagesValues(MaxPages);
+            return MaxPages;
         }
     }
 }

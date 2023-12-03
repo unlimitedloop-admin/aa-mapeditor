@@ -116,8 +116,6 @@ namespace ClientForm
             mapFieldPanel.Name = "mapFieldPanel";
             mapFieldPanel.Size = new Size(516, 484);
             mapFieldPanel.TabIndex = 0;
-            mapFieldPanel.OnChangeバイナリデータを開き直すMenuItemEnabled += Changeバイナリデータを開き直すMenuItemEnabled;
-            mapFieldPanel.OnChangeマップデータをバイナリへ書き出しMenuItemEnabled += Changeマップデータをバイナリへ書き出しMenuItemEnabled;
             mapFieldPanel.DoubleClick += MapFieldPanel_DoubleClick;
             // 
             // mapFieldInfoPanel

@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/11/26
+//      Last update     : 2023/12/03
 //
-//      File version    : 14
+//      File version    : 15
 //
 //
 /**************************************************************/
@@ -42,23 +42,35 @@ namespace ClientForm
         /// </summary>
         private RecordSupervision _recorder;
 
+        /// <summary>
+        ///  Edit data management class for map fields.
+        /// </summary>
+        private MapFieldNavigator? _navigator;
+
 
         public MainForm(string applicationName)
         {
             InitializeComponent();
             Text = applicationName;  // Application name.
 
+            _services = RegisteringServiceProvider();
             _recorder = new(this);
-            SetupMapBuilder();  // The primary instance that should be configured uniquely to the application.
+            Bootstrapper();  // The primary instance that should be configured uniquely to the application.
         }
 
         /// <summary>
         ///  Initialization process of map container required instance.
         /// </summary>
-        private void SetupMapBuilder()
+        private void Bootstrapper()
         {
+            var mapFieldViewer = GetMapFieldViewer();
+            var binaryArrayData = GetIBinaryArrayData();
+            var binaryFile = GetIBinaryFile();
+            var pageIndex = GetIPageIndex();
+            binaryFile.BinFileNameChanged += BinaryArrayData_FilenameChanged;
+            _navigator = GetMapFieldNavigator(mapFieldViewer, binaryArrayData, binaryFile, pageIndex);
             graphicChipPanel.SetPrimaryInstance(ref choiceChipPanel, ref _recorder);
-            mapFieldPanel.SetPrimaryInstance(ref choiceChipPanel, ref _recorder);
+            mapFieldPanel.SetPrimaryInstance(ref choiceChipPanel, ref _recorder, mapFieldViewer, binaryArrayData, pageIndex);
         }
 
         /// <summary>
@@ -99,13 +111,13 @@ namespace ClientForm
         ///  Returns the loaded binary file to its pre-change state (reloads it).
         /// </summary>
         private void バイナリデータを開き直す_Click(object sender, EventArgs e) => ExecuteReloadBinaryMapFile(sender, e);
-        public void Changeバイナリデータを開き直すMenuItemEnabled(bool isEnabled) => バイナリデータを開き直すRToolStripMenuItem.Enabled = isEnabled;
+        private void Changeバイナリデータを開き直すMenuItemEnabled(bool isEnabled) => バイナリデータを開き直すRToolStripMenuItem.Enabled = isEnabled;
 
         /// <summary>
         ///  Output binary data to a binary file.
         /// </summary>
         private void マップデータをバイナリへ書き出しMenuItem_Click(object sender, EventArgs e) => ExecuteSavingBinaryFile();
-        public void Changeマップデータをバイナリへ書き出しMenuItemEnabled(bool isEnabled) => マップデータをバイナリへ書き出しToolStripMenuItem.Enabled = isEnabled;
+        private void Changeマップデータをバイナリへ書き出しMenuItemEnabled(bool isEnabled) => マップデータをバイナリへ書き出しToolStripMenuItem.Enabled = isEnabled;
 
         /// <summary>
         ///  User interface for page transitions.

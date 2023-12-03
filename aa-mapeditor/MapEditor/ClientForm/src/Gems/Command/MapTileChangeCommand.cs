@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/11/26
+//      Last update     : 2023/12/03
 //
-//      File version    : 4
+//      File version    : 5
 //
 //
 /**************************************************************/
@@ -82,13 +82,16 @@ namespace ClientForm.src.Gems.Command
                     if (flag)
                     {
                         // Redo (Execute command)
-                        _oldTileIndex.Add(targets.Navigator.GetBinaryData(pagesIndex, row, col));
-                        targets.Navigator.UpdateBinaryData(pagesIndex, row, col, newTileIndex);  // TODO : バイナリデータへ設定できなかった場合はどうしますか？
+                        if (targets.GetBinaryData(pagesIndex, row, col) is byte data)
+                        {
+                            _oldTileIndex.Add(data);
+                        }
+                        targets.UpdateBinaryData(pagesIndex, row, col, newTileIndex);
                     }
                     else
                     {
                         // Undo
-                        targets.Navigator.UpdateBinaryData(pagesIndex, row, col, _oldTileIndex[index]);  // TODO : バイナリデータへ設定できなかった場合はどうしますか？
+                        targets.UpdateBinaryData(pagesIndex, row, col, _oldTileIndex[index]);
                     }
                     index++;
                 }

@@ -17,15 +17,16 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/11/25
+//      Last update     : 2023/12/03
 //
-//      File version    : 6
+//      File version    : 7
 //
 //
 /**************************************************************/
 
 /* using namespace */
 using ClientForm.src.Exceptions;
+using ClientForm.src.Logger;
 
 
 
@@ -33,63 +34,35 @@ using ClientForm.src.Exceptions;
 namespace ClientForm.src.Apps.Files.BinaryFile
 {
     /// <summary>
-    ///  A memory class that reads binary files and manages map data.
+    ///  A static class that provides functionality for reading and writing binary files.
     /// </summary>
-    internal class BinaryMap : IDisposable
+    internal static class BinaryMap
     {
-        /// <summary>
-        ///  It's an asynchronous file stream of binary data that you're reading.
-        /// </summary>
-        private FileStream? _fileStream;
-
-        /// <summary>
-        ///  A storage structure for reading binary file data.
-        /// </summary>
-        private BinaryReader? _binaryReader;
-
-        /// <summary>
-        ///  Path of the selected file.
-        /// </summary>
-        public string FilePath { get; private set; } = string.Empty;
-
-        /// <summary>
-        ///  Original obtained from the selected binary data file.
-        /// </summary>
-        public byte[] BinaryData { get; private set; }
-
-
-        internal BinaryMap()
-        {
-            BinaryData = [];
-        }
-
-        internal BinaryMap(byte[] bytes)
-        {
-            BinaryData = bytes;
-        }
-
         /// <summary>
         ///  The process of opening a binary file.
         /// </summary>
-        /// <returns>True if successful.</returns>
-        private bool FileOpen()
+        /// <returns>Byte array for binary data file.</returns>
+        private static byte[] FileOpen(string filepath)
         {
-            return ExceptionHandler.TryCatchWithLogging(() =>
+            try
             {
-                _fileStream = File.OpenRead(FilePath);
-                _binaryReader = new BinaryReader(_fileStream);
-                long len = _fileStream.Length;
-                byte[] data = new byte[len];
-                _ = _binaryReader.Read(data, 0, (int)len);
-                BinaryData = data;
-            });
+                using var fileStream = File.OpenRead(filepath);
+                using var binaryReader = new BinaryReader(fileStream);
+                long len = fileStream.Length;
+                return binaryReader.ReadBytes((int)len);
+            }
+            catch (Exception ex)
+            {
+                DefaultLogger.LogError(ex.Message);
+                return [];  // Returns an empty byte array if an error occurs.
+            }
         }
 
         /// <summary>
         ///  Hosts the dialog to open a binary file.
         /// </summary>
         /// <returns>Binary data of the opened file.</returns>
-        internal byte[] BinaryFileOpener()
+        internal static byte[] BinaryFileOpener(out string filePath)
         {
             using OpenFileDialog openbin = new()
             {
@@ -98,13 +71,11 @@ namespace ClientForm.src.Apps.Files.BinaryFile
             };
             if (openbin.ShowDialog() == DialogResult.OK)
             {
-                FilePath = openbin.FileName;
-                if (!FileOpen())
-                {
-                    return [];
-                }
+                filePath = openbin.FileName;
+                return FileOpen(filePath);
             }
-            return BinaryData;
+            filePath = string.Empty;
+            return [];
         }
 
         /// <summary>
@@ -112,46 +83,48 @@ namespace ClientForm.src.Apps.Files.BinaryFile
         /// </summary>
         /// <param name="filePath">File path to open</param>
         /// <returns>Binary data of the opened file.</returns>
-        internal byte[] BinaryFileOpener(string filePath)
+        internal static byte[] BinaryFileOpener(string filePath)
         {
-            BinaryData = [];
-            FilePath = filePath;
-            return !FileOpen() ? ([]) : BinaryData;
+            return FileOpen(filePath);
         }
 
         /// <summary>
-        ///  Writes a BinaryData byte string to a file as binary data.
+        ///  Writes a BinaryArrayData byte string to a file as binary data.
         /// </summary>
         /// <param name="filepath">Target file path</param>
+        /// <param name="data"></param>
         /// <param name="offset">Number of bytes to start writing binary data</param>
         /// <param name="length">Length of bytes to write</param>
         /// <returns>True if the operation is complete.</returns>
-        private bool FileWrite(string filepath, int offset, int length)
+        private static bool FileWrite(string filepath, byte[] data, int offset, int length)
         {
             return ExceptionHandler.TryCatchWithLogging(() =>
             {
                 using FileStream fileStream = new(filepath, FileMode.Create);
-                fileStream.Write(BinaryData, offset, length);
+                fileStream.Write(data, offset, length);
             });
         }
 
         /// <summary>
         ///  Save the binary file.
         /// </summary>
-        /// <param name="filePath">File path to save</param>
-        /// <returns>Saved file path.</returns>
-        internal string SaveBinaryFile(string filePath)
+        /// <param name="bytes">Binary data array to write</param>
+        /// <returns>Saved binary file path.</returns>
+        internal static string SaveBinaryFile(byte[] bytes)
         {
-            return !FileWrite(filePath, 0, BinaryData.Length) ? string.Empty : filePath;
-        }
-
-        /// <summary>
-        ///  Disposing instance.
-        /// </summary>
-        public void Dispose()
-        {
-            _binaryReader?.Dispose();
-            _fileStream?.Dispose();
+            if (0 < bytes.Length)
+            {
+                using SaveFileDialog saveBin = new()
+                {
+                    Filter = "binファイル|*bin",
+                    Title = "名前を付けて保存",
+                };
+                if (saveBin.ShowDialog() == DialogResult.OK)
+                {
+                    return !FileWrite(saveBin.FileName, bytes, 0, bytes.Length) ? string.Empty : saveBin.FileName;
+                }
+            }
+            return string.Empty;
         }
     }
 }

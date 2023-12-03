@@ -17,17 +17,17 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/11/25
+//      Last update     : 2023/12/03
 //
-//      File version    : 7
+//      File version    : 8
 //
 //
 /**************************************************************/
 
 /* using namespace */
 using ClientForm.src.Apps.Loader;
-using ClientForm.src.Configs;
 using ClientForm.src.Gems.Command;
+using static ClientForm.src.Configs.CustomColor;
 
 
 
@@ -67,7 +67,7 @@ namespace ClientForm
         /// </summary>
         private void ExecuteOpenBinaryMapFile(object sender, EventArgs e)
         {
-            if (mapFieldPanel.Navigator.SetFieldData())
+            if (_navigator!.SetFieldData())
             {
                 ActivateMapFieldPanel();
             }
@@ -79,9 +79,12 @@ namespace ClientForm
         /// </summary>
         private void ExecuteCloseBinaryMapFile(object sender, EventArgs e)
         {
-            if (!string.IsNullOrEmpty(mapFieldPanel.Navigator.FieldName))
+            if (!string.IsNullOrEmpty(_navigator!.BinFileName))
             {
                 mapFieldPanel.DestroyMapField();
+                _navigator!.BinFileName = string.Empty;
+                _navigator!.Clear();
+                _recorder.Clear();
                 mapFieldPanel.Invalidate();
                 mapFieldPanel.DoubleClick += MapFieldPanel_DoubleClick;
                 showPagesTextBox.Text = "";
@@ -96,9 +99,9 @@ namespace ClientForm
         private void ExecuteReloadBinaryMapFile(object sender, EventArgs args)
         {
             const string alertText = "マップフィールドの編集は失われます。この操作は元に戻せません。\r\nバイナリデータを再読み込みしますか？";
-            if (!string.IsNullOrEmpty(mapFieldPanel.Navigator.FieldName) && DialogResult.OK == MessageBox.Show(alertText, "Caution", MessageBoxButtons.OKCancel))
+            if (!string.IsNullOrEmpty(_navigator!.BinFileName) && DialogResult.OK == MessageBox.Show(alertText, "Caution", MessageBoxButtons.OKCancel))
             {
-                mapFieldPanel.Navigator.ReOpenFieldData();
+                _navigator!.ReOpenFieldData();
                 ActivateMapFieldPanel();
                 _recorder.Clear();
                 ActiveControl = null;
@@ -114,7 +117,7 @@ namespace ClientForm
             mapFieldPanel.Invalidate();
             showPagesTextBox.Enabled = true;
             showPagesTextBox.Text = "1";
-            maxPagesLabel.Text = "/ " + (mapFieldPanel.Navigator.BinaryData.Length / CoreConstants.BINARY_DATA_1PAGE_SIZE).ToString();
+            maxPagesLabel.Text = "/ " + _navigator!.MaxPages.ToString();
         }
 
         /// <summary>
@@ -123,11 +126,11 @@ namespace ClientForm
         /// <param name="offset">Change offset</param>
         private void ExecuteChangePages(int offset)
         {
-            int maxPages = mapFieldPanel.Navigator.BinaryData.Length / CoreConstants.BINARY_DATA_1PAGE_SIZE;
+            int maxPages = _navigator!.MaxPages;
             if (int.TryParse(showPagesTextBox.Text, out int number) && ((offset < 0 && 1 < number) || (offset > 0 && number < maxPages)))
             {
                 showPagesTextBox.Text = (number + offset).ToString();
-                mapFieldPanel.Navigator.PageIndex = number + offset - 1;
+                _navigator!.PageIndex = number + offset - 1;
                 mapFieldPanel.Refresh();
             }
             ActiveControl = null;
@@ -139,12 +142,11 @@ namespace ClientForm
         /// <param name="sender"><see cref="TextBox"/> object</param>
         private void ExecuteChangePages(TextBox sender)
         {
-            int maxPages = mapFieldPanel.Navigator.BinaryData.Length / CoreConstants.BINARY_DATA_1PAGE_SIZE;
-            mapFieldPanel.Navigator.ValidationInputPagesValues(sender, maxPages);
-            if (int.TryParse(sender.Text, out int number) && 0 < number && number <= maxPages)
+            int v = _navigator!.ValidationInputPagesValues();
+            if (int.TryParse(sender.Text, out int number) && 0 < number && number <= v)
             {
                 sender.Text = number.ToString();
-                mapFieldPanel.Navigator.PageIndex = number - 1;
+                _navigator!.PageIndex = number - 1;
                 mapFieldPanel.Refresh();
             }
         }
@@ -154,7 +156,7 @@ namespace ClientForm
         /// </summary>
         private void ExecuteSavingBinaryFile()
         {
-            if (mapFieldPanel.Navigator.ExportingBinaryData() is string filename && !string.IsNullOrEmpty(filename))
+            if (_navigator!.ExportingBinaryData() is string filename && !string.IsNullOrEmpty(filename))
             {
                 _ = MessageBox.Show("バイナリファイルを保存しました。" + "\r\n" + Path.GetFileName(filename), "名前を付けて保存");
             }
@@ -176,6 +178,28 @@ namespace ClientForm
         {
             Command? command = _recorder!.PopRedoStack();
             command?.Execute();
+        }
+
+        /// <summary>
+        ///  Event listener when the file path of IBinaryFile is changed.
+        /// </summary>
+        /// <param name="fieldName">Changed file path</param>
+        private void BinaryArrayData_FilenameChanged(string fieldName)
+        {
+            if (string.IsNullOrEmpty(fieldName))
+            {
+                mapFieldPanel.BackColor = SystemColors.AppWorkspace;
+                mapFieldPanel.SetToolTipActivate(true);
+                Changeバイナリデータを開き直すMenuItemEnabled(false);
+                Changeマップデータをバイナリへ書き出しMenuItemEnabled(false);
+            }
+            else
+            {
+                mapFieldPanel.BackColor = LightGreen;
+                mapFieldPanel.SetToolTipActivate(false);
+                Changeバイナリデータを開き直すMenuItemEnabled(true);
+                Changeマップデータをバイナリへ書き出しMenuItemEnabled(true);
+            }
         }
     }
 }
