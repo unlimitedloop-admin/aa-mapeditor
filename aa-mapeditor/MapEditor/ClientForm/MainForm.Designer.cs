@@ -1,3 +1,5 @@
+using ClientForm.src.CustomControls.Map;
+
 namespace ClientForm
 {
     partial class MainForm
@@ -31,8 +33,8 @@ namespace ClientForm
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             mainContainer = new SplitContainer();
             mapFieldContainer = new SplitContainer();
-            mapFieldPanel = new src.CustomControls.Map.TilingPanel();
-            mapFieldInfoPanel = new Panel();
+            mapFieldPanel = new TilingPanel();
+            mapFieldInfoPanel = new HeaderInfoPanel();
             graphicChipPanel = new src.CustomControls.Chip.ShowcasePanel();
             mainMenuStrip = new MenuStrip();
             ファイルFToolStripMenuItem = new ToolStripMenuItem();
@@ -120,6 +122,7 @@ namespace ClientForm
             // 
             // mapFieldInfoPanel
             // 
+            mapFieldInfoPanel.AutoScroll = true;
             mapFieldInfoPanel.BackColor = SystemColors.ButtonFace;
             mapFieldInfoPanel.BorderStyle = BorderStyle.Fixed3D;
             mapFieldInfoPanel.Dock = DockStyle.Fill;
@@ -127,6 +130,7 @@ namespace ClientForm
             mapFieldInfoPanel.Name = "mapFieldInfoPanel";
             mapFieldInfoPanel.Size = new Size(516, 117);
             mapFieldInfoPanel.TabIndex = 0;
+            mapFieldInfoPanel.DoubleClick += MapFieldInfoPanel_DoubleClick;
             // 
             // graphicChipPanel
             // 
@@ -167,14 +171,14 @@ namespace ClientForm
             // マップデータToolStripMenuItem
             // 
             マップデータToolStripMenuItem.Name = "マップデータToolStripMenuItem";
-            マップデータToolStripMenuItem.Size = new Size(180, 22);
+            マップデータToolStripMenuItem.Size = new Size(176, 22);
             マップデータToolStripMenuItem.Text = "マップデータ... (&M)";
             マップデータToolStripMenuItem.Click += 開く_マップデータ_Click;
             // 
             // グラフィックチップToolStripMenuItem
             // 
             グラフィックチップToolStripMenuItem.Name = "グラフィックチップToolStripMenuItem";
-            グラフィックチップToolStripMenuItem.Size = new Size(180, 22);
+            グラフィックチップToolStripMenuItem.Size = new Size(176, 22);
             グラフィックチップToolStripMenuItem.Text = "グラフィックチップ... (&R)";
             グラフィックチップToolStripMenuItem.Click += 開く_グラフィックチップ_Click;
             // 
@@ -394,7 +398,7 @@ namespace ClientForm
 
         private SplitContainer mainContainer;
         private SplitContainer mapFieldContainer;
-        private Panel mapFieldInfoPanel;
+        private src.CustomControls.Map.HeaderInfoPanel mapFieldInfoPanel;
         private MenuStrip mainMenuStrip;
         private ToolStripMenuItem ファイルFToolStripMenuItem;
         private ToolStripMenuItem アプリケーションの終了XToolStripMenuItem;

@@ -63,6 +63,26 @@ namespace Properties {
         /// <summary>
         ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
         /// </summary>
+        internal static System.Drawing.Bitmap icons8_toggle_32_off {
+            get {
+                object obj = ResourceManager.GetObject("icons8_toggle_32_off", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
+        /// </summary>
+        internal static System.Drawing.Bitmap icons8_toggle_32_on {
+            get {
+                object obj = ResourceManager.GetObject("icons8_toggle_32_on", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
+        /// </summary>
         internal static System.Drawing.Bitmap icons8_フォルダーを開く_30 {
             get {
                 object obj = ResourceManager.GetObject("icons8-フォルダーを開く-30", resourceCulture);

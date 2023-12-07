@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/12/03
+//      Last update     : 2023/12/07
 //
-//      File version    : 1
+//      File version    : 2
 //
 //
 /**************************************************************/
@@ -46,6 +46,8 @@ namespace ClientForm.src.Apps.EditsUI
         virtual void Set(int index, byte value) { }
         virtual byte GetBinaryData(int page, int row, int column) { return 0; }
         virtual void SetBinaryData(int page, int row, int column, byte value) { }
+        virtual byte[] ExtractRangeData(int startIndex, int length) { return []; }
+        virtual void UpdateRangeData(byte[] bytes, int startIndex) { }
     }
 
     /// <summary>
@@ -153,6 +155,44 @@ namespace ClientForm.src.Apps.EditsUI
             return (page * CoreConstants.BINARY_DATA_1PAGE_SIZE) + CoreConstants.BINARY_HEADER_SIZE + (row * CoreConstants.BINARY_LINE_SIZE) + column;
         }
 
+        /// <summary>
+        ///  Extract binary data from a specified range.
+        /// </summary>
+        /// <param name="startIndex">Address to start extraction</param>
+        /// <param name="length">Length in bytes of address</param>
+        /// <returns>Array of binary addresses.</returns>
+        public byte[] ExtractRangeData(int startIndex, int length)
+        {
+            byte[] bytes = new byte[length];
+            for (int i = 0; i < length; i++)
+            {
+                if (startIndex + i < _binaryData.Length)
+                {
+                    bytes[i] = _binaryData[startIndex + i];
+                }
+                else
+                {
+                    bytes[i] = 0;
+                }
+            }
+            return bytes;
+        }
+
+        /// <summary>
+        ///  Updates the specified range of bytes.
+        /// </summary>
+        /// <param name="bytes">Byte value to be rewritten</param>
+        /// <param name="startIndex">Address to start rewrite</param>
+        public void UpdateRangeData(byte[] bytes, int startIndex)
+        {
+            for (int i = 0; i < bytes.Length; i++)
+            {
+                if (startIndex + i < _binaryData.Length)
+                {
+                    _binaryData[startIndex + i] = bytes[i];
+                }
+            }
+        }
 
         /// <summary>
         ///  Event when BinFileName is changed.

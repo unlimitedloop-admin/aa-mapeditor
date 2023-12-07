@@ -8,13 +8,13 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace />
     <Product>AA-MapEditor</Product>
-    <Version>0.0.1</Version>
+    <Version>0.0.9</Version>
     <Authors>u7</Authors>
     <PackageIcon>pen_pencil_write_edit_icon_185947.png</PackageIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <ApplicationIcon>pen_pencil_write_edit_icon_185947.ico</ApplicationIcon>
-    <AssemblyVersion>0.0.0.18</AssemblyVersion>
-    <FileVersion>0.0.0.18</FileVersion>
+    <AssemblyVersion>0.0.9.0</AssemblyVersion>
+    <FileVersion>0.0.9.0</FileVersion>
     <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
   </PropertyGroup>
 

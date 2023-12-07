@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/10/15
+//      Last update     : 2023/12/07
 //
-//      File version    : 2
+//      File version    : 3
 //
 //
 /**************************************************************/
@@ -154,7 +154,7 @@ namespace ClientForm.src.Apps.Loader
         {
             if (null != ActiveControl)
             {
-                this.ActiveControl = null;
+                ActiveControl = null;
             }
         }
 
@@ -166,14 +166,12 @@ namespace ClientForm.src.Apps.Loader
             if (e.KeyChar == (char)Keys.Escape && ActiveControl != null)
             {
                 e.Handled = true;
-                this.ActiveControl = null;
-                return;
+                ActiveControl = null;
             }
             else if (e.KeyChar == (char)Keys.Escape && ActiveControl == null)
             {
                 e.Handled = true;
                 Close();
-                return;
             }
         }
 
@@ -235,7 +233,6 @@ namespace ClientForm.src.Apps.Loader
             {
                 SystemSounds.Beep.Play();
                 MessageBox.Show("画像ファイルを選択して下さい。");
-                return;
             }
             else if (ValidateOfRowColNumberTextBox() && CheckOfGraphicFile(filePathTextBox.Text))
             {

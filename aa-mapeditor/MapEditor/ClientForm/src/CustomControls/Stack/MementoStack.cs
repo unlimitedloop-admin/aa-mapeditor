@@ -30,7 +30,7 @@ using ClientForm.src.Gems.List;
 
 
 /* sources */
-namespace ClientForm.src.CustomControls.Array
+namespace ClientForm.src.CustomControls.Stack
 {
     /// <summary>
     ///  Custom stack with upper limit.

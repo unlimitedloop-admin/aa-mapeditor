@@ -70,6 +70,7 @@ namespace ClientForm
             if (_navigator!.SetFieldData())
             {
                 ActivateMapFieldPanel();
+                mapFieldInfoPanel.Invalidate();
             }
             ActiveControl = null;
         }
@@ -82,10 +83,12 @@ namespace ClientForm
             if (!string.IsNullOrEmpty(_navigator!.BinFileName))
             {
                 mapFieldPanel.DestroyMapField();
+                mapFieldInfoPanel.Clear();
                 _navigator!.BinFileName = string.Empty;
                 _navigator!.Clear();
                 _recorder.Clear();
                 mapFieldPanel.Invalidate();
+                mapFieldInfoPanel.Invalidate();
                 mapFieldPanel.DoubleClick += MapFieldPanel_DoubleClick;
                 showPagesTextBox.Text = "";
                 showPagesTextBox.Enabled = false;
@@ -115,9 +118,10 @@ namespace ClientForm
         {
             mapFieldPanel.DoubleClick -= MapFieldPanel_DoubleClick; // When the map is already loaded, it will not be loaded further.
             mapFieldPanel.Invalidate();
+            mapFieldInfoPanel.InitializeLabels();
             showPagesTextBox.Enabled = true;
-            showPagesTextBox.Text = "1";
-            maxPagesLabel.Text = "/ " + _navigator!.MaxPages.ToString();
+            showPagesTextBox.Text = "01";
+            maxPagesLabel.Text = "/ " + _navigator!.MaxPages.ToString("X2");
         }
 
         /// <summary>
@@ -127,11 +131,12 @@ namespace ClientForm
         private void ExecuteChangePages(int offset)
         {
             int maxPages = _navigator!.MaxPages;
-            if (int.TryParse(showPagesTextBox.Text, out int number) && ((offset < 0 && 1 < number) || (offset > 0 && number < maxPages)))
+            if (int.TryParse(showPagesTextBox.Text, System.Globalization.NumberStyles.HexNumber, null, out int number) && ((offset < 0 && 1 < number) || (offset > 0 && number < maxPages)))
             {
-                showPagesTextBox.Text = (number + offset).ToString();
+                showPagesTextBox.Text = (number + offset).ToString("X2");
                 _navigator!.PageIndex = number + offset - 1;
                 mapFieldPanel.Refresh();
+                mapFieldInfoPanel.Refresh();
             }
             ActiveControl = null;
         }
@@ -143,11 +148,12 @@ namespace ClientForm
         private void ExecuteChangePages(TextBox sender)
         {
             int v = _navigator!.ValidationInputPagesValues();
-            if (int.TryParse(sender.Text, out int number) && 0 < number && number <= v)
+            if (int.TryParse(sender.Text, System.Globalization.NumberStyles.HexNumber, null, out int number) && 0 < number && number <= v)
             {
-                sender.Text = number.ToString();
+                sender.Text = number.ToString("X2");
                 _navigator!.PageIndex = number - 1;
                 mapFieldPanel.Refresh();
+                mapFieldInfoPanel.Refresh();
             }
         }
 

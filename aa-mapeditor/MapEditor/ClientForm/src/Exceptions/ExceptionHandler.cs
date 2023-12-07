@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/11/25
+//      Last update     : 2023/12/07
 //
-//      File version    : 3
+//      File version    : 4
 //
 //
 /**************************************************************/
@@ -70,6 +70,10 @@ namespace ClientForm.src.Exceptions
                 else if (ex is FileNotFoundException)
                 {
                     _ = MessageBox.Show("ファイルが見つかりませんでした。" + "\r\n" + ex, "FileNotFoundException info");
+                }
+                else if (ex is FormatException)
+                {
+                    _ = MessageBox.Show("指定した書式にデータが対応していません。" + "\r\n" + ex, "FormatException info");
                 }
                 else if (ex is IndexOutOfRangeException)
                 {

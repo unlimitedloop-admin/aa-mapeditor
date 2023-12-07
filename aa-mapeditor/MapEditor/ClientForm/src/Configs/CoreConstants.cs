@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/11/18
+//      Last update     : 2023/12/07
 //
-//      File version    : 5
+//      File version    : 6
 //
 //
 /**************************************************************/
@@ -60,5 +60,45 @@ namespace ClientForm.src.Configs
         public const int BINARY_DATA_1PAGE_SIZE = 0x100;
         public const int BINARY_HEADER_SIZE = 0x10;
         public const int BINARY_LINE_SIZE = 0x10;
+
+
+        // Header property collection.
+        public static readonly string[] SCROLLTYPELIST = [
+            "隣接ページなし",
+            "任意スクロール",
+            "ぺージ単位スクロール",
+            "スクロール不可（淵あり）",
+            "スクロール不可（淵なし）",
+            "動的イベント型（フラグ）",
+            "軸補正型スクロール",
+            "ループ部屋の両端",
+            "オートスクロール",
+            "オブジェクト依存オートスクロール",
+            "大部屋",
+            "三次元スクロール",
+            "ラスタースクロール（フラグ）",
+            "多重BG（フラグ）",
+            "その他",
+            "（未定義）"
+        ];
+
+        public static readonly string[] SCROLLTYPE = [
+            "-",
+            "Follow",
+            "Fixed",
+            "None",
+            "None",
+            "Event",
+            "SemiFollow",
+            "Loops",
+            "Auto",
+            "Obj.Auto",
+            "Multiway",
+            "3D",
+            "Raster",
+            "DupliBG",
+            "X",
+            "Z"
+        ];
     }
 }

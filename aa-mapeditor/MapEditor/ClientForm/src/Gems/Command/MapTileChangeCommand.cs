@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/12/03
+//      Last update     : 2023/12/07
 //
-//      File version    : 5
+//      File version    : 6
 //
 //
 /**************************************************************/
@@ -62,8 +62,8 @@ namespace ClientForm.src.Gems.Command
         /// <summary>
         ///  Changes the map tiles within the specified range of cell locations.
         /// </summary>
-        /// <param name="flag">Specify true to embed _newTileIndex, and specify false to return _oldTileIndex data</param>
-        private void ChangeMapTiles(bool flag)
+        /// <param name="isRedo">Specify true to embed _newTileIndex, and specify false to return _oldTileIndex data</param>
+        private void ChangeMapTiles(bool isRedo)
         {
             Point startPoint = new(
                 Math.Min(start.X, end.X),
@@ -79,7 +79,7 @@ namespace ClientForm.src.Gems.Command
             {
                 for (int col = startPoint.X; col <= endPoint.X; col++)
                 {
-                    if (flag)
+                    if (isRedo)
                     {
                         // Redo (Execute command)
                         if (targets.GetBinaryData(pagesIndex, row, col) is byte data)

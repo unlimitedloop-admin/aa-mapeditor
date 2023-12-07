@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/12/03
+//      Last update     : 2023/12/07
 //
-//      File version    : 15
+//      File version    : 16
 //
 //
 /**************************************************************/
@@ -71,6 +71,7 @@ namespace ClientForm
             _navigator = GetMapFieldNavigator(mapFieldViewer, binaryArrayData, binaryFile, pageIndex);
             graphicChipPanel.SetPrimaryInstance(ref choiceChipPanel, ref _recorder);
             mapFieldPanel.SetPrimaryInstance(ref choiceChipPanel, ref _recorder, mapFieldViewer, binaryArrayData, pageIndex);
+            mapFieldInfoPanel.SetPrimaryInstance(ref _recorder, binaryArrayData, pageIndex);
         }
 
         /// <summary>
@@ -101,6 +102,11 @@ namespace ClientForm
         private void OpenBinaryMapButton_Click(object sender, EventArgs e) => ExecuteOpenBinaryMapFile(sender, e);
         private void MapFieldPanel_DoubleClick(object? sender, EventArgs e) => ExecuteOpenBinaryMapFile(sender!, e);
         private void 開く_マップデータ_Click(object sender, EventArgs e) => ExecuteOpenBinaryMapFile(sender, e);
+
+        /// <summary>
+        ///  Event handler to edit map information.
+        /// </summary>
+        private void MapFieldInfoPanel_DoubleClick(object? sender, EventArgs e) => mapFieldInfoPanel.ExecuteBinaryHeaderEditDialog(sender!, e);
 
         /// <summary>
         ///  Close binary map event handler.

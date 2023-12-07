@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/12/03
+//      Last update     : 2023/12/07
 //
-//      File version    : 1
+//      File version    : 2
 //
 //
 /**************************************************************/
@@ -34,7 +34,7 @@ namespace ClientForm.src.Apps.Modules
     {
         // Used to hold pre-input information for showPagesTextBox used when moving pages.
         // This is only manipulated by the ValidationInputPagesValues method. Anything else is not allowed.
-        private string _previousPageText = "1";
+        private string _previousPageText = "01";
 
         /// <summary>
         ///  Validate the input value in the page number <see cref="TextBox"/>.
@@ -43,7 +43,7 @@ namespace ClientForm.src.Apps.Modules
         /// <param name="maxPages">Maximum number of pages that can be set</param>
         internal void ValidationInputPagesValues(TextBox sender, int maxPages)
         {
-            if (int.TryParse(sender.Text, out int number))
+            if (int.TryParse(sender.Text, System.Globalization.NumberStyles.HexNumber, null, out int number))
             {
                 // If the input value is within the range, keep the value; if it is outside the range, restore the input value.
                 if (number <= 0 || number > maxPages)
@@ -61,7 +61,7 @@ namespace ClientForm.src.Apps.Modules
             }
             else // Default behavior when sender.Text is empty.
             {
-                _previousPageText = "1";
+                _previousPageText = "01";
                 sender.Text = _previousPageText;
             }
         }
