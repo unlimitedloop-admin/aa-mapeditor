@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/12/07
+//      Last update     : 2023/12/09
 //
-//      File version    : 1
+//      File version    : 2
 //
 //
 /**************************************************************/
@@ -211,6 +211,7 @@ namespace ClientForm.src.Apps.Editor
                 textBox.BackColor = SystemColors.Window;
                 textBox.ForeColor = SystemColors.WindowText;
                 textBox.ReadOnly = false;
+                textBox.TabStop = true;
                 textBox.Enter += HeaderTextBox_Enter;
                 textBox.Leave += HeaderTextBox_Leave;
             }
@@ -219,6 +220,9 @@ namespace ClientForm.src.Apps.Editor
                 textBox.BackColor = SystemColors.GrayText;
                 textBox.ForeColor = SystemColors.WindowText;
                 textBox.ReadOnly = true;
+                textBox.TabStop = false;
+                textBox.Enter -= HeaderTextBox_Enter;
+                textBox.Leave -= HeaderTextBox_Leave;
             }
         }
 

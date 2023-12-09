@@ -55,6 +55,7 @@ namespace ClientForm.src.CustomControls
             stateLabel.Size = new Size(27, 17);
             stateLabel.TabIndex = 1;
             stateLabel.Text = "Off";
+            stateLabel.TextChanged += StateLabel_TextChanged;
             // 
             // ToggleSwitchControl
             // 

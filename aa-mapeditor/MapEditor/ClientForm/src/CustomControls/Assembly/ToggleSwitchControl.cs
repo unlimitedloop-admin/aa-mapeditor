@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/12/07
+//      Last update     : 2023/12/09
 //
-//      File version    : 1
+//      File version    : 2
 //
 //
 /**************************************************************/
@@ -41,7 +41,7 @@ namespace ClientForm.src.CustomControls
 
         public bool Toggled
         {
-            get { return _isToggled; }
+            get => _isToggled;
             set
             {
                 if (_isToggled != value)
@@ -69,6 +69,19 @@ namespace ClientForm.src.CustomControls
             toggleSwitchObject.Image = _isToggled ? icons8_toggle_32_on : icons8_toggle_32_off;
             stateLabel.Text = _isToggled ? "On" : "Off";
             OnToggleChanged();
+        }
+
+        private void StateLabel_TextChanged(object sender, EventArgs e)
+        {
+            var objects = (Label)sender!;
+            if (objects.Text == "Off")
+            {
+                objects.ForeColor = SystemColors.ControlText;
+            }
+            else if (objects.Text == "On")
+            {
+                objects.ForeColor = Color.Firebrick;
+            }
         }
 
         public event EventHandler? ToggleSwitchChanged;

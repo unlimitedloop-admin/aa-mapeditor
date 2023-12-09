@@ -89,10 +89,12 @@ namespace ClientForm.src.Apps.Editor
             // restrictToggleSwitch
             // 
             restrictToggleSwitch.AutoValidate = AutoValidate.EnablePreventFocusChange;
+            restrictToggleSwitch.ForeColor = SystemColors.ControlText;
             restrictToggleSwitch.Location = new Point(15, 19);
             restrictToggleSwitch.Name = "restrictToggleSwitch";
             restrictToggleSwitch.Size = new Size(65, 33);
             restrictToggleSwitch.TabIndex = 1;
+            restrictToggleSwitch.TabStop = false;
             restrictToggleSwitch.Toggled = false;
             restrictToggleSwitch.ToggleSwitchChanged += RestrictToggleSwitch_Changed;
             // 
@@ -213,7 +215,7 @@ namespace ClientForm.src.Apps.Editor
             adminModeGroupBox.Location = new Point(180, 43);
             adminModeGroupBox.Name = "adminModeGroupBox";
             adminModeGroupBox.Size = new Size(88, 60);
-            adminModeGroupBox.TabIndex = 13;
+            adminModeGroupBox.TabIndex = 99;
             adminModeGroupBox.TabStop = false;
             adminModeGroupBox.Text = "force gate";
             // 

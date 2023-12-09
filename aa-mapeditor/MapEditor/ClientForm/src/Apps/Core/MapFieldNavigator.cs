@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/12/03
+//      Last update     : 2023/12/09
 //
-//      File version    : 8
+//      File version    : 9
 //
 //
 /**************************************************************/
@@ -112,9 +112,10 @@ namespace ClientForm.src.Apps.Core
         /// <returns>True if the field information could be set.</returns>
         internal bool SetFieldData()
         {
-            binaryData.Set(BinaryMap.BinaryFileOpener(out string filepath));
-            if (0 < binaryData.Length)
+            byte[] binByte = BinaryMap.BinaryFileOpener(out string filepath);
+            if (0 < binByte.Length)
             {
+                binaryData.Set(binByte);
                 BinFileName = filepath;
                 return ApplyingMapTiles();
             }
@@ -138,7 +139,10 @@ namespace ClientForm.src.Apps.Core
         ///  Save the binary file.
         /// </summary>
         /// <returns>Saved binary file path.</returns>
-        internal string ExportingBinaryData() => BinaryMap.SaveBinaryFile(binaryData.Get());
+        internal string ExportingBinaryData()
+        {
+            return BinaryMap.SaveBinaryFile(binaryData.Get());
+        }
 
         /// <summary>
         ///  Checks the validity of the values entered in a given object.
