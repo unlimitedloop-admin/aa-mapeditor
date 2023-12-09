@@ -8,3 +8,6 @@
 
 - 2023-10-06
     - Branched into 'feature/basic-design'
+
+- 2023-12-09
+    - Merge 'develop' into "master" (Merged 'feature/basic-design')

@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/12/03
+//      Last update     : 2023/12/09
 //
-//      File version    : 8
+//      File version    : 9
 //
 //
 /**************************************************************/
@@ -206,6 +206,11 @@ namespace ClientForm
                 Changeバイナリデータを開き直すMenuItemEnabled(true);
                 Changeマップデータをバイナリへ書き出しMenuItemEnabled(true);
             }
+        }
+
+        private void ExecuteDiagnosticsBrowsing(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start("explorer.exe", "https://icons8.jp/");
         }
     }
 }

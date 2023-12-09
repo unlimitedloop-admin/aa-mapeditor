@@ -54,6 +54,7 @@ namespace ClientForm
             やり直しRToolStripMenuItem = new ToolStripMenuItem();
             choiceChipPanel = new src.CustomControls.Chip.ChipManagedPanel();
             statusStrip = new StatusStrip();
+            licenseStatusLabel = new ToolStripStatusLabel();
             openGraphChipButton = new Button();
             openBinaryMapButton = new Button();
             nextPagesButton = new Button();
@@ -69,6 +70,7 @@ namespace ClientForm
             mapFieldContainer.Panel2.SuspendLayout();
             mapFieldContainer.SuspendLayout();
             mainMenuStrip.SuspendLayout();
+            statusStrip.SuspendLayout();
             SuspendLayout();
             // 
             // mainContainer
@@ -274,11 +276,23 @@ namespace ClientForm
             // 
             // statusStrip
             // 
+            statusStrip.Items.AddRange(new ToolStripItem[] { licenseStatusLabel });
             statusStrip.Location = new Point(0, 763);
             statusStrip.Name = "statusStrip";
             statusStrip.Size = new Size(1174, 22);
             statusStrip.TabIndex = 3;
             statusStrip.Text = "statusStrip1";
+            // 
+            // licenseStatusLabel
+            // 
+            licenseStatusLabel.IsLink = true;
+            licenseStatusLabel.Name = "licenseStatusLabel";
+            licenseStatusLabel.RightToLeft = RightToLeft.No;
+            licenseStatusLabel.Size = new Size(1159, 17);
+            licenseStatusLabel.Spring = true;
+            licenseStatusLabel.Text = "Icons by Icon8";
+            licenseStatusLabel.TextAlign = ContentAlignment.MiddleRight;
+            licenseStatusLabel.Click += LicenseStatusLabel_Click;
             // 
             // openGraphChipButton
             // 
@@ -390,6 +404,8 @@ namespace ClientForm
             mapFieldContainer.ResumeLayout(false);
             mainMenuStrip.ResumeLayout(false);
             mainMenuStrip.PerformLayout();
+            statusStrip.ResumeLayout(false);
+            statusStrip.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -425,5 +441,6 @@ namespace ClientForm
         private ToolStripMenuItem バイナリデータを開き直すRToolStripMenuItem;
         private ToolStripMenuItem 保存SToolStripMenuItem;
         private ToolStripMenuItem マップデータをバイナリへ書き出しToolStripMenuItem;
+        private ToolStripStatusLabel licenseStatusLabel;
     }
 }

@@ -17,9 +17,9 @@
 //
 //      Author          : u7
 //
-//      Last update     : 2023/12/07
+//      Last update     : 2023/12/09
 //
-//      File version    : 16
+//      File version    : 17
 //
 //
 /**************************************************************/
@@ -144,5 +144,8 @@ namespace ClientForm
         /// </summary>
         private void やり直し_Click(object sender, EventArgs e) => ExecuteRedo(sender, e);
         internal void やり直し_ChangeEnabled(bool enabled) => やり直しRToolStripMenuItem.Enabled = enabled;
+
+
+        private void LicenseStatusLabel_Click(object sender, EventArgs e) => ExecuteDiagnosticsBrowsing(sender, e);
     }
 }
